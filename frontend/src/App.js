@@ -1431,17 +1431,8 @@ const MessagesPage = ({ user, setPage }) => {
   const [loading, setLoading] = useState(true);
   const messagesEndRef = useRef(null);
 
-  useEffect(() => {
-    if (user) {
-      loadConversations();
-    }
-  }, [user]);
-
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages]);
-
   const loadConversations = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       const data = await api.getConversations(user.uid);
@@ -1451,6 +1442,17 @@ const MessagesPage = ({ user, setPage }) => {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (user) {
+      loadConversations();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
+
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
   const openConversation = async (conv) => {
     setActiveConversation(conv);
