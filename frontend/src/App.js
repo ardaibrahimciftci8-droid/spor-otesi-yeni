@@ -1778,7 +1778,7 @@ const LoginPage = ({ onLogin, setPage }) => {
           <User size={32} className="text-yellow-500" />
         </div>
         <h1 className="text-3xl font-bold text-white mb-2">Hoş Geldin</h1>
-        <p className="text-gray-400 mb-8">Spor Ötesi'ne katılmak için giriş yap</p>
+        <p className="text-gray-400 mb-8">Spor Ötesine katılmak için giriş yap</p>
         
         <button 
           onClick={onLogin}
