@@ -1,12 +1,13 @@
 import requests
 import sys
 import json
+import os
 from datetime import datetime, timezone
 
 class SporOtesiAPITester:
-    def __init__(self, base_url="https://sportsxpress.preview.emergentagent.com"):
-        self.base_url = base_url
-        self.api_url = f"{base_url}/api"
+    def __init__(self, base_url=None):
+        self.base_url = base_url or os.environ.get('BACKEND_URL', 'http://localhost:8001')
+        self.api_url = f"{self.base_url}/api"
         self.tests_run = 0
         self.tests_passed = 0
         self.test_user_id = "test123"  # Firebase UID from context
