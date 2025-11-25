@@ -936,13 +936,8 @@ const TrackerPage = ({ user, setPage }) => {
     notes: ''
   });
 
-  useEffect(() => {
-    if (user) {
-      loadData();
-    }
-  }, [user]);
-
   const loadData = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       const [activitiesData, sleepData, statsData, sleepStatsData] = await Promise.all([
@@ -960,6 +955,13 @@ const TrackerPage = ({ user, setPage }) => {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (user) {
+      loadData();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleAddActivity = async (e) => {
     e.preventDefault();
