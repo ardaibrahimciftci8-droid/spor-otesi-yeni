@@ -1813,13 +1813,8 @@ const ProfilePage = ({ user, setPage }) => {
   const [editMode, setEditMode] = useState(false);
   const [bio, setBio] = useState('');
 
-  useEffect(() => {
-    if (user) {
-      loadProfile();
-    }
-  }, [user]);
-
   const loadProfile = async () => {
+    if (!user) return;
     setLoading(true);
     try {
       let profileData = await api.getUser(user.uid);
@@ -1851,6 +1846,13 @@ const ProfilePage = ({ user, setPage }) => {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    if (user) {
+      loadProfile();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleUpdateBio = async () => {
     try {
