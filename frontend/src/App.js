@@ -769,7 +769,6 @@ const SocialPage = ({ user, setPage, setViewUserId }) => {
 
   useEffect(() => {
     loadPosts();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const handleSearch = async (e) => {
@@ -960,7 +959,6 @@ const TrackerPage = ({ user, setPage }) => {
     if (user) {
       loadData();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const handleAddActivity = async (e) => {
@@ -1447,7 +1445,6 @@ const MessagesPage = ({ user, setPage }) => {
     if (user) {
       loadConversations();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
@@ -1851,7 +1848,6 @@ const ProfilePage = ({ user, setPage }) => {
     if (user) {
       loadProfile();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   const handleUpdateBio = async () => {
