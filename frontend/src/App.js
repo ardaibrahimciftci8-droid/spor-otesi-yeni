@@ -756,10 +756,6 @@ const SocialPage = ({ user, setPage, setViewUserId }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [activeTab, setActiveTab] = useState('feed');
 
-  useEffect(() => {
-    loadPosts();
-  }, [user]);
-
   const loadPosts = async () => {
     setLoading(true);
     try {
@@ -770,6 +766,11 @@ const SocialPage = ({ user, setPage, setViewUserId }) => {
     }
     setLoading(false);
   };
+
+  useEffect(() => {
+    loadPosts();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
