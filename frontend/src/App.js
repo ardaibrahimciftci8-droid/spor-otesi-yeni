@@ -2268,7 +2268,7 @@ function App() {
   const [page, setPage] = useState('home');
   const [user, setUser] = useState(null);
   const [viewUserId, setViewUserId] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!auth);
 
   useEffect(() => {
     if (auth) {
@@ -2292,8 +2292,6 @@ function App() {
         }
       });
       return () => unsub();
-    } else {
-      setLoading(false);
     }
   }, []);
 
