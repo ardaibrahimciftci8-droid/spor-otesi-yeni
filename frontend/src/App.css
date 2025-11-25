@@ -1,0 +1,130 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Montserrat:wght@400;500;600;700;800;900&display=swap');
+
+:root {
+  --yellow-500: #eab308;
+  --yellow-400: #facc15;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background-color: #000;
+  color: #fff;
+  overflow-x: hidden;
+}
+
+.font-montserrat {
+  font-family: 'Montserrat', sans-serif;
+}
+
+.font-inter {
+  font-family: 'Inter', sans-serif;
+}
+
+/* Scrollbar Styling */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #1f2937;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #4b5563;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+/* Custom Animations */
+@keyframes pulse-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(234, 179, 8, 0.3);
+  }
+  50% {
+    box-shadow: 0 0 40px rgba(234, 179, 8, 0.6);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+/* Safe area for mobile */
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Post card styling */
+.post-card {
+  @apply bg-gray-900/80 border border-gray-800 rounded-2xl overflow-hidden transition-all duration-300;
+}
+
+.post-card:hover {
+  @apply border-gray-700;
+}
+
+/* Activity card */
+.activity-card {
+  @apply bg-gradient-to-br from-gray-800/50 to-gray-900/50 border border-gray-700/50 rounded-2xl p-6 transition-all duration-300;
+}
+
+.activity-card:hover {
+  @apply border-yellow-500/30;
+}
+
+/* Stats card */
+.stats-card {
+  @apply bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-gray-700/30;
+}
+
+/* Message bubble */
+.message-bubble-sent {
+  @apply bg-gradient-to-br from-yellow-500 to-yellow-600 text-black rounded-2xl rounded-tr-none;
+}
+
+.message-bubble-received {
+  @apply bg-gray-800 border border-white/5 text-gray-100 rounded-2xl rounded-tl-none;
+}
+
+/* Input styling */
+.input-dark {
+  @apply w-full bg-gray-800 border border-gray-700 rounded-xl px-4 py-3 text-white placeholder-gray-500 focus:border-yellow-500 focus:ring-1 focus:ring-yellow-500 outline-none transition-all;
+}
+
+/* Button styling */
+.btn-primary {
+  @apply bg-yellow-500 hover:bg-yellow-400 text-black font-bold py-3 px-6 rounded-xl transition-all duration-300 shadow-lg shadow-yellow-500/20;
+}
+
+.btn-secondary {
+  @apply bg-gray-800 hover:bg-gray-700 text-white font-medium py-3 px-6 rounded-xl border border-gray-700 transition-all duration-300;
+}
+
+/* Glass effect */
+.glass {
+  @apply bg-white/5 backdrop-blur-md border border-white/10;
+}
+
+/* Gradient text */
+.gradient-text {
+  @apply text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-orange-600;
+}
