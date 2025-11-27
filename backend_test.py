@@ -427,25 +427,42 @@ class SporOtesiAPITester:
 
     def test_create_conversation(self):
         """Test creating a conversation"""
-        success, response = self.run_test(
-            "Create Conversation",
-            "POST",
-            "conversations",
-            200,
-            data={
-                "participant1_id": self.test_user_id,
-                "participant1_name": "Test User",
-                "participant1_photo": ""
-            },
-            params={
-                "participant2_id": self.test_user_id2,
-                "participant2_name": "Test User 2",
-                "participant2_photo": ""
-            }
-        )
-        if success and isinstance(response, dict) and 'id' in response:
-            self.created_conversation_id = response['id']
-        return success, response
+        # Fix the API call format based on server.py
+        url = f"{self.api_url}/conversations"
+        headers = {'Content-Type': 'application/json'}
+        params = {
+            "participant1_id": self.test_user_id,
+            "participant1_name": "Test User",
+            "participant1_photo": "",
+            "participant2_id": self.test_user_id2,
+            "participant2_name": "Test User 2",
+            "participant2_photo": ""
+        }
+        
+        print(f"\n🔍 Testing Create Conversation...")
+        print(f"   URL: {url}")
+        
+        try:
+            response = requests.post(url, headers=headers, params=params, timeout=10)
+            success = response.status_code == 200
+            
+            if success:
+                self.log_test("Create Conversation", True)
+                try:
+                    response_data = response.json()
+                    if isinstance(response_data, dict) and 'id' in response_data:
+                        self.created_conversation_id = response_data['id']
+                    return True, response_data
+                except:
+                    return True, response.text
+            else:
+                details = f"Expected 200, got {response.status_code}. Response: {response.text[:200]}"
+                self.log_test("Create Conversation", False, details)
+                return False, {}
+
+        except Exception as e:
+            self.log_test("Create Conversation", False, f"Exception: {str(e)}")
+            return False, {}
 
     def test_send_message(self):
         """Test sending a message"""
