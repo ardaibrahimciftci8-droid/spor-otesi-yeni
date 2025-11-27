@@ -2013,6 +2013,18 @@ const NutritionPage = ({ user, setPage }) => {
           <h1 className="text-4xl font-bold mb-4"><Flame className="inline mr-2 text-orange-500" />AI Beslenme Uzmanı</h1>
           <p className="text-gray-400">Kalori hesapla veya yediğini analiz et</p>
         </div>
+        {/* AI Coach */}
+        <div className="mb-8">
+          <AICoach
+            user={user}
+            coachType="nutrition"
+            title="Beslenme Koçu"
+            icon={Utensils}
+            color="text-orange-500"
+            placeholder="Beslenme ve diyet hakkında soru sorun..."
+          />
+        </div>
+
         <div className="flex justify-center gap-4 mb-8">
           <button onClick={() => setActiveTab("hesapla")} className={`px-6 py-3 rounded-xl font-bold transition ${activeTab === "hesapla" ? "bg-gradient-to-r from-orange-500 to-red-500 text-white" : "bg-white/5 text-gray-400"}`}>İhtiyaç Hesapla</button>
           <button onClick={() => setActiveTab("analiz")} className={`px-6 py-3 rounded-xl font-bold transition flex items-center gap-2 ${activeTab === "analiz" ? "bg-gradient-to-r from-orange-500 to-red-500 text-white" : "bg-white/5 text-gray-400"}`}><Utensils size={18} /> Analiz Et</button>
