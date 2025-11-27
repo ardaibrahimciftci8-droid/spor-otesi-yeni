@@ -539,15 +539,20 @@ async def get_comments(post_id: str, skip: int = 0, limit: int = 50):
 # =============== CONVERSATION/MESSAGING ROUTES ===============
 
 @api_router.post("/conversations")
-async def create_or_get_conversation(participant1_id: str, participant1_name: str, participant1_photo: str = "", 
-                                      participant2_id: str = Query(...), participant2_name: str = Query(...), 
-                                      participant2_photo: str = Query("")):
+async def create_or_get_conversation(
+    participant1_id: str = Query(...), 
+    participant1_name: str = Query(...), 
+    participant1_photo: str = Query(""), 
+    participant2_id: str = Query(...), 
+    participant2_name: str = Query(...), 
+    participant2_photo: str = Query("")
+):
     existing = await db.conversations.find_one({
         "participants": {"$all": [participant1_id, participant2_id]}
     }, {"_id": 0})
     
     if existing:
-        return serialize_doc(existing)
+        return existing
     
     conv = Conversation(
         participants=[participant1_id, participant2_id],
@@ -558,9 +563,11 @@ async def create_or_get_conversation(participant1_id: str, participant1_name: st
     doc['created_at'] = doc['created_at'].isoformat()
     if doc['last_message_time']:
         doc['last_message_time'] = doc['last_message_time'].isoformat()
-    await db.conversations.insert_one(doc)
+    result = await db.conversations.insert_one(doc)
     
-    return conv.model_dump()
+    # Return without _id
+    created_conv = await db.conversations.find_one({"id": doc['id']}, {"_id": 0})
+    return created_conv
 
 @api_router.get("/conversations")
 async def get_conversations(user_id: str = Query(...)):
