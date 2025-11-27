@@ -3,15 +3,21 @@ import sys
 import json
 import os
 from datetime import datetime, timezone
+import uuid
 
 class SporOtesiAPITester:
     def __init__(self, base_url=None):
-        self.base_url = base_url or os.environ.get('BACKEND_URL', 'http://localhost:8001')
+        self.base_url = base_url or 'https://fitintegrate.preview.emergentagent.com'
         self.api_url = f"{self.base_url}/api"
         self.tests_run = 0
         self.tests_passed = 0
-        self.test_user_id = "test123"  # Firebase UID from context
+        self.test_user_id = f"test_user_{str(uuid.uuid4())[:8]}"  # Unique test user
+        self.test_user_id2 = f"test_user2_{str(uuid.uuid4())[:8]}"  # Second test user for social features
         self.test_results = []
+        self.created_post_id = None
+        self.created_activity_id = None
+        self.created_conversation_id = None
+        self.created_goal_id = None
 
     def log_test(self, name, success, details=""):
         """Log test result"""
