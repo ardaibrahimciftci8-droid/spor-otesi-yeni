@@ -1075,6 +1075,216 @@ async def get_user_analytics(user_id: str):
         "coach_chats_count": coach_chats_count
     }
 
+# =============== GOALS SYSTEM ===============
+
+@api_router.post("/goals")
+async def create_goal(goal: GoalCreate):
+    """Create a new goal"""
+    new_goal = Goal(**goal.model_dump())
+    doc = new_goal.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    if doc.get('deadline'):
+        doc['deadline'] = doc['deadline'].isoformat()
+    await db.goals.insert_one(doc)
+    return serialize_doc(doc)
+
+@api_router.get("/goals/{user_id}")
+async def get_user_goals(user_id: str, status: Optional[str] = None):
+    """Get user's goals"""
+    query = {"user_id": user_id}
+    if status:
+        query["status"] = status
+    
+    goals = await db.goals.find(query, {"_id": 0}).sort("created_at", -1).to_list(100)
+    return [serialize_doc(g) for g in goals]
+
+@api_router.put("/goals/{goal_id}")
+async def update_goal(goal_id: str, current_value: float):
+    """Update goal progress"""
+    goal = await db.goals.find_one({"id": goal_id}, {"_id": 0})
+    if not goal:
+        raise HTTPException(status_code=404, detail="Goal not found")
+    
+    updates = {"current_value": current_value}
+    
+    # Check if goal is completed
+    if goal.get('target_value') and current_value >= goal['target_value']:
+        updates["status"] = "completed"
+        updates["completed_at"] = datetime.now(timezone.utc).isoformat()
+    
+    await db.goals.update_one({"id": goal_id}, {"$set": updates})
+    return {"message": "Goal updated"}
+
+@api_router.delete("/goals/{goal_id}")
+async def delete_goal(goal_id: str):
+    """Delete a goal"""
+    await db.goals.delete_one({"id": goal_id})
+    return {"message": "Goal deleted"}
+
+# =============== ACHIEVEMENTS SYSTEM ===============
+
+@api_router.get("/achievements/{user_id}")
+async def get_user_achievements(user_id: str):
+    """Get user's achievements"""
+    achievements = await db.achievements.find({"user_id": user_id}, {"_id": 0}).sort("earned_at", -1).to_list(100)
+    return [serialize_doc(a) for a in achievements]
+
+@api_router.post("/achievements/check/{user_id}")
+async def check_and_award_achievements(user_id: str):
+    """Check and award new achievements"""
+    awarded = []
+    
+    # Check various milestones
+    posts_count = await db.posts.count_documents({"user_id": user_id})
+    activities_count = await db.activities.count_documents({"user_id": user_id})
+    yoga_count = await db.yoga_programs.count_documents({"user_id": user_id})
+    
+    # Achievement definitions
+    potential_achievements = []
+    
+    if posts_count >= 1:
+        potential_achievements.append({
+            "badge_type": "first_post",
+            "title": "İlk Adım",
+            "description": "İlk gönderini paylaştın!",
+            "icon": "📝"
+        })
+    if posts_count >= 10:
+        potential_achievements.append({
+            "badge_type": "social_star",
+            "title": "Sosyal Yıldız",
+            "description": "10 gönderi paylaştın!",
+            "icon": "⭐"
+        })
+    if activities_count >= 5:
+        potential_achievements.append({
+            "badge_type": "fitness_starter",
+            "title": "Fitness Başlangıcı",
+            "description": "5 aktivite kaydı oluşturdun!",
+            "icon": "🏃"
+        })
+    if activities_count >= 20:
+        potential_achievements.append({
+            "badge_type": "athlete",
+            "title": "Atlet",
+            "description": "20 aktivite tamamladın!",
+            "icon": "💪"
+        })
+    if yoga_count >= 1:
+        potential_achievements.append({
+            "badge_type": "yoga_beginner",
+            "title": "Yoga Yolcusu",
+            "description": "İlk yoga programını oluşturdun!",
+            "icon": "🧘"
+        })
+    
+    # Check which ones user doesn't have yet
+    existing = await db.achievements.find({"user_id": user_id}, {"badge_type": 1, "_id": 0}).to_list(100)
+    existing_types = [a['badge_type'] for a in existing]
+    
+    for ach in potential_achievements:
+        if ach['badge_type'] not in existing_types:
+            new_achievement = Achievement(
+                user_id=user_id,
+                badge_type=ach['badge_type'],
+                title=ach['title'],
+                description=ach['description'],
+                icon=ach['icon']
+            )
+            doc = new_achievement.model_dump()
+            doc['earned_at'] = doc['earned_at'].isoformat()
+            await db.achievements.insert_one(doc)
+            awarded.append(serialize_doc(doc))
+    
+    return {"awarded": awarded, "count": len(awarded)}
+
+# =============== PROGRESS REPORTS ===============
+
+@api_router.post("/reports/generate/{user_id}")
+async def generate_progress_report(user_id: str, report_type: str = "weekly"):
+    """Generate progress report"""
+    now = datetime.now(timezone.utc)
+    
+    if report_type == "daily":
+        period_start = now - timedelta(days=1)
+    elif report_type == "weekly":
+        period_start = now - timedelta(days=7)
+    else:  # monthly
+        period_start = now - timedelta(days=30)
+    
+    # Gather statistics
+    activities_count = await db.activities.count_documents({
+        "user_id": user_id,
+        "created_at": {"$gte": period_start.isoformat()}
+    })
+    
+    posts_count = await db.posts.count_documents({
+        "user_id": user_id,
+        "created_at": {"$gte": period_start.isoformat()}
+    })
+    
+    yoga_sessions = await db.yoga_programs.count_documents({
+        "user_id": user_id,
+        "created_at": {"$gte": period_start.isoformat()}
+    })
+    
+    coach_interactions = await db.coach_messages.count_documents({
+        "user_id": user_id,
+        "created_at": {"$gte": period_start.isoformat()}
+    })
+    
+    goals_completed = await db.goals.count_documents({
+        "user_id": user_id,
+        "status": "completed",
+        "completed_at": {"$gte": period_start.isoformat()}
+    })
+    
+    # Generate AI summary
+    summary_prompt = f"""
+    Kullanıcının son {report_type} performansını özetle:
+    - {activities_count} aktivite
+    - {posts_count} post
+    - {yoga_sessions} yoga seansı
+    - {coach_interactions} AI koç konuşması
+    - {goals_completed} hedef tamamlandı
+    
+    Kısa, motive edici ve Türkçe bir özet yaz (max 100 kelime).
+    """
+    
+    summary = await ask_ai(summary_prompt)
+    
+    # Create report
+    report = ProgressReport(
+        user_id=user_id,
+        report_type=report_type,
+        period_start=period_start,
+        period_end=now,
+        summary=summary,
+        activities_count=activities_count,
+        posts_count=posts_count,
+        yoga_sessions=yoga_sessions,
+        coach_interactions=coach_interactions,
+        goals_completed=goals_completed
+    )
+    
+    doc = report.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    doc['period_start'] = doc['period_start'].isoformat()
+    doc['period_end'] = doc['period_end'].isoformat()
+    await db.progress_reports.insert_one(doc)
+    
+    return serialize_doc(doc)
+
+@api_router.get("/reports/{user_id}")
+async def get_user_reports(user_id: str, limit: int = 10):
+    """Get user's progress reports"""
+    reports = await db.progress_reports.find(
+        {"user_id": user_id},
+        {"_id": 0}
+    ).sort("created_at", -1).limit(limit).to_list(limit)
+    
+    return [serialize_doc(r) for r in reports]
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
