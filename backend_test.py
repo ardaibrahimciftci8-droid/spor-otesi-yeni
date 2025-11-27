@@ -193,7 +193,7 @@ class SporOtesiAPITester:
         post_data = {
             "user_id": self.test_user_id,
             "user_name": "Test User",
-            "content": "Test post for API testing",
+            "content": "Bu bir test gönderisi! Spor Ötesi API testleri için oluşturuldu. 🏃‍♂️💪",
             "media_url": None,
             "media_type": None
         }
