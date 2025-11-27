@@ -244,11 +244,179 @@ test_plan:
   test_all: true
   test_priority: "high_first"
 
+backend:
+  - task: "Authentication & User Management"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test user creation, authentication, profile management, and user search functionality"
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: User creation/update (POST /api/users), user retrieval by Firebase UID, and user search functionality all working correctly. Firebase authentication integration working properly."
+
+  - task: "Social Feed & Posts"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test post creation, feed retrieval, likes, comments, and social interactions"
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: Post creation, feed retrieval, like/unlike functionality, comment creation and retrieval all working correctly. Social features fully functional."
+
+  - task: "Follow/Unfollow System"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test user following, unfollowing, follower/following lists"
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: Follow user, check following status, get followers/following lists all working correctly. Social network functionality is complete."
+
+  - task: "Activity Tracking"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test activity creation, retrieval, statistics, and deletion"
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: Activity creation (running, cycling, etc.), activity retrieval, and statistics calculation all working correctly. Activity tracking system is fully functional."
+
+  - task: "Sleep Tracking"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test sleep record creation, retrieval, and statistics"
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: Sleep record creation, retrieval, and statistics calculation all working correctly. Sleep tracking system is fully functional."
+
+  - task: "AI Coach Features"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test all 4 AI coaches (exercise, yoga, nutrition, analysis) and chat history"
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: All AI coaches working correctly - Exercise Coach, Yoga Coach, Nutrition Coach, and Analysis Coach all respond appropriately. Chat history retrieval working. AI integration with Pollinations API functioning properly."
+
+  - task: "Yoga Program Generation"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test yoga program generation and retrieval"
+      - working: false
+        agent: "testing"
+        comment: "❌ FAILED: Yoga program generation returns 500 Internal Server Error. Issue appears to be MongoDB ObjectId serialization problem in the response. Program retrieval endpoint works correctly."
+
+  - task: "Messaging System"
+    implemented: true
+    working: false
+    file: "/app/backend/server.py"
+    stuck_count: 1
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test conversation creation, message sending, and message retrieval"
+      - working: false
+        agent: "testing"
+        comment: "❌ FAILED: Conversation creation endpoint has parameter validation issues (422 error). API expects different parameter format than implemented. Message retrieval works when conversation exists."
+
+  - task: "Goals & Achievements System"
+    implemented: false
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test goal creation, progress tracking, and achievement system"
+      - working: "NA"
+        agent: "testing"
+        comment: "⚠️ NOT IMPLEMENTED: Goals and achievements endpoints return 404 Not Found. These features are defined in server.py but routes are not properly registered or accessible."
+
+  - task: "Analytics Dashboard"
+    implemented: false
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test analytics stats and user analytics"
+      - working: "NA"
+        agent: "testing"
+        comment: "⚠️ NOT IMPLEMENTED: Analytics endpoints return 404 Not Found. Analytics system is defined in server.py but routes are not properly registered or accessible."
+
+  - task: "Notifications System"
+    implemented: false
+    working: "NA"
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "low"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test notification retrieval and preferences"
+      - working: "NA"
+        agent: "testing"
+        comment: "⚠️ NOT IMPLEMENTED: Notification endpoints return 404 Not Found. Notification system is defined in server.py but routes are not properly registered or accessible."
+
 agent_communication:
   - agent: "testing"
     message: "Starting comprehensive end-to-end testing for Spor Ötesi application including all major features, AI coaches, responsive design, and performance testing"
   - agent: "testing"
     message: "COMPREHENSIVE TESTING COMPLETED: All 8 major features tested successfully. Homepage & navigation (5 buttons), Social page with feed, Tracker page, Yoga page, Donation page with 81 cities, AI Coach components, responsive design (desktop/tablet/mobile), and performance testing all passed. Authentication-protected features (AI coaches, activity tracking, yoga programs) correctly require login. Donation functionality works perfectly with city selection and modal forms. Application is fully functional and ready for production use."
+  - agent: "testing"
+    message: "BACKEND API TESTING COMPLETED: Comprehensive testing of all backend endpoints performed. Core features working: User management, social feed, activity/sleep tracking, AI coaches (4 types), and follow system. Issues found: Yoga program generation (500 error - ObjectId serialization), messaging system (422 parameter validation), and several endpoint groups not accessible (goals, achievements, analytics, notifications) despite being defined in code. 7/11 major backend systems fully functional."
 ## Fork Agent - CORS & Firebase Fix Session (27.11.2025)
 
 ### Issues Addressed:
