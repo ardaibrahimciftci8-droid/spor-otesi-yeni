@@ -1,5 +1,5 @@
 // Vision API utilities for image analysis
-const GOOGLE_VISION_API_KEY = 'AIzaSyCX9mTodIiwsWk0-_ux1AYgMbniUcqgAuo';
+const GOOGLE_VISION_API_KEY = process.env.REACT_APP_GOOGLE_VISION_API_KEY;
 
 // Analyze food image
 export const analyzeFoodImage = async (imageFile) => {
