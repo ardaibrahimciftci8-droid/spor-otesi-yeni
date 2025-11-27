@@ -181,6 +181,39 @@ class SleepRecordCreate(BaseModel):
     quality: Optional[int] = None
     notes: Optional[str] = None
 
+class CoachMessage(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    coach_type: str  # yoga, nutrition, exercise, match_analysis, general
+    user_message: str
+    coach_response: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class CoachMessageCreate(BaseModel):
+    user_id: str
+    coach_type: str
+    user_message: str
+
+class YogaProgram(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    program_name: str
+    duration_minutes: int
+    difficulty: str  # beginner, intermediate, advanced
+    exercises: List[dict]
+    video_url: Optional[str] = None
+    audio_url: Optional[str] = None
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class YogaProgramCreate(BaseModel):
+    user_id: str
+    program_name: str
+    duration_minutes: int
+    difficulty: str
+    user_preferences: Optional[str] = None
+
 # ===================== HELPER FUNCTIONS =====================
 
 def serialize_doc(doc):
