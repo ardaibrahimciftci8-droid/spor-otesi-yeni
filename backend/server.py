@@ -1107,7 +1107,7 @@ async def get_user_goals(user_id: str, status: Optional[str] = None):
         query["status"] = status
     
     goals = await db.goals.find(query, {"_id": 0}).sort("created_at", -1).to_list(100)
-    return [serialize_doc(g) for g in goals]
+    return goals
 
 @api_router.put("/goals/{goal_id}")
 async def update_goal(goal_id: str, current_value: float):
