@@ -2059,7 +2059,7 @@ const NutritionPage = ({ user, setPage }) => {
 };
 
 // --- ANALYSIS PAGE ---
-const AnalysisPage = ({ setPage }) => {
+const AnalysisPage = ({ user, setPage }) => {
   const [takim1, setTakim1] = useState("");
   const [takim2, setTakim2] = useState("");
   const [analiz, setAnaliz] = useState("");
