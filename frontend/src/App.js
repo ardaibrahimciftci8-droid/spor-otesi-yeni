@@ -734,7 +734,7 @@ const DonatePage = ({ user, setPage }) => {
             Spor Geleceğimize <span className="gradient-text">Destek Ol</span>
           </h1>
           <p className="text-gray-400 max-w-2xl mx-auto">
-            Türkiye'nin 81 ilindeki genç sporculara umut ol. Seçtiğin ile yapacağın her bağış, geleceğin şampiyonlarına destek oluyor.
+            Türkiye&apos;nin 81 ilindeki genç sporculara umut ol. Seçtiğin ile yapacağın her bağış, geleceğin şampiyonlarına destek oluyor.
           </p>
         </motion.div>
 
