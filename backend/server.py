@@ -1094,8 +1094,10 @@ async def create_goal(goal: GoalCreate):
     doc['created_at'] = doc['created_at'].isoformat()
     if doc.get('deadline'):
         doc['deadline'] = doc['deadline'].isoformat()
-    await db.goals.insert_one(doc)
-    return serialize_doc(doc)
+    result = await db.goals.insert_one(doc)
+    # Return without _id
+    created_goal = await db.goals.find_one({"id": doc['id']}, {"_id": 0})
+    return created_goal
 
 @api_router.get("/goals/{user_id}")
 async def get_user_goals(user_id: str, status: Optional[str] = None):
