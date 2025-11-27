@@ -214,6 +214,55 @@ class YogaProgramCreate(BaseModel):
     difficulty: str
     user_preferences: Optional[str] = None
 
+class Goal(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    goal_type: str  # fitness, yoga, nutrition, weight, sleep
+    title: str
+    description: str
+    target_value: Optional[float] = None
+    current_value: float = 0
+    unit: Optional[str] = None  # kg, km, hours, count
+    deadline: Optional[datetime] = None
+    status: str = "active"  # active, completed, failed
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    completed_at: Optional[datetime] = None
+
+class GoalCreate(BaseModel):
+    user_id: str
+    goal_type: str
+    title: str
+    description: str
+    target_value: Optional[float] = None
+    unit: Optional[str] = None
+    deadline: Optional[datetime] = None
+
+class Achievement(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    badge_type: str
+    title: str
+    description: str
+    icon: str
+    earned_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class ProgressReport(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    report_type: str  # daily, weekly, monthly
+    period_start: datetime
+    period_end: datetime
+    summary: str
+    activities_count: int = 0
+    posts_count: int = 0
+    yoga_sessions: int = 0
+    coach_interactions: int = 0
+    goals_completed: int = 0
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 # ===================== HELPER FUNCTIONS =====================
 
 def serialize_doc(doc):
