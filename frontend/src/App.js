@@ -273,7 +273,7 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
                   <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full"></span>
                 </button>
                 <button onClick={() => setPage('profile')} className="flex items-center gap-2 hover:bg-white/5 p-2 rounded-xl transition">
-                  <img src={user.photoURL || 'https://via.placeholder.com/40'} alt="" className="w-10 h-10 rounded-xl border-2 border-yellow-500/50" />
+                  <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=40'} alt="" className="w-10 h-10 rounded-xl border-2 border-yellow-500/50" />
                 </button>
                 <button onClick={onLogout} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition">
                   <LogOut size={20} />
@@ -354,7 +354,7 @@ const PostCard = ({ post, user, onDelete }) => {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="post-card">
       <div className="p-4 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <img src={post.user_photo || 'https://via.placeholder.com/48'} alt="" className="w-12 h-12 rounded-xl border-2 border-white/10" />
+          <img src={post.user_photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl border-2 border-white/10" />
           <div>
             <h4 className="font-bold text-white">{post.user_name}</h4>
             <span className="text-xs text-gray-500">{timeAgo(post.created_at)}</span>
@@ -401,7 +401,7 @@ const PostCard = ({ post, user, onDelete }) => {
             <div className="p-4 space-y-4 max-h-64 overflow-y-auto">
               {comments.map(comment => (
                 <div key={comment.id} className="flex gap-3">
-                  <img src={comment.user_photo || 'https://via.placeholder.com/32'} alt="" className="w-8 h-8 rounded-lg" />
+                  <img src={comment.user_photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=32'} alt="" className="w-8 h-8 rounded-lg" />
                   <div className="flex-1 bg-white/5 rounded-xl p-3">
                     <span className="font-medium text-sm text-yellow-500">{comment.user_name}</span>
                     <p className="text-sm text-gray-300">{comment.content}</p>
@@ -475,7 +475,7 @@ const CreatePostModal = ({ user, onClose, onPostCreated }) => {
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="flex gap-3">
-            <img src={user?.photoURL || 'https://via.placeholder.com/48'} alt="" className="w-12 h-12 rounded-xl" />
+            <img src={user?.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl" />
             <textarea value={content} onChange={e => setContent(e.target.value)} placeholder="Ne düşünüyorsun?" className="flex-1 bg-transparent text-white placeholder-gray-500 resize-none outline-none text-lg" rows={4} />
           </div>
           {mediaPreview && (
@@ -523,7 +523,7 @@ const UserCard = ({ profile, currentUser, onViewProfile }) => {
   return (
     <div className="glass-card p-4 flex items-center justify-between">
       <div className="flex items-center gap-3 cursor-pointer" onClick={onViewProfile}>
-        <img src={profile.photo_url || 'https://via.placeholder.com/48'} alt="" className="w-12 h-12 rounded-xl border-2 border-white/10" />
+        <img src={profile.photo_url || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl border-2 border-white/10" />
         <div>
           <h4 className="font-bold text-white">{profile.display_name}</h4>
           <p className="text-sm text-gray-400">{profile.followers_count || 0} takipçi</p>
@@ -561,7 +561,7 @@ const HomePage = ({ user, setPage, onLogout }) => {
             {user ? (
               <div className="flex items-center gap-2">
                 <button onClick={() => setPage('profile')} className="p-1">
-                  <img src={user.photoURL || 'https://via.placeholder.com/32'} alt="" className="w-10 h-10 rounded-xl border-2 border-yellow-500/50" />
+                  <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=32'} alt="" className="w-10 h-10 rounded-xl border-2 border-yellow-500/50" />
                 </button>
                 <button onClick={onLogout} className="p-2 bg-white/5 rounded-xl text-gray-400"><LogOut size={18} /></button>
               </div>
@@ -1521,7 +1521,7 @@ const SocialPage = ({ user, setPage }) => {
           {/* Create Post */}
           {user && (
             <button onClick={() => setShowCreatePost(true)} className="w-full glass-card p-4 flex items-center gap-4 mb-6 hover:border-white/20 transition text-left">
-              <img src={user.photoURL || 'https://via.placeholder.com/48'} alt="" className="w-12 h-12 rounded-xl" />
+              <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl" />
               <span className="text-gray-500">Ne düşünüyorsun?</span>
             </button>
           )}
@@ -1569,7 +1569,7 @@ const SocialPage = ({ user, setPage }) => {
                     const other = getOtherParticipant(conv);
                     return (
                       <button key={conv.id} onClick={() => openConversation(conv)} className="w-full p-4 flex items-center gap-3 hover:bg-white/5 transition border-b border-white/5">
-                        <img src={other.photo || 'https://via.placeholder.com/48'} alt="" className="w-12 h-12 rounded-xl" />
+                        <img src={other.photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl" />
                         <div className="flex-1 text-left">
                           <h4 className="font-bold text-white">{other.name}</h4>
                           <p className="text-sm text-gray-500 truncate">{conv.last_message || 'Henüz mesaj yok'}</p>
@@ -1590,7 +1590,7 @@ const SocialPage = ({ user, setPage }) => {
                   <button onClick={() => setActiveConversation(null)} className="p-2 hover:bg-white/5 rounded-lg">
                     <ChevronLeft size={20} />
                   </button>
-                  <img src={getOtherParticipant(activeConversation).photo || 'https://via.placeholder.com/40'} alt="" className="w-10 h-10 rounded-xl" />
+                  <img src={getOtherParticipant(activeConversation).photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=40'} alt="" className="w-10 h-10 rounded-xl" />
                   <h3 className="font-bold text-white">{getOtherParticipant(activeConversation).name}</h3>
                 </div>
                 <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -2332,7 +2332,7 @@ const MessagesPage = ({ user, setPage }) => {
               const other = getOtherParticipant(conv);
               return (
                 <button key={conv.id} onClick={() => openConversation(conv)} className={`w-full p-4 flex items-center gap-3 hover:bg-white/5 transition border-b border-white/5 ${activeConversation?.id === conv.id ? 'bg-white/5' : ''}`}>
-                  <img src={other.photo || 'https://via.placeholder.com/48'} alt="" className="w-12 h-12 rounded-xl" />
+                  <img src={other.photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl" />
                   <div className="flex-1 text-left">
                     <h4 className="font-bold text-white">{other.name}</h4>
                     <p className="text-sm text-gray-500 truncate">{conv.last_message || 'Henüz mesaj yok'}</p>
@@ -2353,7 +2353,7 @@ const MessagesPage = ({ user, setPage }) => {
           <div className="flex-1 flex flex-col">
             <div className="p-4 border-b border-white/10 flex items-center gap-3">
               <button onClick={() => setActiveConversation(null)} className="md:hidden p-2 hover:bg-white/5 rounded-lg"><ChevronLeft size={20} /></button>
-              <img src={getOtherParticipant(activeConversation).photo || 'https://via.placeholder.com/40'} alt="" className="w-10 h-10 rounded-xl" />
+              <img src={getOtherParticipant(activeConversation).photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=40'} alt="" className="w-10 h-10 rounded-xl" />
               <h3 className="font-bold text-white">{getOtherParticipant(activeConversation).name}</h3>
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
@@ -2450,7 +2450,7 @@ const ProfilePage = ({ user, setPage }) => {
       <div className="animated-bg" />
       <div className="max-w-2xl mx-auto">
         <div className="glass-card p-8 text-center mb-8">
-          <img src={user.photoURL || 'https://via.placeholder.com/120'} alt="" className="w-24 h-24 rounded-2xl border-4 border-yellow-500/50 mx-auto mb-4" />
+          <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=120'} alt="" className="w-24 h-24 rounded-2xl border-4 border-yellow-500/50 mx-auto mb-4" />
           <h1 className="text-2xl font-bold text-white">{user.displayName}</h1>
           {editMode ? (
             <div className="mt-4 space-y-2">
