@@ -2219,6 +2219,8 @@ function App() {
       case 'profile': return <ProfilePage user={user} setPage={setPage} />;
       case 'nutrition': return <NutritionPage user={user} setPage={setPage} />;
       case 'analysis': return <AnalysisPage user={user} setPage={setPage} />;
+      case 'notifications': return <NotificationsPage user={user} setPage={setPage} />;
+      case 'analytics': return <AnalyticsPage user={user} setPage={setPage} />;
       default: return <HomePage user={user} setPage={setPage} onLogout={handleLogout} />;
     }
   };
