@@ -885,6 +885,147 @@ logging.basicConfig(
 )
 logger = logging.getLogger(__name__)
 
+# =============== NOTIFICATION SYSTEM ===============
+
+class NotificationPreference(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    user_id: str
+    fcm_token: Optional[str] = None
+    new_follower: bool = True
+    new_message: bool = True
+    post_liked: bool = True
+    post_commented: bool = True
+    yoga_reminder: bool = True
+    workout_reminder: bool = True
+    daily_goal: bool = True
+
+class NotificationLog(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    type: str
+    title: str
+    body: str
+    read: bool = False
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+@api_router.post("/notifications/token")
+async def save_fcm_token(user_id: str, fcm_token: str):
+    """Save user's FCM token for push notifications"""
+    existing = await db.notification_preferences.find_one({"user_id": user_id}, {"_id": 0})
+    
+    if existing:
+        await db.notification_preferences.update_one(
+            {"user_id": user_id},
+            {"$set": {"fcm_token": fcm_token}}
+        )
+    else:
+        pref = NotificationPreference(user_id=user_id, fcm_token=fcm_token)
+        await db.notification_preferences.insert_one(pref.model_dump())
+    
+    return {"message": "FCM token saved"}
+
+@api_router.get("/notifications/{user_id}")
+async def get_notifications(user_id: str, limit: int = 20):
+    """Get user's notification history"""
+    notifications = await db.notification_logs.find(
+        {"user_id": user_id},
+        {"_id": 0}
+    ).sort("created_at", -1).limit(limit).to_list(limit)
+    
+    return [serialize_doc(n) for n in notifications]
+
+@api_router.post("/notifications/{notification_id}/read")
+async def mark_notification_read(notification_id: str):
+    """Mark notification as read"""
+    await db.notification_logs.update_one(
+        {"id": notification_id},
+        {"$set": {"read": True}}
+    )
+    return {"message": "Notification marked as read"}
+
+@api_router.put("/notifications/preferences/{user_id}")
+async def update_notification_preferences(user_id: str, preferences: NotificationPreference):
+    """Update user's notification preferences"""
+    await db.notification_preferences.update_one(
+        {"user_id": user_id},
+        {"$set": preferences.model_dump()},
+        upsert=True
+    )
+    return {"message": "Preferences updated"}
+
+@api_router.get("/notifications/preferences/{user_id}")
+async def get_notification_preferences(user_id: str):
+    """Get user's notification preferences"""
+    prefs = await db.notification_preferences.find_one({"user_id": user_id}, {"_id": 0})
+    return prefs if prefs else NotificationPreference(user_id=user_id).model_dump()
+
+@api_router.post("/notifications/log")
+async def log_notification(notification: NotificationLog):
+    """Log a notification (for history)"""
+    doc = notification.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.notification_logs.insert_one(doc)
+    return {"message": "Notification logged"}
+
+# =============== ANALYTICS SYSTEM ===============
+
+class AnalyticsEvent(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: Optional[str] = None
+    event_type: str  # page_view, post_create, coach_chat, yoga_program, etc.
+    event_data: Optional[dict] = None
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+@api_router.post("/analytics/event")
+async def track_event(event: AnalyticsEvent):
+    """Track analytics event"""
+    doc = event.model_dump()
+    doc['timestamp'] = doc['timestamp'].isoformat()
+    await db.analytics_events.insert_one(doc)
+    return {"message": "Event tracked"}
+
+@api_router.get("/analytics/stats")
+async def get_analytics_stats():
+    """Get overall analytics statistics"""
+    total_users = await db.users.count_documents({})
+    total_posts = await db.posts.count_documents({})
+    total_activities = await db.activities.count_documents({})
+    total_yoga_programs = await db.yoga_programs.count_documents({})
+    total_coach_messages = await db.coach_messages.count_documents({})
+    
+    # Last 7 days events
+    seven_days_ago = datetime.now(timezone.utc) - timedelta(days=7)
+    recent_events = await db.analytics_events.count_documents({
+        "timestamp": {"$gte": seven_days_ago.isoformat()}
+    })
+    
+    return {
+        "total_users": total_users,
+        "total_posts": total_posts,
+        "total_activities": total_activities,
+        "total_yoga_programs": total_yoga_programs,
+        "total_coach_messages": total_coach_messages,
+        "recent_events_7d": recent_events
+    }
+
+@api_router.get("/analytics/user/{user_id}")
+async def get_user_analytics(user_id: str):
+    """Get specific user's analytics"""
+    posts_count = await db.posts.count_documents({"user_id": user_id})
+    activities_count = await db.activities.count_documents({"user_id": user_id})
+    yoga_programs_count = await db.yoga_programs.count_documents({"user_id": user_id})
+    coach_chats_count = await db.coach_messages.count_documents({"user_id": user_id})
+    
+    return {
+        "user_id": user_id,
+        "posts_count": posts_count,
+        "activities_count": activities_count,
+        "yoga_programs_count": yoga_programs_count,
+        "coach_chats_count": coach_chats_count
+    }
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
