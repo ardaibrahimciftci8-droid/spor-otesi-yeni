@@ -2616,6 +2616,52 @@ const NutritionPage = ({ user, setPage }) => {
           />
         </div>
 
+        {/* Photo Analysis Button */}
+        <div className="mb-6">
+          <label className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-purple-500 to-pink-500 hover:from-purple-600 hover:to-pink-600 text-white font-bold rounded-xl transition-all cursor-pointer">
+            {analyzingPhoto ? (
+              <>
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Fotoğraf analiz ediliyor...
+              </>
+            ) : (
+              <>
+                <Camera size={20} />
+                Yemek Fotoğrafı Analiz Et
+              </>
+            )}
+            <input
+              type="file"
+              accept="image/*"
+              capture="environment"
+              onChange={handlePhotoAnalysis}
+              className="hidden"
+              disabled={analyzingPhoto}
+            />
+          </label>
+        </div>
+
+        {/* Photo Analysis Result */}
+        {photoAnalysis && (
+          <div className="glass-card p-6 mb-6">
+            <h3 className="text-lg font-bold text-white mb-3 flex items-center gap-2">
+              <Camera size={20} className="text-purple-500" />
+              Fotoğraf Analizi
+            </h3>
+            <div className="mb-3">
+              <p className="text-sm text-gray-400 mb-2">Tespit edilen yiyecekler:</p>
+              <div className="flex flex-wrap gap-2">
+                {photoAnalysis.foodItems.map((food, idx) => (
+                  <span key={idx} className="px-3 py-1 bg-purple-500/20 text-purple-300 rounded-full text-sm">
+                    {food}
+                  </span>
+                ))}
+              </div>
+            </div>
+            <div className="text-gray-300 whitespace-pre-line">{photoAnalysis.analysis}</div>
+          </div>
+        )}
+
         <div className="flex justify-center gap-4 mb-8">
           <button onClick={() => setActiveTab("hesapla")} className={`px-6 py-3 rounded-xl font-bold transition ${activeTab === "hesapla" ? "bg-gradient-to-r from-orange-500 to-red-500 text-white" : "bg-white/5 text-gray-400"}`}>İhtiyaç Hesapla</button>
           <button onClick={() => setActiveTab("analiz")} className={`px-6 py-3 rounded-xl font-bold transition flex items-center gap-2 ${activeTab === "analiz" ? "bg-gradient-to-r from-orange-500 to-red-500 text-white" : "bg-white/5 text-gray-400"}`}><Utensils size={18} /> Analiz Et</button>
