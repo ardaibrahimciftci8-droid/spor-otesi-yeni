@@ -722,6 +722,115 @@ async def analyze_activity(user_id: str = Query(...)):
     analysis = await ask_ai(prompt)
     return {"analysis": analysis}
 
+# =============== AI COACH ROUTES ===============
+
+COACH_PROMPTS = {
+    "yoga": "Sen uzman bir yoga ve meditasyon koçusun. Sadece yoga, meditasyon, esneklik ve rahatlama teknikleri hakkında konuşursun. Diğer konularda 'Bu konuda size yardımcı olamam, ilgili koça danışabilirsiniz' dersin. Türkçe ve samimi bir dille konuş.",
+    "nutrition": "Sen uzman bir beslenme koçusun. Sadece beslenme, diyet, kalori, besin değerleri ve sağlıklı yemek konularında konuşursun. Diğer konularda 'Bu konuda size yardımcı olamam, ilgili koça danışabilirsiniz' dersin. Türkçe ve samimi bir dille konuş.",
+    "exercise": "Sen uzman bir fitness ve egzersiz koçusun. Sadece antrenman programları, egzersiz teknikleri, tempo, form ve fitness konularında konuşursun. Diğer konularda 'Bu konuda size yardımcı olamam, ilgili koça danışabilirsiniz' dersin. Türkçe ve samimi bir dille konuş.",
+    "match_analysis": "Sen uzman bir spor analisti ve taktik koçusun. Sadece maç analizleri, takım taktikleri, oyuncu performansları ve spor stratejileri hakkında konuşursun. Diğer konularda 'Bu konuda size yardımcı olamam, ilgili koça danışabilirsiniz' dersin. Türkçe ve samimi bir dille konuş.",
+    "general": "Sen genel bir spor ve wellness koçusun. Motivasyon, hedef belirleme ve genel spor konularında konuşursun. Teknik konularda ilgili uzmanlara yönlendirirsin. Türkçe ve samimi bir dille konuş."
+}
+
+@api_router.post("/coach/chat")
+async def coach_chat(message: CoachMessageCreate):
+    """AI Coach chat endpoint with conversation history"""
+    
+    # Get coach system prompt
+    system_prompt = COACH_PROMPTS.get(message.coach_type, COACH_PROMPTS["general"])
+    
+    # Get user's previous conversations with this coach (last 5)
+    previous_messages = await db.coach_messages.find(
+        {"user_id": message.user_id, "coach_type": message.coach_type},
+        {"_id": 0}
+    ).sort("created_at", -1).limit(5).to_list(5)
+    
+    # Build context with conversation history
+    context = ""
+    if previous_messages:
+        context = "\n\nÖnceki konuşma geçmişi:\n"
+        for msg in reversed(previous_messages):
+            context += f"Kullanıcı: {msg['user_message']}\n"
+            context += f"Sen: {msg['coach_response']}\n"
+    
+    # Get AI response
+    full_prompt = f"{system_prompt}\n{context}\n\nŞimdi kullanıcı sana şunu soruyor: {message.user_message}"
+    coach_response = await ask_ai(full_prompt)
+    
+    # Save to database
+    coach_msg = CoachMessage(
+        user_id=message.user_id,
+        coach_type=message.coach_type,
+        user_message=message.user_message,
+        coach_response=coach_response
+    )
+    doc = coach_msg.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.coach_messages.insert_one(doc)
+    
+    return {"response": coach_response, "message_id": coach_msg.id}
+
+@api_router.get("/coach/history/{user_id}")
+async def get_coach_history(user_id: str, coach_type: Optional[str] = None):
+    """Get user's chat history with coaches"""
+    query = {"user_id": user_id}
+    if coach_type:
+        query["coach_type"] = coach_type
+    
+    messages = await db.coach_messages.find(query, {"_id": 0}).sort("created_at", -1).limit(50).to_list(50)
+    return [serialize_doc(msg) for msg in messages]
+
+@api_router.post("/yoga/generate-program")
+async def generate_yoga_program(program: YogaProgramCreate):
+    """Generate personalized yoga program using AI"""
+    
+    prompt = f"""
+    Kullanıcı için kişiselleştirilmiş bir yoga programı oluştur:
+    - Süre: {program.duration_minutes} dakika
+    - Seviye: {program.difficulty}
+    - Kullanıcı tercihleri: {program.user_preferences or 'Belirtilmemiş'}
+    
+    Program şunları içermeli:
+    1. Isınma hareketleri (5 dakika)
+    2. Ana yoga pozları (ayrıntılı açıklamalar ile)
+    3. Nefes egzersizleri
+    4. Soğuma ve meditasyon (5 dakika)
+    
+    Her hareket için:
+    - Hareket adı
+    - Açıklama
+    - Süre
+    - Faydaları
+    - Dikkat edilmesi gerekenler
+    
+    JSON formatında dön.
+    """
+    
+    ai_response = await ask_ai(prompt)
+    
+    # Parse AI response and create program
+    yoga_program = YogaProgram(
+        user_id=program.user_id,
+        program_name=program.program_name,
+        duration_minutes=program.duration_minutes,
+        difficulty=program.difficulty,
+        exercises=[{"description": ai_response}],
+        video_url=None,
+        audio_url=None
+    )
+    
+    doc = yoga_program.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.yoga_programs.insert_one(doc)
+    
+    return serialize_doc(doc)
+
+@api_router.get("/yoga/programs/{user_id}")
+async def get_user_yoga_programs(user_id: str):
+    """Get user's yoga programs"""
+    programs = await db.yoga_programs.find({"user_id": user_id}, {"_id": 0}).to_list(100)
+    return [serialize_doc(p) for p in programs]
+
 # =============== UPLOAD ROUTES ===============
 
 @api_router.post("/upload/image")
