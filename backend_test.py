@@ -43,14 +43,17 @@ class SporOtesiAPITester:
         print(f"   URL: {url}")
         
         try:
+            # Use longer timeout for AI endpoints
+            timeout = 30 if any(ai_endpoint in endpoint for ai_endpoint in ['coach/chat', 'yoga/generate-program', 'ai/analyze-activity']) else 10
+            
             if method == 'GET':
-                response = requests.get(url, headers=headers, params=params, timeout=10)
+                response = requests.get(url, headers=headers, params=params, timeout=timeout)
             elif method == 'POST':
-                response = requests.post(url, json=data, headers=headers, params=params, timeout=10)
+                response = requests.post(url, json=data, headers=headers, params=params, timeout=timeout)
             elif method == 'PUT':
-                response = requests.put(url, json=data, headers=headers, params=params, timeout=10)
+                response = requests.put(url, json=data, headers=headers, params=params, timeout=timeout)
             elif method == 'DELETE':
-                response = requests.delete(url, headers=headers, params=params, timeout=10)
+                response = requests.delete(url, headers=headers, params=params, timeout=timeout)
 
             success = response.status_code == expected_status
             
