@@ -2512,6 +2512,71 @@ const NutritionPage = ({ user, setPage }) => {
   const [mealInput, setMealInput] = useState("");
   const [mealAnalysis, setMealAnalysis] = useState("");
   const [loading, setLoading] = useState(false);
+  const [analyzingPhoto, setAnalyzingPhoto] = useState(false);
+  const [photoAnalysis, setPhotoAnalysis] = useState(null);
+
+  const handlePhotoAnalysis = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    setAnalyzingPhoto(true);
+    try {
+      // Convert to base64
+      const reader = new FileReader();
+      reader.onload = async (event) => {
+        const base64Image = event.target.result;
+        
+        // Call Vision API
+        const response = await fetch(
+          `https://vision.googleapis.com/v1/images:annotate?key=AIzaSyCX9mTodIiwsWk0-_ux1AYgMbniUcqgAuo`,
+          {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+              requests: [{
+                image: { content: base64Image.split(',')[1] },
+                features: [
+                  { type: 'LABEL_DETECTION', maxResults: 10 },
+                  { type: 'TEXT_DETECTION' }
+                ]
+              }]
+            })
+          }
+        );
+
+        const data = await response.json();
+        const labels = data.responses[0]?.labelAnnotations || [];
+        
+        // Filter food-related labels
+        const foodLabels = labels.filter(l => 
+          ['food', 'dish', 'cuisine', 'meal', 'fruit', 'vegetable', 'meat', 'bread', 'rice', 'pasta', 'salad', 'drink', 'yemek', 'meyve', 'sebze'].some(
+            keyword => l.description.toLowerCase().includes(keyword)
+          )
+        ).slice(0, 5);
+
+        if (foodLabels.length > 0) {
+          const foodItems = foodLabels.map(l => l.description).join(', ');
+          
+          // Get AI analysis
+          const aiResult = await askGemini(
+            `Fotoğrafta tespit edilen yiyecekler: ${foodItems}. Bunlar için tahmini kalori, protein, karbonhidrat ve yağ değerlerini ver. Ayrıca sağlık önerisi yap. Türkçe.`
+          );
+          
+          setPhotoAnalysis({
+            foodItems: foodLabels.map(l => l.description),
+            analysis: aiResult
+          });
+        } else {
+          alert('❌ Fotoğrafta yiyecek tespit edilemedi. Lütfen daha net bir fotoğraf deneyin.');
+        }
+      };
+      reader.readAsDataURL(file);
+    } catch (error) {
+      console.error('Photo analysis error:', error);
+      alert('❌ Fotoğraf analizi başarısız.');
+    }
+    setAnalyzingPhoto(false);
+  };
 
   const hesaplaBMR = (e) => {
     e.preventDefault();
