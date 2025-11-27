@@ -12,14 +12,16 @@ export const TURKEY_CITIES = [
   "Ardahan", "Iğdır", "Yalova", "Karabük", "Kilis", "Osmaniye", "Düzce"
 ];
 
+import { Footprints, Activity, Zap, Dumbbell, Sparkles, ShoppingBag, Coffee, Smartphone, Headphones } from 'lucide-react';
+
 // Activity Types
 export const ACTIVITY_TYPES = [
-  { id: 'running', name: 'Koşu', color: 'text-green-500', bg: 'bg-green-500/20' },
-  { id: 'walking', name: 'Yürüyüş', color: 'text-blue-500', bg: 'bg-blue-500/20' },
-  { id: 'cycling', name: 'Bisiklet', color: 'text-yellow-500', bg: 'bg-yellow-500/20' },
-  { id: 'swimming', name: 'Yüzme', color: 'text-cyan-500', bg: 'bg-cyan-500/20' },
-  { id: 'gym', name: 'Fitness', color: 'text-purple-500', bg: 'bg-purple-500/20' },
-  { id: 'yoga', name: 'Yoga', color: 'text-teal-500', bg: 'bg-teal-500/20' },
+  { id: 'running', name: 'Koşu', icon: Footprints, color: 'text-green-500', bg: 'bg-green-500/20' },
+  { id: 'walking', name: 'Yürüyüş', icon: Activity, color: 'text-blue-500', bg: 'bg-blue-500/20' },
+  { id: 'cycling', name: 'Bisiklet', icon: Zap, color: 'text-yellow-500', bg: 'bg-yellow-500/20' },
+  { id: 'swimming', name: 'Yüzme', icon: Activity, color: 'text-cyan-500', bg: 'bg-cyan-500/20' },
+  { id: 'gym', name: 'Fitness', icon: Dumbbell, color: 'text-purple-500', bg: 'bg-purple-500/20' },
+  { id: 'yoga', name: 'Yoga', icon: Sparkles, color: 'text-teal-500', bg: 'bg-teal-500/20' },
 ];
 
 // Advertisement Data
