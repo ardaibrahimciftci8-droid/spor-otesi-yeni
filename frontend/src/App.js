@@ -1578,24 +1578,16 @@ const TrackerPage = ({ user, setPage }) => {
           </div>
         )}
 
-        {/* AI Analysis */}
-        <div className="glass-card p-6 mb-8">
-          <div className="flex items-center justify-between mb-4">
-            <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20 flex items-center justify-center">
-                <BrainCircuit size={24} className="text-yellow-500" />
-              </div>
-              <h3 className="text-lg font-bold text-white">AI Koçum</h3>
-            </div>
-            <button onClick={getAIAnalysis} disabled={aiLoading} className="btn-primary text-sm py-2 px-4 disabled:opacity-50">
-              {aiLoading ? 'Analiz...' : 'Analiz Al'}
-            </button>
-          </div>
-          {aiAnalysis ? (
-            <div className="text-gray-300 whitespace-pre-line">{aiAnalysis}</div>
-          ) : (
-            <p className="text-gray-500">AI analizini almak için butona tıklayın</p>
-          )}
+        {/* AI Coach */}
+        <div className="mb-8">
+          <AICoach
+            user={user}
+            coachType="exercise"
+            title="Egzersiz Koçu"
+            icon={Dumbbell}
+            color="text-purple-500"
+            placeholder="Antrenman programı veya egzersiz tekniği hakkında soru sorun..."
+          />
         </div>
 
         {/* Ad Banner */}
