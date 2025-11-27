@@ -1,5 +1,5 @@
 // Google Fit Integration
-const GOOGLE_FIT_CLIENT_ID = '513216468100-s4i9lqu1ovi8p2bpjcgbl81ts5n405ff.apps.googleusercontent.com';
+const GOOGLE_FIT_CLIENT_ID = process.env.REACT_APP_GOOGLE_FIT_CLIENT_ID;
 const GOOGLE_FIT_SCOPES = [
   'https://www.googleapis.com/auth/fitness.activity.read',
   'https://www.googleapis.com/auth/fitness.body.read',
