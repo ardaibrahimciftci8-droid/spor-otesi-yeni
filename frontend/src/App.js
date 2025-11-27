@@ -830,6 +830,14 @@ const SocialPage = ({ user, setPage }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
+  
+  // Messaging state
+  const [showMessages, setShowMessages] = useState(false);
+  const [conversations, setConversations] = useState([]);
+  const [activeConversation, setActiveConversation] = useState(null);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const messagesEndRef = useRef(null);
 
   const loadPosts = async () => {
     setLoading(true);
@@ -840,7 +848,17 @@ const SocialPage = ({ user, setPage }) => {
     setLoading(false);
   };
 
+  const loadConversations = async () => {
+    if (!user) return;
+    try {
+      const data = await api.getConversations(user.uid);
+      setConversations(data);
+    } catch (e) { console.error(e); }
+  };
+
   useEffect(() => { loadPosts(); }, [user]);
+  useEffect(() => { if (user && showMessages) loadConversations(); }, [user, showMessages]);
+  useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
   const handleSearch = async (e) => {
     e.preventDefault();
@@ -860,69 +878,167 @@ const SocialPage = ({ user, setPage }) => {
     } catch (e) { console.error(e); }
   };
 
+  const openConversation = async (conv) => {
+    setActiveConversation(conv);
+    try {
+      const data = await api.getMessages(conv.id);
+      setMessages(data);
+    } catch (e) { console.error(e); }
+  };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim()) return;
+    const msgText = newMessage;
+    setNewMessage('');
+    const tempMsg = { id: Date.now().toString(), sender_id: user.uid, sender_name: user.displayName, content: msgText, created_at: new Date().toISOString() };
+    setMessages([...messages, tempMsg]);
+    try {
+      await api.sendMessage({ conversation_id: activeConversation.id, sender_id: user.uid, sender_name: user.displayName, sender_photo: user.photoURL, content: msgText });
+      loadConversations();
+    } catch (e) { console.error(e); }
+  };
+
+  const getOtherParticipant = (conv) => {
+    const idx = conv.participants.findIndex(p => p !== user.uid);
+    return { name: conv.participant_names[idx] || 'Kullanıcı', photo: conv.participant_photos[idx] || '' };
+  };
+
   return (
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 px-4">
       <div className="animated-bg" />
-      <div className="max-w-2xl mx-auto">
-        <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-          <h1 className="text-3xl font-bold text-white mb-2">Sosyal</h1>
-          <p className="text-gray-400">Sporcularla bağlan, paylaş, ilham ol</p>
-        </motion.div>
-
-        {/* Search */}
-        <form onSubmit={handleSearch} className="mb-6">
-          <div className="relative">
-            <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
-            <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Kullanıcı ara..." className="input-modern pl-12" />
-          </div>
-        </form>
-
-        {/* Search Results */}
-        {showSearch && searchResults.length > 0 && (
-          <div className="mb-6 space-y-3">
+      <div className="max-w-7xl mx-auto flex gap-4">
+        {/* Main Content */}
+        <div className={`flex-1 ${showMessages && activeConversation ? 'hidden md:block' : 'block'}`}>
+          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-bold text-white">Arama Sonuçları</h3>
-              <button onClick={() => setShowSearch(false)} className="text-gray-400 hover:text-white"><X size={20} /></button>
-            </div>
-            {searchResults.map(profile => (
-              <UserCard key={profile.id} profile={profile} currentUser={user} onViewProfile={() => setPage('profile')} />
-            ))}
-          </div>
-        )}
-
-        {/* Create Post */}
-        {user && (
-          <button onClick={() => setShowCreatePost(true)} className="w-full glass-card p-4 flex items-center gap-4 mb-6 hover:border-white/20 transition text-left">
-            <img src={user.photoURL || 'https://via.placeholder.com/48'} alt="" className="w-12 h-12 rounded-xl" />
-            <span className="text-gray-500">Ne düşünüyorsun?</span>
-          </button>
-        )}
-
-        {/* Ad Banner */}
-        <div className="mb-6">
-          <AdBanner />
-        </div>
-
-        {/* Posts */}
-        <div className="space-y-4">
-          {loading ? (
-            <div className="text-center py-10">
-              <div className="w-8 h-8 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
-            </div>
-          ) : posts.length > 0 ? (
-            posts.map(post => (
-              <PostCard key={post.id} post={post} user={user} onDelete={handleDeletePost} />
-            ))
-          ) : (
-            <div className="text-center py-10 glass-card">
-              <Users size={48} className="mx-auto text-gray-600 mb-4" />
-              <p className="text-gray-500">Henüz paylaşım yok</p>
+              <div>
+                <h1 className="text-3xl font-bold text-white mb-2">Sosyal</h1>
+                <p className="text-gray-400">Sporcularla bağlan, paylaş, ilham ol</p>
+              </div>
               {user && (
-                <button onClick={() => setShowCreatePost(true)} className="mt-4 btn-primary">İlk paylaşımı yap!</button>
+                <button onClick={() => setShowMessages(!showMessages)} className={`btn-primary flex items-center gap-2 ${showMessages ? 'bg-gradient-to-r from-green-500 to-emerald-500' : ''}`}>
+                  <MessageCircle size={20} />
+                  <span className="hidden md:inline">{showMessages ? 'Mesajları Gizle' : 'Mesajlar'}</span>
+                </button>
               )}
             </div>
+          </motion.div>
+
+          {/* Search */}
+          <form onSubmit={handleSearch} className="mb-6">
+            <div className="relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Kullanıcı ara..." className="input-modern pl-12" />
+            </div>
+          </form>
+
+          {/* Search Results */}
+          {showSearch && searchResults.length > 0 && (
+            <div className="mb-6 space-y-3">
+              <div className="flex items-center justify-between">
+                <h3 className="text-lg font-bold text-white">Arama Sonuçları</h3>
+                <button onClick={() => setShowSearch(false)} className="text-gray-400 hover:text-white"><X size={20} /></button>
+              </div>
+              {searchResults.map(profile => (
+                <UserCard key={profile.id} profile={profile} currentUser={user} onViewProfile={() => setPage('profile')} />
+              ))}
+            </div>
           )}
+
+          {/* Create Post */}
+          {user && (
+            <button onClick={() => setShowCreatePost(true)} className="w-full glass-card p-4 flex items-center gap-4 mb-6 hover:border-white/20 transition text-left">
+              <img src={user.photoURL || 'https://via.placeholder.com/48'} alt="" className="w-12 h-12 rounded-xl" />
+              <span className="text-gray-500">Ne düşünüyorsun?</span>
+            </button>
+          )}
+
+          {/* Ad Banner */}
+          <div className="mb-6">
+            <AdBanner />
+          </div>
+
+          {/* Posts */}
+          <div className="space-y-4">
+            {loading ? (
+              <div className="text-center py-10">
+                <div className="w-8 h-8 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+              </div>
+            ) : posts.length > 0 ? (
+              posts.map(post => (
+                <PostCard key={post.id} post={post} user={user} onDelete={handleDeletePost} />
+              ))
+            ) : (
+              <div className="text-center py-10 glass-card">
+                <Users size={48} className="mx-auto text-gray-600 mb-4" />
+                <p className="text-gray-500">Henüz paylaşım yok</p>
+                {user && (
+                  <button onClick={() => setShowCreatePost(true)} className="mt-4 btn-primary">İlk paylaşımı yap!</button>
+                )}
+              </div>
+            )}
+          </div>
         </div>
+
+        {/* Messages Sidebar */}
+        {showMessages && user && (
+          <div className={`${activeConversation ? 'fixed inset-0 z-50 md:relative md:inset-auto' : 'hidden md:block'} w-full md:w-96 glass-card h-[calc(100vh-8rem)] md:sticky md:top-24`}>
+            {!activeConversation ? (
+              <>
+                <div className="p-4 border-b border-white/10 flex items-center justify-between">
+                  <h2 className="text-xl font-bold text-white">Mesajlar</h2>
+                  <button onClick={() => setShowMessages(false)} className="md:hidden text-gray-400 hover:text-white">
+                    <X size={20} />
+                  </button>
+                </div>
+                <div className="overflow-y-auto h-[calc(100%-4rem)]">
+                  {conversations.length > 0 ? conversations.map(conv => {
+                    const other = getOtherParticipant(conv);
+                    return (
+                      <button key={conv.id} onClick={() => openConversation(conv)} className="w-full p-4 flex items-center gap-3 hover:bg-white/5 transition border-b border-white/5">
+                        <img src={other.photo || 'https://via.placeholder.com/48'} alt="" className="w-12 h-12 rounded-xl" />
+                        <div className="flex-1 text-left">
+                          <h4 className="font-bold text-white">{other.name}</h4>
+                          <p className="text-sm text-gray-500 truncate">{conv.last_message || 'Henüz mesaj yok'}</p>
+                        </div>
+                      </button>
+                    );
+                  }) : (
+                    <div className="p-4 text-center text-gray-500">
+                      <MessageCircle size={32} className="mx-auto mb-2 opacity-50" />
+                      <p>Henüz sohbet yok</p>
+                    </div>
+                  )}
+                </div>
+              </>
+            ) : (
+              <div className="flex flex-col h-full">
+                <div className="p-4 border-b border-white/10 flex items-center gap-3">
+                  <button onClick={() => setActiveConversation(null)} className="p-2 hover:bg-white/5 rounded-lg">
+                    <ChevronLeft size={20} />
+                  </button>
+                  <img src={getOtherParticipant(activeConversation).photo || 'https://via.placeholder.com/40'} alt="" className="w-10 h-10 rounded-xl" />
+                  <h3 className="font-bold text-white">{getOtherParticipant(activeConversation).name}</h3>
+                </div>
+                <div className="flex-1 overflow-y-auto p-4 space-y-4">
+                  {messages.map((msg, idx) => (
+                    <div key={msg.id || idx} className={`flex ${msg.sender_id === user.uid ? 'justify-end' : 'justify-start'}`}>
+                      <div className={`max-w-[70%] p-3 ${msg.sender_id === user.uid ? 'message-sent' : 'message-received'}`}>
+                        <p className="text-sm">{msg.content}</p>
+                      </div>
+                    </div>
+                  ))}
+                  <div ref={messagesEndRef} />
+                </div>
+                <form onSubmit={handleSendMessage} className="p-4 border-t border-white/10 flex gap-2">
+                  <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Mesaj yaz..." className="flex-1 input-modern" />
+                  <button type="submit" disabled={!newMessage.trim()} className="btn-primary px-4 disabled:opacity-50"><Send size={20} /></button>
+                </form>
+              </div>
+            )}
+          </div>
+        )}
       </div>
 
       <AnimatePresence>
