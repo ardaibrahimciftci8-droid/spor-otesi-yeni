@@ -278,7 +278,6 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
     { id: 'social', icon: Users, label: 'Sosyal' },
     { id: 'tracker', icon: Activity, label: 'Takip' },
     { id: 'donate', icon: Heart, label: 'Bağış' },
-    { id: 'messages', icon: MessageCircle, label: 'Mesaj' },
   ];
 
   return (
