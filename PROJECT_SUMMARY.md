@@ -181,7 +181,7 @@
 
 ### ✅ Emergent (Backend)
 - **Durum:** Running
-- **API:** `https://sportsocial-3.preview.emergentagent.com/api`
+- **API:** `https://fitintegrate.preview.emergentagent.com/api`
 - **MongoDB:** Bağlı
 - **Cloudinary:** Çalışıyor
 

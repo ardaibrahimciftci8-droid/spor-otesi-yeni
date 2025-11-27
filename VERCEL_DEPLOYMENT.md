@@ -43,7 +43,7 @@ Vercel dashboard'da Project Settings → Environment Variables bölümüne gidin
 
 | Variable Name | Value | Description |
 |--------------|-------|-------------|
-| `REACT_APP_BACKEND_URL` | `https://sportsocial-3.preview.emergentagent.com` | Backend API URL'i |
+| `REACT_APP_BACKEND_URL` | `https://fitintegrate.preview.emergentagent.com` | Backend API URL'i |
 | `REACT_APP_FIREBASE_API_KEY` | `AIzaSyBzqEYs6V5oM2RLi1vOorMwgKDoOvqMmnI` | Firebase API Key |
 | `REACT_APP_FIREBASE_AUTH_DOMAIN` | `sporotesi-a4ee9.firebaseapp.com` | Firebase Auth Domain |
 | `REACT_APP_FIREBASE_PROJECT_ID` | `sporotesi-a4ee9` | Firebase Project ID |
