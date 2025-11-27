@@ -2081,6 +2081,19 @@ const AnalysisPage = ({ user, setPage }) => {
       <div className="animated-bg" />
       <div className="max-w-2xl mx-auto">
         <button onClick={() => setPage('home')} className="mb-6 flex items-center gap-2 text-gray-400 hover:text-white transition"><ChevronLeft size={20} /> Ana Sayfa</button>
+        
+        {/* AI Coach */}
+        <div className="mb-8">
+          <AICoach
+            user={user}
+            coachType="match_analysis"
+            title="Maç Analizi Koçu"
+            icon={Trophy}
+            color="text-blue-500"
+            placeholder="Maç taktikleri ve analiz hakkında soru sorun..."
+          />
+        </div>
+
         <div className="glass-card p-8">
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4"><BrainCircuit size={32} className="text-purple-500" /></div>
