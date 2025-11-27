@@ -1909,8 +1909,18 @@ function App() {
 
   const handleLogin = async () => {
     if (auth) {
-      try { await signInWithPopup(auth, googleProvider); setPage('home'); }
-      catch (e) { console.error(e); }
+      try { 
+        await signInWithPopup(auth, googleProvider); 
+        setPage('home'); 
+      }
+      catch (e) { 
+        console.error("Login error:", e); 
+        if (e.code === 'auth/unauthorized-domain') {
+          alert('⚠️ Firebase Domain Hatası!\n\nBu sorunu çözmek için:\n1. Firebase Console\'a gidin (console.firebase.google.com)\n2. Authentication → Settings → Authorized Domains\n3. Bu domain\'i ekleyin: ' + window.location.hostname + '\n\nVercel\'e deploy ettiğinizde bu sorun otomatik çözülecektir.');
+        } else {
+          alert('Giriş hatası: ' + (e.message || 'Bilinmeyen hata'));
+        }
+      }
     }
   };
 
