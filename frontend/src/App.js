@@ -172,10 +172,18 @@ const AICoach = ({ user, coachType, title, icon: Icon, color, placeholder }) => 
                       <p className="text-sm">{chat.user_message}</p>
                     </div>
                   </div>
-                  <div className="flex justify-start">
+                  <div className="flex justify-start gap-2 items-start">
                     <div className="max-w-[80%] message-received">
                       <p className="text-sm whitespace-pre-line">{chat.coach_response}</p>
                     </div>
+                    <button
+                      onClick={() => handleSpeak(chat.coach_response)}
+                      disabled={speaking}
+                      className="p-2 hover:bg-white/10 rounded-lg transition text-gray-400 hover:text-white disabled:opacity-50"
+                      title="Sesli dinle"
+                    >
+                      <Volume2 size={16} />
+                    </button>
                   </div>
                 </div>
               ))
