@@ -26,10 +26,10 @@ export const ACTIVITY_TYPES = [
 
 // Advertisement Data
 export const ADS = [
-  { id: 1, title: "Nike Air Max 2025", desc: "Yeni sezon spor ayakkabılar %30 indirimli!", color: "from-orange-500 to-red-500" },
-  { id: 2, title: "Protein Shop", desc: "En kaliteli supplementler uygun fiyatlarla", color: "from-green-500 to-emerald-500" },
-  { id: 3, title: "FitWatch Pro", desc: "Akıllı saat ile antrenmanlarını takip et", color: "from-blue-500 to-cyan-500" },
-  { id: 4, title: "Premium Kulaklık", desc: "Spor yaparken müziğin tadını çıkar", color: "from-purple-500 to-pink-500" },
+  { id: 1, title: "Nike Air Max 2025", desc: "Yeni sezon spor ayakkabılar %30 indirimli!", icon: ShoppingBag, color: "from-orange-500 to-red-500" },
+  { id: 2, title: "Protein Shop", desc: "En kaliteli supplementler uygun fiyatlarla", icon: Coffee, color: "from-green-500 to-emerald-500" },
+  { id: 3, title: "FitWatch Pro", desc: "Akıllı saat ile antrenmanlarını takip et", icon: Smartphone, color: "from-blue-500 to-cyan-500" },
+  { id: 4, title: "Premium Kulaklık", desc: "Spor yaparken müziğin tadını çıkar", icon: Headphones, color: "from-purple-500 to-pink-500" },
 ];
 
 // Backend URL
