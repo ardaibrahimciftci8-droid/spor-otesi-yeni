@@ -66,6 +66,7 @@ const AICoach = ({ user, coachType, title, icon: Icon, color, placeholder }) => 
   const [chatHistory, setChatHistory] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showChat, setShowChat] = useState(false);
+  const [speaking, setSpeaking] = useState(false);
   const messagesEndRef = useRef(null);
 
   useEffect(() => {
@@ -97,14 +98,39 @@ const AICoach = ({ user, coachType, title, icon: Icon, color, placeholder }) => 
 
     try {
       const response = await api.coachChat(user.uid, coachType, userMsg);
-      setChatHistory([
-        { user_message: userMsg, coach_response: response.response, created_at: new Date().toISOString() },
-        ...chatHistory
-      ]);
+      const newChat = { user_message: userMsg, coach_response: response.response, created_at: new Date().toISOString() };
+      setChatHistory([newChat, ...chatHistory]);
+      
+      // Auto-speak response if TTS is available
+      if (window.speakResponse && 'speechSynthesis' in window) {
+        handleSpeak(response.response);
+      }
     } catch (e) {
       console.error(e);
     }
     setLoading(false);
+  };
+
+  const handleSpeak = async (text) => {
+    try {
+      setSpeaking(true);
+      // Use Web Speech API (browser native)
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.lang = 'tr-TR';
+      utterance.rate = 1.0;
+      utterance.onend = () => setSpeaking(false);
+      window.speechSynthesis.speak(utterance);
+    } catch (e) {
+      console.error('Speech error:', e);
+      setSpeaking(false);
+    }
+  };
+
+  const stopSpeaking = () => {
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+      setSpeaking(false);
+    }
   };
 
   if (!user) {
