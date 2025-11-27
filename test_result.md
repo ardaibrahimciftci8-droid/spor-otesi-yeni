@@ -102,68 +102,104 @@
 # Testing Data - Main Agent and testing sub agent both should log testing data below this section
 #====================================================================================================
 
-user_problem_statement: "Test logo change, navigation bar updates, social page messaging integration, and profile page functionality"
+user_problem_statement: "Comprehensive end-to-end testing for the Spor Ötesi application including homepage, navigation, yoga page, social page, tracker page, donation page, AI coach components, responsive design, and performance testing"
 
 frontend:
-  - task: "Logo Change Verification"
+  - task: "Homepage & Navigation Testing"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "testing"
-        comment: "Need to verify new logo with alt='Spor Ötesi Logo' and src='/logo.png' is visible in navbar"
-      - working: true
-        agent: "testing"
-        comment: "✅ PASSED: Logo with alt='Spor Ötesi Logo' and src='/logo.png' is visible and correctly positioned in navbar. Logo displays properly on all tested pages."
+        comment: "Need to verify homepage loads, rounded logo is visible, and 5 navigation buttons work: Ana Sayfa, Sosyal, Takip, Yoga, Bağış"
 
-  - task: "Navigation Bar Update"
+  - task: "Yoga & Meditation Page Testing"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "testing"
-        comment: "Need to verify navbar has exactly 4 buttons: Ana Sayfa, Sosyal, Takip, Bağış and Mesaj button is removed"
-      - working: true
-        agent: "testing"
-        comment: "✅ PASSED: Navigation bar contains exactly 4 buttons: Ana Sayfa, Sosyal, Takip, Bağış. 'Mesaj' button is correctly removed from navbar. All navigation buttons work properly."
+        comment: "Need to verify Yoga page loads, AI Yoga Coach component is visible, and 'Yeni Program Oluştur' button exists"
 
-  - task: "Social Page Messaging Integration"
+  - task: "Social Page Testing"
     implemented: true
-    working: true
+    working: "NA"
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "high"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "testing"
-        comment: "Need to verify Mesajlar button is visible on Social page for logged-in users"
-      - working: true
-        agent: "testing"
-        comment: "✅ PASSED: Messaging integration is properly implemented. 'Mesajlar' button is conditionally rendered on Social page (lines 918-923) and only appears for logged-in users. Firebase authentication is properly configured. Message-related content found in page source."
+        comment: "Need to verify Social page loads, feed displays, and 'Mesajlar' button is visible for logged in users"
 
-  - task: "Profile Page Functionality"
+  - task: "Tracker Page Testing"
     implemented: true
-    working: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to verify Tracker page loads, AI Exercise Coach is visible, and activity types are displayed"
+
+  - task: "Donation Page Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to verify Bağış page loads, 81 cities selector works, and donation form is present"
+
+  - task: "AI Coach Components Testing"
+    implemented: true
+    working: "NA"
     file: "/app/frontend/src/App.js"
     stuck_count: 0
     priority: "medium"
-    needs_retesting: false
+    needs_retesting: true
     status_history:
       - working: "NA"
         agent: "testing"
-        comment: "Need to verify profile page shows user posts, followers, and following tabs"
-      - working: true
+        comment: "Need to verify AI coach cards are collapsible, have proper icons and colors, and expand/collapse functionality works"
+
+  - task: "Responsive Design Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
         agent: "testing"
-        comment: "✅ PASSED: Profile page functionality is implemented and requires authentication as expected. Firebase authentication system is properly configured with Google login integration."
+        comment: "Need to test on desktop (1920x800) and mobile (375x667) to verify navbar adapts correctly"
+
+  - task: "Performance & Error Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "medium"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to check for console errors, verify no broken images, and check page load times"
 
 metadata:
   created_by: "testing_agent"
