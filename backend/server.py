@@ -870,9 +870,11 @@ async def generate_yoga_program(program: YogaProgramCreate):
     
     doc = yoga_program.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
-    await db.yoga_programs.insert_one(doc)
+    result = await db.yoga_programs.insert_one(doc)
     
-    return serialize_doc(doc)
+    # Fetch the inserted document without _id
+    created_program = await db.yoga_programs.find_one({"id": doc['id']}, {"_id": 0})
+    return created_program
 
 @api_router.get("/yoga/programs/{user_id}")
 async def get_user_yoga_programs(user_id: str):
