@@ -231,6 +231,13 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
           <div className="hidden md:flex items-center gap-4">
             {user ? (
               <div className="flex items-center gap-3">
+                <button onClick={() => setPage('analytics')} className="p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-500/10 rounded-xl transition relative">
+                  <TrendingUp size={20} />
+                </button>
+                <button onClick={() => setPage('notifications')} className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 rounded-xl transition relative">
+                  <MessageCircle size={20} />
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full"></span>
+                </button>
                 <button onClick={() => setPage('profile')} className="flex items-center gap-2 hover:bg-white/5 p-2 rounded-xl transition">
                   <img src={user.photoURL || 'https://via.placeholder.com/40'} alt="" className="w-10 h-10 rounded-xl border-2 border-yellow-500/50" />
                 </button>
