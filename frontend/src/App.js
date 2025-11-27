@@ -2555,6 +2555,7 @@ function App() {
       case 'analysis': return <AnalysisPage user={user} setPage={setPage} />;
       case 'notifications': return <NotificationsPage user={user} setPage={setPage} />;
       case 'analytics': return <AnalyticsPage user={user} setPage={setPage} />;
+      case 'goals': return <GoalsPage user={user} setPage={setPage} />;
       default: return <HomePage user={user} setPage={setPage} onLogout={handleLogout} />;
     }
   };
