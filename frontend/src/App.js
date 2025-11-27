@@ -2165,11 +2165,12 @@ function App() {
       case 'login': return <LoginPage onLogin={handleLogin} setPage={setPage} />;
       case 'social': return <SocialPage user={user} setPage={setPage} />;
       case 'tracker': return <TrackerPage user={user} setPage={setPage} />;
+      case 'yoga': return <YogaPage user={user} setPage={setPage} />;
       case 'donate': return <DonatePage user={user} setPage={setPage} />;
       case 'messages': return <MessagesPage user={user} setPage={setPage} />;
       case 'profile': return <ProfilePage user={user} setPage={setPage} />;
-      case 'nutrition': return <NutritionPage setPage={setPage} />;
-      case 'analysis': return <AnalysisPage setPage={setPage} />;
+      case 'nutrition': return <NutritionPage user={user} setPage={setPage} />;
+      case 'analysis': return <AnalysisPage user={user} setPage={setPage} />;
       default: return <HomePage user={user} setPage={setPage} onLogout={handleLogout} />;
     }
   };
