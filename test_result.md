@@ -203,21 +203,23 @@ frontend:
 
 metadata:
   created_by: "testing_agent"
-  version: "1.0"
-  test_sequence: 1
+  version: "2.0"
+  test_sequence: 2
 
 test_plan:
   current_focus:
-    - "Logo Change Verification"
-    - "Navigation Bar Update"
-    - "Social Page Messaging Integration"
-    - "Profile Page Functionality"
+    - "Homepage & Navigation Testing"
+    - "Yoga & Meditation Page Testing"
+    - "Social Page Testing"
+    - "Tracker Page Testing"
+    - "Donation Page Testing"
+    - "AI Coach Components Testing"
+    - "Responsive Design Testing"
+    - "Performance & Error Testing"
   stuck_tasks: []
-  test_all: false
+  test_all: true
   test_priority: "high_first"
 
 agent_communication:
   - agent: "testing"
-    message: "Starting comprehensive UI testing for logo, navigation, social messaging, and profile functionality"
-  - agent: "testing"
-    message: "TESTING COMPLETED: All 4 requested features have been successfully tested and verified. Logo change, navigation bar updates, social messaging integration, and profile functionality are all working correctly. Firebase authentication is properly configured. All navigation pages (Ana Sayfa, Sosyal, Takip, Bağış) are accessible and functional."
+    message: "Starting comprehensive end-to-end testing for Spor Ötesi application including all major features, AI coaches, responsive design, and performance testing"
