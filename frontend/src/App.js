@@ -1979,7 +1979,7 @@ const ProfilePage = ({ user, setPage }) => {
 };
 
 // --- NUTRITION PAGE ---
-const NutritionPage = ({ setPage }) => {
+const NutritionPage = ({ user, setPage }) => {
   const [activeTab, setActiveTab] = useState("hesapla");
   const [val, setVal] = useState({ kilo: "", boy: "", yas: "", cinsiyet: "erkek", aktivite: "1.2" });
   const [bmrResult, setBmrResult] = useState(null);
