@@ -235,6 +235,36 @@ const api = {
     });
     return res.data;
   },
+  // AI Coach APIs
+  coachChat: async (userId, coachType, userMessage) => {
+    const res = await axios.post(`${API}/coach/chat`, {
+      user_id: userId,
+      coach_type: coachType,
+      user_message: userMessage
+    });
+    return res.data;
+  },
+  getCoachHistory: async (userId, coachType = null) => {
+    const url = coachType 
+      ? `${API}/coach/history/${userId}?coach_type=${coachType}`
+      : `${API}/coach/history/${userId}`;
+    const res = await axios.get(url);
+    return res.data;
+  },
+  generateYogaProgram: async (userId, programName, duration, difficulty, preferences = '') => {
+    const res = await axios.post(`${API}/yoga/generate-program`, {
+      user_id: userId,
+      program_name: programName,
+      duration_minutes: duration,
+      difficulty: difficulty,
+      user_preferences: preferences
+    });
+    return res.data;
+  },
+  getUserYogaPrograms: async (userId) => {
+    const res = await axios.get(`${API}/yoga/programs/${userId}`);
+    return res.data;
+  },
 };
 
 // --- AD BANNER COMPONENT ---
