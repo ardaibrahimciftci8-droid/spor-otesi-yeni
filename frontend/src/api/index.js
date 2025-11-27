@@ -241,6 +241,53 @@ const api = {
     const res = await axios.get(`${API}/analytics/user/${userId}`);
     return res.data;
   },
+
+  // Goals APIs
+  createGoal: async (userId, goalType, title, description, targetValue = null, unit = null, deadline = null) => {
+    const res = await axios.post(`${API}/goals`, {
+      user_id: userId,
+      goal_type: goalType,
+      title,
+      description,
+      target_value: targetValue,
+      unit,
+      deadline
+    });
+    return res.data;
+  },
+  getUserGoals: async (userId, status = null) => {
+    const url = status ? `${API}/goals/${userId}?status=${status}` : `${API}/goals/${userId}`;
+    const res = await axios.get(url);
+    return res.data;
+  },
+  updateGoal: async (goalId, currentValue) => {
+    const res = await axios.put(`${API}/goals/${goalId}?current_value=${currentValue}`);
+    return res.data;
+  },
+  deleteGoal: async (goalId) => {
+    const res = await axios.delete(`${API}/goals/${goalId}`);
+    return res.data;
+  },
+
+  // Achievements APIs
+  getUserAchievements: async (userId) => {
+    const res = await axios.get(`${API}/achievements/${userId}`);
+    return res.data;
+  },
+  checkAchievements: async (userId) => {
+    const res = await axios.post(`${API}/achievements/check/${userId}`);
+    return res.data;
+  },
+
+  // Progress Reports APIs
+  generateProgressReport: async (userId, reportType = 'weekly') => {
+    const res = await axios.post(`${API}/reports/generate/${userId}?report_type=${reportType}`);
+    return res.data;
+  },
+  getUserReports: async (userId, limit = 10) => {
+    const res = await axios.get(`${API}/reports/${userId}?limit=${limit}`);
+    return res.data;
+  },
 };
 
 export default api;
