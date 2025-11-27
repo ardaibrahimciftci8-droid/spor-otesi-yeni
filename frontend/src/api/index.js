@@ -288,6 +288,33 @@ const api = {
     const res = await axios.get(`${API}/reports/${userId}?limit=${limit}`);
     return res.data;
   },
+
+  // Google Fit APIs
+  syncGoogleFitData: async (userId, activities) => {
+    const res = await axios.post(`${API}/googlefit/sync`, {
+      user_id: userId,
+      activities
+    });
+    return res.data;
+  },
+
+  // Vision Analysis APIs
+  analyzeFoodImage: async (userId, imageData, foodItems) => {
+    const res = await axios.post(`${API}/vision/analyze-food`, {
+      user_id: userId,
+      image_data: imageData,
+      food_items: foodItems
+    });
+    return res.data;
+  },
+  analyzeExerciseImage: async (userId, imageData, exerciseType) => {
+    const res = await axios.post(`${API}/vision/analyze-exercise`, {
+      user_id: userId,
+      image_data: imageData,
+      exercise_type: exerciseType
+    });
+    return res.data;
+  },
 };
 
 export default api;
