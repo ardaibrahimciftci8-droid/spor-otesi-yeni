@@ -197,6 +197,50 @@ const api = {
     const res = await axios.get(`${API}/yoga/programs/${userId}`);
     return res.data;
   },
+
+  // Notification APIs
+  saveFCMToken: async (userId, fcmToken) => {
+    const res = await axios.post(`${API}/notifications/token?user_id=${userId}&fcm_token=${fcmToken}`);
+    return res.data;
+  },
+  getNotifications: async (userId, limit = 20) => {
+    const res = await axios.get(`${API}/notifications/${userId}?limit=${limit}`);
+    return res.data;
+  },
+  markNotificationRead: async (notificationId) => {
+    const res = await axios.post(`${API}/notifications/${notificationId}/read`);
+    return res.data;
+  },
+  updateNotificationPreferences: async (userId, preferences) => {
+    const res = await axios.put(`${API}/notifications/preferences/${userId}`, preferences);
+    return res.data;
+  },
+  getNotificationPreferences: async (userId) => {
+    const res = await axios.get(`${API}/notifications/preferences/${userId}`);
+    return res.data;
+  },
+  logNotification: async (notification) => {
+    const res = await axios.post(`${API}/notifications/log`, notification);
+    return res.data;
+  },
+
+  // Analytics APIs
+  trackEvent: async (eventType, userId = null, eventData = null) => {
+    const res = await axios.post(`${API}/analytics/event`, {
+      event_type: eventType,
+      user_id: userId,
+      event_data: eventData
+    });
+    return res.data;
+  },
+  getAnalyticsStats: async () => {
+    const res = await axios.get(`${API}/analytics/stats`);
+    return res.data;
+  },
+  getUserAnalytics: async (userId) => {
+    const res = await axios.get(`${API}/analytics/user/${userId}`);
+    return res.data;
+  },
 };
 
 export default api;
