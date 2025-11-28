@@ -1300,6 +1300,18 @@ async def get_user_reports(user_id: str, limit: int = 10):
     
     return [serialize_doc(r) for r in reports]
 
+# Include the router in the main app (MUST be after all route definitions)
+app.include_router(api_router)
+
+# Add CORS middleware
+app.add_middleware(
+    CORSMiddleware,
+    allow_credentials=True,
+    allow_origins=os.environ.get('CORS_ORIGINS', '*').split(','),
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
