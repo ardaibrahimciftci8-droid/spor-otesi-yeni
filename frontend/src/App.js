@@ -399,12 +399,7 @@ const HomePage = ({ user, setPage, onLogout }) => {
           </motion.div>
         </div>
 
-        {/* Floating Elements */}
-        <div className="hidden lg:block absolute top-20 left-10 hero-float">
-          <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-yellow-500/20 to-orange-500/20 border border-yellow-500/20 flex items-center justify-center">
-            <Trophy size={32} className="text-yellow-500" />
-          </div>
-        </div>
+        {/* Floating Element - Right */}
         <div className="hidden lg:block absolute bottom-20 right-10 hero-float" style={{ animationDelay: '2s' }}>
           <div className="w-16 h-16 rounded-2xl bg-gradient-to-br from-blue-500/20 to-cyan-500/20 border border-blue-500/20 flex items-center justify-center">
             <Target size={32} className="text-blue-500" />
