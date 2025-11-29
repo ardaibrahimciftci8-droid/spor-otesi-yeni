@@ -2031,27 +2031,6 @@ const TrackerPage = ({ user, setPage }) => {
           <AdBanner />
         </div>
 
-        {/* Google Fit Sync Button */}
-        <div className="mb-6">
-          <button
-            onClick={handleGoogleFitSync}
-            disabled={syncingGoogleFit}
-            className="w-full flex items-center justify-center gap-2 px-6 py-4 bg-gradient-to-r from-blue-500 to-cyan-500 hover:from-blue-600 hover:to-cyan-600 text-white font-bold rounded-xl transition-all disabled:opacity-50"
-          >
-            {syncingGoogleFit ? (
-              <>
-                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
-                Google Fit'ten veriler alınıyor...
-              </>
-            ) : (
-              <>
-                <Smartphone size={20} />
-                Google Fit'ten Aktiviteleri Al
-              </>
-            )}
-          </button>
-        </div>
-
         {/* Tabs */}
         <div className="flex gap-2 mb-6">
           <button onClick={() => setActiveTab('activities')} className={`flex-1 py-3 rounded-xl font-bold transition ${activeTab === 'activities' ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black' : 'bg-white/5 text-gray-400'}`}>
