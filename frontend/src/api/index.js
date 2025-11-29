@@ -315,6 +315,32 @@ const api = {
     });
     return res.data;
   },
+
+  // Reels APIs
+  getReelsFeed: async (limit = 20) => {
+    const res = await axios.get(`${API}/reels/feed?limit=${limit}`);
+    return res.data;
+  },
+  createReel: async (reelData) => {
+    const res = await axios.post(`${API}/reels`, reelData);
+    return res.data;
+  },
+  likeReel: async (reelId, userId) => {
+    const res = await axios.post(`${API}/reels/${reelId}/like?user_id=${userId}`);
+    return res.data;
+  },
+  commentOnReel: async (reelId, commentData) => {
+    const res = await axios.post(`${API}/reels/${reelId}/comment`, commentData);
+    return res.data;
+  },
+  getReelComments: async (reelId) => {
+    const res = await axios.get(`${API}/reels/${reelId}/comments`);
+    return res.data;
+  },
+  incrementReelViews: async (reelId) => {
+    const res = await axios.post(`${API}/reels/${reelId}/view`);
+    return res.data;
+  },
 };
 
 export default api;
