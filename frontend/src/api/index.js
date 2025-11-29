@@ -341,6 +341,24 @@ const api = {
     const res = await axios.post(`${API}/reels/${reelId}/view`);
     return res.data;
   },
+
+  // Block & Privacy APIs
+  blockUser: async (userId, targetUserId) => {
+    const res = await axios.post(`${API}/users/${userId}/block?target_user_id=${targetUserId}`);
+    return res.data;
+  },
+  unblockUser: async (userId, targetUserId) => {
+    const res = await axios.post(`${API}/users/${userId}/unblock?target_user_id=${targetUserId}`);
+    return res.data;
+  },
+  getBlockedUsers: async (userId) => {
+    const res = await axios.get(`${API}/users/${userId}/blocked`);
+    return res.data;
+  },
+  togglePrivacy: async (userId, isPrivate) => {
+    const res = await axios.post(`${API}/users/${userId}/privacy?is_private=${isPrivate}`);
+    return res.data;
+  },
 };
 
 export default api;
