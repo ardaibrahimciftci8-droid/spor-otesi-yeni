@@ -1396,6 +1396,9 @@ async def comment_on_reel(reel_id: str, comment: CommentCreate):
 
 @api_router.get("/reels/{reel_id}/comments")
 async def get_reel_comments(reel_id: str):
+    """Get comments for a reel"""
+    comments = await db.comments.find({"post_id": reel_id}, {"_id": 0}).sort("created_at", -1).to_list(100)
+    return comments
 
 # ==================== BOT USERS FOR DEMO ====================
 
