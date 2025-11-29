@@ -30,6 +30,12 @@ export const analyzeFoodImage = async (imageFile) => {
       }
     );
 
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error('Vision API Error:', response.status, errorText);
+      throw new Error(`Vision API hatası: ${response.status}. Lütfen API ayarlarını kontrol edin.`);
+    }
+
     const data = await response.json();
     
     if (data.responses && data.responses[0]) {
