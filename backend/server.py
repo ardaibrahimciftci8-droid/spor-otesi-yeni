@@ -1489,7 +1489,7 @@ async def populate_demo_bots():
             "user_photo": user["photo_url"],
             "video_url": video,
             "description": desc,
-            "music": f"Original Audio - {user['displayName']}",
+            "music": f"Original Audio - {user['display_name']}",
             "likes": [],
             "likes_count": (i * 15) % 100,
             "comments_count": (i * 5) % 30,
