@@ -1593,16 +1593,6 @@ async def toggle_privacy(user_id: str, is_private: bool = Query(...)):
     
     return {"success": True, "is_private": is_private}
 
-
-        await db.activities.insert_one(activity_doc)
-    
-    return {"success": True, "message": "Demo bots ve içerik oluşturuldu!"}
-
-
-    """Get comments for a reel"""
-    comments = await db.comments.find({"post_id": reel_id}, {"_id": 0}).sort("created_at", -1).to_list(100)
-    return comments
-
 @api_router.post("/reels/{reel_id}/view")
 async def increment_reel_views(reel_id: str):
     """Increment reel views"""
