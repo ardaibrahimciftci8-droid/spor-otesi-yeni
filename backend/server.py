@@ -1325,6 +1325,85 @@ async def get_user_reports(user_id: str, limit: int = 10):
     
     return [serialize_doc(r) for r in reports]
 
+
+# ==================== REELS ENDPOINTS ====================
+
+@api_router.post("/reels")
+async def create_reel(reel: ReelCreate):
+    """Create a new reel"""
+    new_reel = Reel(**reel.model_dump())
+    doc = new_reel.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    result = await db.reels.insert_one(doc)
+    
+    created_reel = await db.reels.find_one({"id": doc['id']}, {"_id": 0})
+    return created_reel
+
+@api_router.get("/reels/feed")
+async def get_reels_feed(limit: int = 20):
+    """Get reels feed"""
+    reels = await db.reels.find({}, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
+    return reels
+
+@api_router.post("/reels/{reel_id}/like")
+async def like_reel(reel_id: str, user_id: str = Query(...)):
+    """Like/unlike a reel"""
+    reel = await db.reels.find_one({"id": reel_id}, {"_id": 0})
+    if not reel:
+        raise HTTPException(status_code=404, detail="Reel not found")
+    
+    likes = reel.get('likes', [])
+    if user_id in likes:
+        # Unlike
+        likes.remove(user_id)
+    else:
+        # Like
+        likes.append(user_id)
+    
+    await db.reels.update_one(
+        {"id": reel_id},
+        {"$set": {"likes": likes, "likes_count": len(likes)}}
+    )
+    
+    return {"liked": user_id in likes, "likes_count": len(likes)}
+
+@api_router.post("/reels/{reel_id}/comment")
+async def comment_on_reel(reel_id: str, comment: CommentCreate):
+    """Comment on a reel"""
+    reel = await db.reels.find_one({"id": reel_id}, {"_id": 0})
+    if not reel:
+        raise HTTPException(status_code=404, detail="Reel not found")
+    
+    new_comment = Comment(**comment.model_dump(), post_id=reel_id)
+    doc = new_comment.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    await db.comments.insert_one(doc)
+    
+    # Update comments count
+    await db.reels.update_one(
+        {"id": reel_id},
+        {"$inc": {"comments_count": 1}}
+    )
+    
+    created_comment = await db.comments.find_one({"id": doc['id']}, {"_id": 0})
+    return created_comment
+
+@api_router.get("/reels/{reel_id}/comments")
+async def get_reel_comments(reel_id: str):
+    """Get comments for a reel"""
+    comments = await db.comments.find({"post_id": reel_id}, {"_id": 0}).sort("created_at", -1).to_list(100)
+    return comments
+
+@api_router.post("/reels/{reel_id}/view")
+async def increment_reel_views(reel_id: str):
+    """Increment reel views"""
+    await db.reels.update_one(
+        {"id": reel_id},
+        {"$inc": {"views_count": 1}}
+    )
+    return {"success": True}
+
+
 # Include the router in the main app (MUST be after all route definitions)
 app.include_router(api_router)
 
