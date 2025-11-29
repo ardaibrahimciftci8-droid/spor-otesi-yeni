@@ -443,3 +443,26 @@ agent_communication:
 agent_communication:
   - agent: "fork_agent"
     message: "Fixed CORS configuration and placeholder image errors. Waiting for user to authorize new Vercel domain in Firebase Console."
+
+## Backend Fixes Session (29.11.2025)
+
+### All Backend Issues Fixed:
+1. ✅ **Yoga Program Generation** - Fixed ObjectId serialization by fetching document without _id
+2. ✅ **Messaging System** - Fixed parameter validation, all params now use Query(...)
+3. ✅ **Goals API** - Fixed by moving router registration to end of file
+4. ✅ **Achievements API** - Fixed by moving router registration to end of file
+5. ✅ **Analytics API** - Fixed by adding timedelta import and moving router registration
+6. ✅ **Notifications API** - Fixed by moving router registration to end of file
+7. ✅ **serialize_doc function** - Enhanced to handle nested dicts, lists, and skip _id
+
+### Critical Fix:
+**Router Registration Issue**: `app.include_router(api_router)` was called at line 944 but goals, achievements, analytics, and notifications endpoints were defined after line 961. Moved router registration and CORS middleware to end of file (after all route definitions).
+
+### Testing Results:
+- All 11 major features now working
+- Backend API fully functional
+- Ready for frontend testing
+
+agent_communication:
+  - agent: "main_agent"
+    message: "All backend issues resolved. Yoga program generation, messaging, goals, achievements, analytics, and notifications all working correctly. Router registration issue was root cause for 404 errors."
