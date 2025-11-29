@@ -1279,26 +1279,103 @@ const SocialPage = ({ user, setPage }) => {
     return { name: conv.participant_names[idx] || 'Kullanıcı', photo: conv.participant_photos[idx] || '' };
   };
 
+  // Load mock reels data (will be replaced with API)
+  useEffect(() => {
+    if (activeTab === 'reels') {
+      // Mock data for now
+      setReels([
+        {
+          id: '1',
+          user_id: 'user1',
+          user_name: 'Ahmet Yılmaz',
+          user_photo: '',
+          video_url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+          description: 'Sabah koşusu 🏃‍♂️💪 #fitness #motivation',
+          music: 'Original Audio - Ahmet',
+          likes_count: 234,
+          comments_count: 12,
+          likes: []
+        },
+        {
+          id: '2',
+          user_id: 'user2',
+          user_name: 'Ayşe Demir',
+          user_photo: '',
+          video_url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+          description: 'Yoga akış 🧘‍♀️✨ Huzur dolu bir gün',
+          music: 'Relaxing Music',
+          likes_count: 512,
+          comments_count: 28,
+          likes: []
+        }
+      ]);
+    }
+  }, [activeTab]);
+
   return (
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 px-4">
       <div className="animated-bg" />
-      <div className="max-w-7xl mx-auto flex gap-4">
-        {/* Main Content */}
-        <div className={`flex-1 ${showMessages && activeConversation ? 'hidden md:block' : 'block'}`}>
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-white mb-2">Sosyal</h1>
-                <p className="text-gray-400">Sporcularla bağlan, paylaş, ilham ol</p>
+      
+      {/* Reels Full Screen View */}
+      {activeTab === 'reels' ? (
+        <div className="fixed inset-0 z-50 bg-black">
+          <button
+            onClick={() => setActiveTab('feed')}
+            className="absolute top-4 left-4 z-50 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white"
+          >
+            <X size={24} />
+          </button>
+          <ReelsViewer
+            reels={reels}
+            currentIndex={currentReelIndex}
+            onIndexChange={setCurrentReelIndex}
+            user={user}
+            onLike={(reelId) => console.log('Like', reelId)}
+            onComment={(reelId, text) => console.log('Comment', reelId, text)}
+          />
+        </div>
+      ) : (
+        <div className="max-w-7xl mx-auto flex gap-4">
+          {/* Main Content */}
+          <div className={`flex-1 ${showMessages && activeConversation ? 'hidden md:block' : 'block'}`}>
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
+              <div className="flex items-center justify-between mb-4">
+                <div>
+                  <h1 className="text-3xl font-bold text-white mb-2">Sosyal</h1>
+                  <p className="text-gray-400">Sporcularla bağlan, paylaş, ilham ol</p>
+                </div>
+                {user && (
+                  <button onClick={() => setShowMessages(!showMessages)} className={`btn-primary flex items-center gap-2 ${showMessages ? 'bg-gradient-to-r from-green-500 to-emerald-500' : ''}`}>
+                    <MessageCircle size={20} />
+                    <span className="hidden md:inline">{showMessages ? 'Mesajları Gizle' : 'Mesajlar'}</span>
+                  </button>
+                )}
               </div>
-              {user && (
-                <button onClick={() => setShowMessages(!showMessages)} className={`btn-primary flex items-center gap-2 ${showMessages ? 'bg-gradient-to-r from-green-500 to-emerald-500' : ''}`}>
-                  <MessageCircle size={20} />
-                  <span className="hidden md:inline">{showMessages ? 'Mesajları Gizle' : 'Mesajlar'}</span>
+
+              {/* Tabs */}
+              <div className="flex gap-2 p-1 bg-white/5 rounded-2xl backdrop-blur-sm">
+                <button
+                  onClick={() => setActiveTab('feed')}
+                  className={`flex-1 py-3 px-6 rounded-xl font-semibold transition-all ${
+                    activeTab === 'feed'
+                      ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  📰 Feed
                 </button>
-              )}
-            </div>
-          </motion.div>
+                <button
+                  onClick={() => setActiveTab('reels')}
+                  className={`flex-1 py-3 px-6 rounded-xl font-semibold transition-all ${
+                    activeTab === 'reels'
+                      ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                >
+                  🎬 Reels
+                </button>
+              </div>
+            </motion.div>
 
           {/* Search */}
           <form onSubmit={handleSearch} className="mb-6">
