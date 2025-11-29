@@ -1378,8 +1378,8 @@ const SocialPage = ({ user, setPage }) => {
             currentIndex={currentReelIndex}
             onIndexChange={setCurrentReelIndex}
             user={user}
-            onLike={(reelId) => console.log('Like', reelId)}
-            onComment={(reelId, text) => console.log('Comment', reelId, text)}
+            onLike={handleLikeReel}
+            onComment={handleCommentOnReel}
           />
         </div>
       ) : (
