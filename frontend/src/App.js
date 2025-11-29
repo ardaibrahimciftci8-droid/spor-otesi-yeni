@@ -376,11 +376,16 @@ const HomePage = ({ user, setPage, onLogout }) => {
             AI analizleri, sosyal bağlantılar, egzersiz takibi ve topluma katkı - hepsi tek platformda.
           </motion.p>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => setPage('social')} className="btn-primary flex items-center justify-center gap-3 text-lg px-8 py-4 shadow-2xl">
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+            {!user && (
+              <button onClick={() => setPage('login')} className="btn-primary flex items-center justify-center gap-3 text-lg px-10 py-4 shadow-2xl w-full sm:w-auto">
+                <User size={24} />Giriş Yap
+              </button>
+            )}
+            <button onClick={() => setPage('social')} className="btn-primary flex items-center justify-center gap-3 text-lg px-8 py-4 shadow-2xl w-full sm:w-auto">
               <Users size={24} />Keşfet
             </button>
-            <button onClick={() => setPage('donate')} className="btn-secondary flex items-center justify-center gap-3 text-lg px-8 py-4 shadow-2xl">
+            <button onClick={() => setPage('donate')} className="btn-secondary flex items-center justify-center gap-3 text-lg px-8 py-4 shadow-2xl w-full sm:w-auto">
               <Heart size={24} />Bağış Yap
             </button>
           </motion.div>
