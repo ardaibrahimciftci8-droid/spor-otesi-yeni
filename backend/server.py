@@ -60,6 +60,9 @@ class UserProfileUpdate(BaseModel):
     display_name: Optional[str] = None
     bio: Optional[str] = None
     photo_url: Optional[str] = None
+    is_private: bool = False  # Hesap gizli mi?
+    blocked_users: List[str] = []  # Engellenen kullanıcılar
+
 
 class Post(BaseModel):
     model_config = ConfigDict(extra="ignore")
