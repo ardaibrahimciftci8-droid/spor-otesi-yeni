@@ -1491,7 +1491,9 @@ const SocialPage = ({ user, setPage }) => {
             )}
           </div>
         )}
-      </div>
+          </div>
+        </div>
+      )}
 
       <AnimatePresence>
         {showCreatePost && user && <CreatePostModal user={user} onClose={() => setShowCreatePost(false)} onPostCreated={(p) => setPosts([p, ...posts])} />}
