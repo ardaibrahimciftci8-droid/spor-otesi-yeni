@@ -1192,12 +1192,18 @@ const AnalyticsPage = ({ user, setPage }) => {
 
 // --- SOCIAL PAGE ---
 const SocialPage = ({ user, setPage }) => {
+  const [activeTab, setActiveTab] = useState('feed'); // 'feed' or 'reels'
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
+  
+  // Reels state
+  const [reels, setReels] = useState([]);
+  const [currentReelIndex, setCurrentReelIndex] = useState(0);
+  const [showCreateReel, setShowCreateReel] = useState(false);
   
   // Messaging state
   const [showMessages, setShowMessages] = useState(false);
