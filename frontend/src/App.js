@@ -1490,8 +1490,6 @@ const SocialPage = ({ user, setPage }) => {
               </div>
             )}
           </div>
-        )}
-          </div>
         </div>
       )}
 
