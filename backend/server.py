@@ -486,6 +486,25 @@ async def create_post(post: PostCreate):
     
     await db.users.update_one({"firebase_uid": post.user_id}, {"$inc": {"posts_count": 1}})
     
+    # If post is a video, automatically create a reel
+    if post.media_type == "video" and post.media_url:
+        reel_doc = {
+            "id": str(uuid.uuid4()),
+            "user_id": post.user_id,
+            "user_name": post.user_name,
+            "user_photo": post.user_photo,
+            "video_url": post.media_url,
+            "description": post.content,
+            "music": f"Original Audio - {post.user_name}",
+            "likes": [],
+            "likes_count": 0,
+            "comments_count": 0,
+            "shares_count": 0,
+            "views_count": 0,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.reels.insert_one(reel_doc)
+    
     return post_obj
 
 @api_router.get("/posts/feed")
