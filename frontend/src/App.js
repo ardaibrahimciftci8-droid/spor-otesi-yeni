@@ -41,6 +41,7 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
     { id: 'tracker', icon: Activity, label: 'Takip' },
     { id: 'yoga', icon: Sparkles, label: 'Yoga' },
     { id: 'donate', icon: Heart, label: 'Bağış' },
+    { id: 'profile', icon: User, label: 'Profil' },
   ];
 
   return (
