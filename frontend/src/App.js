@@ -16,6 +16,9 @@ import { TURKEY_CITIES, ACTIVITY_TYPES, ADS, firebaseConfig } from './utils/cons
 import { askGemini } from './utils/helpers';
 import api from './api';
 
+// Import components
+import AdBanner from './components/common/AdBanner';
+
 // Firebase initialization
 let app, auth, googleProvider;
 try {
