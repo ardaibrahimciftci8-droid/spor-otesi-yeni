@@ -76,9 +76,6 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
                   <MessageCircle size={20} />
                   <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full"></span>
                 </button>
-                <button onClick={() => setPage('profile')} className="flex items-center gap-2 hover:bg-white/5 p-2 rounded-xl transition">
-                  <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=40'} alt="" className="w-10 h-10 rounded-xl border-2 border-yellow-500/50" />
-                </button>
                 <button onClick={onLogout} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition">
                   <LogOut size={20} />
                 </button>
