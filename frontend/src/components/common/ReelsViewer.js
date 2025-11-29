@@ -174,7 +174,23 @@ const ReelsViewer = ({ reels, currentIndex, onIndexChange, user, onLike, onComme
         </motion.button>
 
         {/* Share */}
-        <motion.button whileTap={{ scale: 0.8 }} className="flex flex-col items-center">
+        <motion.button 
+          whileTap={{ scale: 0.8 }} 
+          onClick={() => {
+            if (navigator.share) {
+              navigator.share({
+                title: 'Spor Ötesi Reels',
+                text: currentReel.description || 'Bu reel\'i izle!',
+                url: window.location.href
+              }).catch(console.error);
+            } else {
+              // Fallback: Copy to clipboard
+              navigator.clipboard.writeText(window.location.href);
+              alert('Link kopyalandı!');
+            }
+          }}
+          className="flex flex-col items-center"
+        >
           <Send size={32} className="text-white" />
         </motion.button>
 
