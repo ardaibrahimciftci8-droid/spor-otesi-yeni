@@ -2439,6 +2439,64 @@ const ProfilePage = ({ user, setPage }) => {
             {following.length > 0 ? following.map(f => <UserCard key={f.id} profile={f} currentUser={user} />) : <p className="text-center text-gray-500 py-10">Henüz takip yok</p>}
           </div>
         )}
+        {activeTab === 'settings' && (
+          <div className="space-y-4">
+            {/* Privacy Settings */}
+            <div className="glass-card p-6">
+              <h3 className="text-xl font-bold text-white mb-4">🔒 Gizlilik Ayarları</h3>
+              <div className="flex items-center justify-between p-4 bg-white/5 rounded-xl">
+                <div>
+                  <p className="text-white font-semibold">Gizli Hesap</p>
+                  <p className="text-sm text-gray-400">Sadece takipçilerin gönderilerini görebilir</p>
+                </div>
+                <button
+                  onClick={async () => {
+                    const newPrivacy = !isPrivate;
+                    setIsPrivate(newPrivacy);
+                    try {
+                      await api.togglePrivacy(user.uid, newPrivacy);
+                    } catch (e) {
+                      console.error(e);
+                      setIsPrivate(!newPrivacy);
+                    }
+                  }}
+                  className={`relative inline-flex h-8 w-14 items-center rounded-full transition ${isPrivate ? 'bg-yellow-500' : 'bg-gray-600'}`}
+                >
+                  <span className={`inline-block h-6 w-6 transform rounded-full bg-white transition ${isPrivate ? 'translate-x-7' : 'translate-x-1'}`} />
+                </button>
+              </div>
+            </div>
+
+            {/* Blocked Users */}
+            <div className="glass-card p-6">
+              <h3 className="text-xl font-bold text-white mb-4">🚫 Engellenen Kullanıcılar</h3>
+              {blockedUsers.length > 0 ? (
+                <div className="space-y-2">
+                  {blockedUsers.map(userId => (
+                    <div key={userId} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
+                      <span className="text-white">{userId}</span>
+                      <button
+                        onClick={async () => {
+                          try {
+                            await api.unblockUser(user.uid, userId);
+                            setBlockedUsers(blockedUsers.filter(id => id !== userId));
+                          } catch (e) {
+                            console.error(e);
+                          }
+                        }}
+                        className="text-red-500 hover:text-red-400 text-sm font-semibold"
+                      >
+                        Engeli Kaldır
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-gray-500 py-6">Engellenmiş kullanıcı yok</p>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
