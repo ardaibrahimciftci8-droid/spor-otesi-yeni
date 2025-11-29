@@ -103,6 +103,7 @@ const ReelsViewer = ({ reels, currentIndex, onIndexChange, user, onLike, onComme
       className="relative h-screen w-full bg-black overflow-hidden"
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onWheel={handleWheel}
     >
       {/* Video */}
       <video
