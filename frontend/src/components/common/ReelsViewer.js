@@ -38,6 +38,31 @@ const ReelsViewer = ({ reels, currentIndex, onIndexChange, user, onLike, onComme
     }
   };
 
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'ArrowUp' && currentIndex > 0) {
+        onIndexChange(currentIndex - 1);
+      } else if (e.key === 'ArrowDown' && currentIndex < reels.length - 1) {
+        onIndexChange(currentIndex + 1);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentIndex, reels.length, onIndexChange]);
+
+  // Mouse wheel navigation
+  const handleWheel = (e) => {
+    if (e.deltaY > 0 && currentIndex < reels.length - 1) {
+      // Scroll down - next reel
+      onIndexChange(currentIndex + 1);
+    } else if (e.deltaY < 0 && currentIndex > 0) {
+      // Scroll up - previous reel
+      onIndexChange(currentIndex - 1);
+    }
+  };
+
   const handleVideoClick = () => {
     if (isPaused) {
       videoRef.current?.play();
