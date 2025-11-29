@@ -1518,6 +1518,63 @@ async def populate_demo_bots():
             "notes": "Harika bir antrenman!",
             "created_at": datetime.now(timezone.utc).isoformat()
         }
+
+# ==================== BLOCK & PRIVACY ====================
+
+@api_router.post("/users/{user_id}/block")
+async def block_user(user_id: str, target_user_id: str = Query(...)):
+    """Block a user"""
+    user = await db.users.find_one({"firebase_uid": user_id}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    blocked_users = user.get('blocked_users', [])
+    if target_user_id not in blocked_users:
+        blocked_users.append(target_user_id)
+        await db.users.update_one(
+            {"firebase_uid": user_id},
+            {"$set": {"blocked_users": blocked_users}}
+        )
+    
+    return {"success": True, "blocked": True}
+
+@api_router.post("/users/{user_id}/unblock")
+async def unblock_user(user_id: str, target_user_id: str = Query(...)):
+    """Unblock a user"""
+    user = await db.users.find_one({"firebase_uid": user_id}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    blocked_users = user.get('blocked_users', [])
+    if target_user_id in blocked_users:
+        blocked_users.remove(target_user_id)
+        await db.users.update_one(
+            {"firebase_uid": user_id},
+            {"$set": {"blocked_users": blocked_users}}
+        )
+    
+    return {"success": True, "blocked": False}
+
+@api_router.get("/users/{user_id}/blocked")
+async def get_blocked_users(user_id: str):
+    """Get list of blocked users"""
+    user = await db.users.find_one({"firebase_uid": user_id}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    return {"blocked_users": user.get('blocked_users', [])}
+
+@api_router.post("/users/{user_id}/privacy")
+async def toggle_privacy(user_id: str, is_private: bool = Query(...)):
+    """Toggle account privacy (public/private)"""
+    await db.users.update_one(
+        {"firebase_uid": user_id},
+        {"$set": {"is_private": is_private}}
+    )
+    
+    return {"success": True, "is_private": is_private}
+
+
         await db.activities.insert_one(activity_doc)
     
     return {"success": True, "message": "Demo bots ve içerik oluşturuldu!"}
