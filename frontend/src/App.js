@@ -1435,7 +1435,7 @@ const SocialPage = ({ user, setPage }) => {
 
           {/* Messages Sidebar */}
           {showMessages && user && (
-          <div className={`${activeConversation ? 'fixed inset-0 z-50 md:relative md:inset-auto' : 'hidden md:block'} w-full md:w-96 glass-card h-[calc(100vh-8rem)] md:sticky md:top-24`}>
+            <div className={`${activeConversation ? 'fixed inset-0 z-50 md:relative md:inset-auto' : 'hidden md:block'} w-full md:w-96 glass-card h-[calc(100vh-8rem)] md:sticky md:top-24`}>
             {!activeConversation ? (
               <>
                 <div className="p-4 border-b border-white/10 flex items-center justify-between">
