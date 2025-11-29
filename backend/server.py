@@ -1396,6 +1396,125 @@ async def comment_on_reel(reel_id: str, comment: CommentCreate):
 
 @api_router.get("/reels/{reel_id}/comments")
 async def get_reel_comments(reel_id: str):
+
+# ==================== BOT USERS FOR DEMO ====================
+
+@api_router.post("/demo/populate-bots")
+async def populate_demo_bots():
+    """Create demo bot users with posts, activities, and reels"""
+    
+    bot_users = [
+        {"firebase_uid": "bot1", "displayName": "Ahmet Yılmaz", "email": "ahmet@demo.com", "photoURL": "https://i.pravatar.cc/150?img=12"},
+        {"firebase_uid": "bot2", "displayName": "Ayşe Kara", "email": "ayse@demo.com", "photoURL": "https://i.pravatar.cc/150?img=5"},
+        {"firebase_uid": "bot3", "displayName": "Mehmet Demir", "email": "mehmet@demo.com", "photoURL": "https://i.pravatar.cc/150?img=33"},
+        {"firebase_uid": "bot4", "displayName": "Fatma Şahin", "email": "fatma@demo.com", "photoURL": "https://i.pravatar.cc/150?img=9"},
+        {"firebase_uid": "bot5", "displayName": "Ali Yıldız", "email": "ali@demo.com", "photoURL": "https://i.pravatar.cc/150?img=15"},
+        {"firebase_uid": "bot6", "displayName": "Zeynep Öztürk", "email": "zeynep@demo.com", "photoURL": "https://i.pravatar.cc/150?img=23"},
+        {"firebase_uid": "bot7", "displayName": "Can Aydın", "email": "can@demo.com", "photoURL": "https://i.pravatar.cc/150?img=52"},
+        {"firebase_uid": "bot8", "displayName": "Elif Çelik", "email": "elif@demo.com", "photoURL": "https://i.pravatar.cc/150?img=44"},
+        {"firebase_uid": "bot9", "displayName": "Burak Arslan", "email": "burak@demo.com", "photoURL": "https://i.pravatar.cc/150?img=68"},
+        {"firebase_uid": "bot10", "displayName": "Selin Koç", "email": "selin@demo.com", "photoURL": "https://i.pravatar.cc/150?img=29"},
+    ]
+    
+    # Create users
+    for user_data in bot_users:
+        existing = await db.users.find_one({"firebase_uid": user_data["firebase_uid"]}, {"_id": 0})
+        if not existing:
+            user_doc = {
+                "id": str(uuid.uuid4()),
+                "firebase_uid": user_data["firebase_uid"],
+                "displayName": user_data["displayName"],
+                "email": user_data["email"],
+                "photoURL": user_data["photoURL"],
+                "created_at": datetime.now(timezone.utc).isoformat()
+            }
+            await db.users.insert_one(user_doc)
+    
+    # Create demo posts
+    post_contents = [
+        "Sabah koşusu tamamlandı! 🏃‍♂️ 5km 25 dakika, yeni rekor! #fitness #running",
+        "Yoga seansı harika geçti 🧘‍♀️ Kendinize zaman ayırın! #yoga #wellness",
+        "Spor salonunda harika bir antrenman 💪 #gym #motivation",
+        "Doğada yürüyüş yapmak ruh sağlığı için harika! 🌲 #hiking #nature",
+        "Bugün protein ağırlıklı beslenme günü 🥗 #healthyfood #nutrition",
+        "Bisiklet turu tamamlandı! 30km 🚴‍♀️ #cycling #outdoor",
+        "Meditasyon ile güne başlamak muhteşem 🙏 #meditation #mindfulness",
+        "Yüzme antrenmanı sonrası enerji dolu! 🏊‍♂️ #swimming #fitness",
+        "Basketbol maçı kazandık! 🏀 Takım ruhu her şeydir #basketball #teamwork",
+        "Pilates dersi harika geçti 🤸‍♀️ Esneklik arttı! #pilates #flexibility",
+    ]
+    
+    users = await db.users.find({}, {"_id": 0}).to_list(100)
+    for i, content in enumerate(post_contents):
+        user = users[i % len(users)]
+        post_doc = {
+            "id": str(uuid.uuid4()),
+            "user_id": user["firebase_uid"],
+            "user_name": user["displayName"],
+            "user_photo": user["photoURL"],
+            "content": content,
+            "media_url": f"https://picsum.photos/600/400?random={i}",
+            "media_type": "image",
+            "likes": [],
+            "likes_count": (i * 7) % 50,
+            "comments_count": (i * 3) % 20,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.posts.insert_one(post_doc)
+    
+    # Create demo reels
+    reel_videos = [
+        "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4",
+        "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4",
+        "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerFun.mp4",
+        "https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerJoyrides.mp4",
+    ]
+    
+    reel_descriptions = [
+        "Sabah antrenmanı 🏃‍♂️💪 #fitness #motivation",
+        "Yoga akışı 🧘‍♀️✨ #yoga #wellness",
+        "Spor salonu motivasyonu 💪🔥 #gym #workout",
+        "Doğada koşu 🌲🏃‍♀️ #running #nature",
+    ]
+    
+    for i, (video, desc) in enumerate(zip(reel_videos, reel_descriptions)):
+        user = users[i % len(users)]
+        reel_doc = {
+            "id": str(uuid.uuid4()),
+            "user_id": user["firebase_uid"],
+            "user_name": user["displayName"],
+            "user_photo": user["photoURL"],
+            "video_url": video,
+            "description": desc,
+            "music": f"Original Audio - {user['displayName']}",
+            "likes": [],
+            "likes_count": (i * 15) % 100,
+            "comments_count": (i * 5) % 30,
+            "shares_count": (i * 2) % 15,
+            "views_count": (i * 50) % 500,
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.reels.insert_one(reel_doc)
+    
+    # Create demo activities
+    activity_types = ["running", "cycling", "swimming", "gym", "yoga"]
+    for i in range(20):
+        user = users[i % len(users)]
+        activity_doc = {
+            "id": str(uuid.uuid4()),
+            "user_id": user["firebase_uid"],
+            "activity_type": activity_types[i % len(activity_types)],
+            "duration_minutes": 30 + (i * 5) % 60,
+            "distance_km": 5 + (i % 10),
+            "calories_burned": 200 + (i * 20) % 300,
+            "notes": "Harika bir antrenman!",
+            "created_at": datetime.now(timezone.utc).isoformat()
+        }
+        await db.activities.insert_one(activity_doc)
+    
+    return {"success": True, "message": "Demo bots ve içerik oluşturuldu!"}
+
+
     """Get comments for a reel"""
     comments = await db.comments.find({"post_id": reel_id}, {"_id": 0}).sort("created_at", -1).to_list(100)
     return comments
