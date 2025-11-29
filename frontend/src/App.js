@@ -358,19 +358,7 @@ const HomePage = ({ user, setPage, onLogout }) => {
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 md:pt-36 md:pb-24 px-4 overflow-hidden">
         <div className="max-w-6xl mx-auto text-center relative z-10">
-          {/* Mobile User Menu */}
-          <div className="md:hidden fixed top-20 right-4 z-50">
-            {user ? (
-              <div className="flex items-center gap-2 bg-slate-900/90 backdrop-blur-xl rounded-2xl p-2 border border-white/10">
-                <button onClick={() => setPage('profile')} className="p-1">
-                  <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=32'} alt="" className="w-10 h-10 rounded-xl border-2 border-yellow-500/50" />
-                </button>
-                <button onClick={onLogout} className="p-2 bg-white/5 rounded-xl text-gray-400 hover:text-red-500 transition"><LogOut size={18} /></button>
-              </div>
-            ) : (
-              <button onClick={() => setPage('login')} className="btn-primary text-sm py-2 px-4 shadow-lg">Giriş</button>
-            )}
-          </div>
+          {/* Mobile User Menu - Fixed position removed, integrated into hero */}
 
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-8">
             <div className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-full px-6 py-3 mb-6 backdrop-blur-xl">
