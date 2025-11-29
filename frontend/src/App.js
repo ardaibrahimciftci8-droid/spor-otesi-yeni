@@ -2346,6 +2346,8 @@ const ProfilePage = ({ user, setPage }) => {
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
   const [bio, setBio] = useState('');
+  const [isPrivate, setIsPrivate] = useState(false);
+  const [blockedUsers, setBlockedUsers] = useState([]);
 
   const loadProfile = async () => {
     if (!user) return;
