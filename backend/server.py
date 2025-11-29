@@ -1483,7 +1483,7 @@ async def populate_demo_bots():
     ]
     
     for i, (video, desc) in enumerate(zip(reel_videos, reel_descriptions)):
-        user = users[i % len(users)]
+        user = all_users[i % len(all_users)]
         reel_doc = {
             "id": str(uuid.uuid4()),
             "user_id": user["firebase_uid"],
