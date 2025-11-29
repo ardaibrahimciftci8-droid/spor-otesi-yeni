@@ -12,6 +12,11 @@ let googleAuth = null;
 // Initialize Google Fit
 export const initGoogleFit = () => {
   return new Promise((resolve, reject) => {
+    if (!GOOGLE_FIT_CLIENT_ID) {
+      reject(new Error('Google Fit Client ID yapılandırılmamış'));
+      return;
+    }
+    
     if (window.gapi) {
       window.gapi.load('auth2', () => {
         window.gapi.auth2.init({
@@ -20,10 +25,13 @@ export const initGoogleFit = () => {
         }).then((auth) => {
           googleAuth = auth;
           resolve(auth);
-        }).catch(reject);
+        }).catch((error) => {
+          console.error('Google Fit initialization error:', error);
+          reject(new Error('Google Fit yetkilendirme hatası. Lütfen domain ayarlarını kontrol edin.'));
+        });
       });
     } else {
-      reject(new Error('Google API not loaded'));
+      reject(new Error('Google API yüklenmedi'));
     }
   });
 };
