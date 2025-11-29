@@ -1335,7 +1335,8 @@ const SocialPage = ({ user, setPage }) => {
           />
         </div>
       ) : (
-        <div className="max-w-7xl mx-auto flex gap-4">
+        <>
+          <div className="max-w-7xl mx-auto flex gap-4">
           {/* Main Content */}
           <div className={`flex-1 ${showMessages && activeConversation ? 'hidden md:block' : 'block'}`}>
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
