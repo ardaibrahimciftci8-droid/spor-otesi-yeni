@@ -1407,16 +1407,16 @@ async def populate_demo_bots():
     """Create demo bot users with posts, activities, and reels"""
     
     bot_users = [
-        {"firebase_uid": "bot1", "displayName": "Ahmet Yılmaz", "email": "ahmet@demo.com", "photoURL": "https://i.pravatar.cc/150?img=12"},
-        {"firebase_uid": "bot2", "displayName": "Ayşe Kara", "email": "ayse@demo.com", "photoURL": "https://i.pravatar.cc/150?img=5"},
-        {"firebase_uid": "bot3", "displayName": "Mehmet Demir", "email": "mehmet@demo.com", "photoURL": "https://i.pravatar.cc/150?img=33"},
-        {"firebase_uid": "bot4", "displayName": "Fatma Şahin", "email": "fatma@demo.com", "photoURL": "https://i.pravatar.cc/150?img=9"},
-        {"firebase_uid": "bot5", "displayName": "Ali Yıldız", "email": "ali@demo.com", "photoURL": "https://i.pravatar.cc/150?img=15"},
-        {"firebase_uid": "bot6", "displayName": "Zeynep Öztürk", "email": "zeynep@demo.com", "photoURL": "https://i.pravatar.cc/150?img=23"},
-        {"firebase_uid": "bot7", "displayName": "Can Aydın", "email": "can@demo.com", "photoURL": "https://i.pravatar.cc/150?img=52"},
-        {"firebase_uid": "bot8", "displayName": "Elif Çelik", "email": "elif@demo.com", "photoURL": "https://i.pravatar.cc/150?img=44"},
-        {"firebase_uid": "bot9", "displayName": "Burak Arslan", "email": "burak@demo.com", "photoURL": "https://i.pravatar.cc/150?img=68"},
-        {"firebase_uid": "bot10", "displayName": "Selin Koç", "email": "selin@demo.com", "photoURL": "https://i.pravatar.cc/150?img=29"},
+        {"firebase_uid": "bot1", "display_name": "Ahmet Yılmaz", "email": "ahmet@demo.com", "photo_url": "https://i.pravatar.cc/150?img=12"},
+        {"firebase_uid": "bot2", "display_name": "Ayşe Kara", "email": "ayse@demo.com", "photo_url": "https://i.pravatar.cc/150?img=5"},
+        {"firebase_uid": "bot3", "display_name": "Mehmet Demir", "email": "mehmet@demo.com", "photo_url": "https://i.pravatar.cc/150?img=33"},
+        {"firebase_uid": "bot4", "display_name": "Fatma Şahin", "email": "fatma@demo.com", "photo_url": "https://i.pravatar.cc/150?img=9"},
+        {"firebase_uid": "bot5", "display_name": "Ali Yıldız", "email": "ali@demo.com", "photo_url": "https://i.pravatar.cc/150?img=15"},
+        {"firebase_uid": "bot6", "display_name": "Zeynep Öztürk", "email": "zeynep@demo.com", "photo_url": "https://i.pravatar.cc/150?img=23"},
+        {"firebase_uid": "bot7", "display_name": "Can Aydın", "email": "can@demo.com", "photo_url": "https://i.pravatar.cc/150?img=52"},
+        {"firebase_uid": "bot8", "display_name": "Elif Çelik", "email": "elif@demo.com", "photo_url": "https://i.pravatar.cc/150?img=44"},
+        {"firebase_uid": "bot9", "display_name": "Burak Arslan", "email": "burak@demo.com", "photo_url": "https://i.pravatar.cc/150?img=68"},
+        {"firebase_uid": "bot10", "display_name": "Selin Koç", "email": "selin@demo.com", "photo_url": "https://i.pravatar.cc/150?img=29"},
     ]
     
     # Create users
@@ -1426,9 +1426,9 @@ async def populate_demo_bots():
             user_doc = {
                 "id": str(uuid.uuid4()),
                 "firebase_uid": user_data["firebase_uid"],
-                "displayName": user_data["displayName"],
+                "display_name": user_data["display_name"],
                 "email": user_data["email"],
-                "photoURL": user_data["photoURL"],
+                "photo_url": user_data["photo_url"],
                 "created_at": datetime.now(timezone.utc).isoformat()
             }
             await db.users.insert_one(user_doc)
