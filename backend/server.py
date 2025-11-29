@@ -1453,8 +1453,8 @@ async def populate_demo_bots():
         post_doc = {
             "id": str(uuid.uuid4()),
             "user_id": user["firebase_uid"],
-            "user_name": user["displayName"],
-            "user_photo": user["photoURL"],
+            "user_name": user["display_name"],
+            "user_photo": user["photo_url"],
             "content": content,
             "media_url": f"https://picsum.photos/600/400?random={i}",
             "media_type": "image",
