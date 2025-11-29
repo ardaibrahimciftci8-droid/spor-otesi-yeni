@@ -2417,9 +2417,9 @@ const ProfilePage = ({ user, setPage }) => {
         </div>
 
         <div className="flex border-b border-white/10 mb-6">
-          {['posts', 'followers', 'following'].map(tab => (
-            <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 py-3 text-center font-medium transition ${activeTab === tab ? 'text-yellow-500 border-b-2 border-yellow-500' : 'text-gray-500'}`}>
-              {tab === 'posts' ? 'Gönderiler' : tab === 'followers' ? 'Takipçiler' : 'Takip'}
+          {['posts', 'followers', 'following', 'settings'].map(tab => (
+            <button key={tab} onClick={() => setActiveTab(tab)} className={`flex-1 py-3 text-center font-medium transition text-sm ${activeTab === tab ? 'text-yellow-500 border-b-2 border-yellow-500' : 'text-gray-500'}`}>
+              {tab === 'posts' ? 'Gönderiler' : tab === 'followers' ? 'Takipçiler' : tab === 'following' ? 'Takip' : 'Ayarlar'}
             </button>
           ))}
         </div>
