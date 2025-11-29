@@ -156,6 +156,9 @@ class Message(BaseModel):
     sender_name: str
     sender_photo: Optional[str] = None
     content: str
+    message_type: str = "text"  # text, image, video, reel
+    media_url: Optional[str] = None
+    reel_id: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class MessageCreate(BaseModel):
@@ -164,6 +167,9 @@ class MessageCreate(BaseModel):
     sender_name: str
     sender_photo: Optional[str] = None
     content: str
+    message_type: str = "text"
+    media_url: Optional[str] = None
+    reel_id: Optional[str] = None
 
 class Activity(BaseModel):
     model_config = ConfigDict(extra="ignore")
