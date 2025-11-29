@@ -1279,38 +1279,86 @@ const SocialPage = ({ user, setPage }) => {
     return { name: conv.participant_names[idx] || 'Kullanıcı', photo: conv.participant_photos[idx] || '' };
   };
 
-  // Load mock reels data (will be replaced with API)
+  // Load reels from API
   useEffect(() => {
     if (activeTab === 'reels') {
-      // Mock data for now
-      setReels([
-        {
-          id: '1',
-          user_id: 'user1',
-          user_name: 'Ahmet Yılmaz',
-          user_photo: '',
-          video_url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
-          description: 'Sabah koşusu 🏃‍♂️💪 #fitness #motivation',
-          music: 'Original Audio - Ahmet',
-          likes_count: 234,
-          comments_count: 12,
-          likes: []
-        },
-        {
-          id: '2',
-          user_id: 'user2',
-          user_name: 'Ayşe Demir',
-          user_photo: '',
-          video_url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
-          description: 'Yoga akış 🧘‍♀️✨ Huzur dolu bir gün',
-          music: 'Relaxing Music',
-          likes_count: 512,
-          comments_count: 28,
-          likes: []
-        }
-      ]);
+      loadReels();
     }
   }, [activeTab]);
+
+  const loadReels = async () => {
+    try {
+      const data = await api.getReelsFeed(20);
+      if (data && data.length > 0) {
+        setReels(data);
+      } else {
+        // If no reels in DB, use mock data
+        setReels([
+          {
+            id: '1',
+            user_id: 'user1',
+            user_name: 'Ahmet Yılmaz',
+            user_photo: '',
+            video_url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4',
+            description: 'Sabah koşusu 🏃‍♂️💪 #fitness #motivation',
+            music: 'Original Audio - Ahmet',
+            likes_count: 234,
+            comments_count: 12,
+            likes: []
+          },
+          {
+            id: '2',
+            user_id: 'user2',
+            user_name: 'Ayşe Demir',
+            user_photo: '',
+            video_url: 'https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerBlazes.mp4',
+            description: 'Yoga akış 🧘‍♀️✨ Huzur dolu bir gün',
+            music: 'Relaxing Music',
+            likes_count: 512,
+            comments_count: 28,
+            likes: []
+          }
+        ]);
+      }
+    } catch (e) {
+      console.error('Reels yükleme hatası:', e);
+    }
+  };
+
+  const handleLikeReel = async (reelId) => {
+    if (!user) return;
+    try {
+      const result = await api.likeReel(reelId, user.uid);
+      // Update local state
+      setReels(reels.map(reel => 
+        reel.id === reelId 
+          ? { ...reel, likes_count: result.likes_count, likes: result.liked ? [...(reel.likes || []), user.uid] : (reel.likes || []).filter(id => id !== user.uid) }
+          : reel
+      ));
+    } catch (e) {
+      console.error('Beğeni hatası:', e);
+    }
+  };
+
+  const handleCommentOnReel = async (reelId, text) => {
+    if (!user || !text.trim()) return;
+    try {
+      await api.commentOnReel(reelId, {
+        user_id: user.uid,
+        user_name: user.displayName || 'Kullanıcı',
+        user_photo: user.photoURL || '',
+        content: text
+      });
+      // Update comments count
+      setReels(reels.map(reel => 
+        reel.id === reelId 
+          ? { ...reel, comments_count: (reel.comments_count || 0) + 1 }
+          : reel
+      ));
+    } catch (e) {
+      console.error('Yorum hatası:', e);
+    }
+  };
 
   return (
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 px-4">
