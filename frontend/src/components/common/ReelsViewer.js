@@ -134,9 +134,14 @@ const ReelsViewer = ({ reels, currentIndex, onIndexChange, user, onLike, onComme
             </button>
           )}
         </div>
-        <button className="p-2 bg-white/20 backdrop-blur-sm rounded-full">
-          <MoreVertical size={20} className="text-white" />
-        </button>
+        <div className="flex items-center gap-3">
+          <div className="text-white text-sm font-semibold bg-black/40 backdrop-blur-sm px-3 py-1 rounded-full">
+            {currentIndex + 1} / {reels.length}
+          </div>
+          <button className="p-2 bg-white/20 backdrop-blur-sm rounded-full">
+            <MoreVertical size={20} className="text-white" />
+          </button>
+        </div>
       </div>
 
       {/* Side Actions */}
