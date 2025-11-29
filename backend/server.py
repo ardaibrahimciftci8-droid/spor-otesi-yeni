@@ -82,6 +82,31 @@ class PostCreate(BaseModel):
     media_url: Optional[str] = None
     media_type: Optional[str] = None
 
+
+class Reel(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    user_name: str
+    user_photo: Optional[str] = None
+    video_url: str
+    description: Optional[str] = None
+    music: Optional[str] = None
+    likes: List[str] = []
+    likes_count: int = 0
+    comments_count: int = 0
+    shares_count: int = 0
+    views_count: int = 0
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
+class ReelCreate(BaseModel):
+    user_id: str
+    user_name: str
+    user_photo: Optional[str] = None
+    video_url: str
+    description: Optional[str] = None
+    music: Optional[str] = None
+
 class Comment(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
