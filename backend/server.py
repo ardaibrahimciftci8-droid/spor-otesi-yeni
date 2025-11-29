@@ -1433,6 +1433,9 @@ async def populate_demo_bots():
             }
             await db.users.insert_one(user_doc)
     
+    # Get all users including newly created bots
+    all_users = await db.users.find({}, {"_id": 0}).to_list(100)
+    
     # Create demo posts
     post_contents = [
         "Sabah koşusu tamamlandı! 🏃‍♂️ 5km 25 dakika, yeni rekor! #fitness #running",
