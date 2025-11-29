@@ -2359,8 +2359,15 @@ const ProfilePage = ({ user, setPage }) => {
       }
       setProfile(profileData);
       setBio(profileData.bio || '');
-      const [postsData, followersData, followingData] = await Promise.all([api.getUserPosts(user.uid), api.getFollowers(user.uid), api.getFollowing(user.uid)]);
+      setIsPrivate(profileData.is_private || false);
+      const [postsData, followersData, followingData, blockedData] = await Promise.all([
+        api.getUserPosts(user.uid), 
+        api.getFollowers(user.uid), 
+        api.getFollowing(user.uid),
+        api.getBlockedUsers(user.uid)
+      ]);
       setPosts(postsData); setFollowers(followersData); setFollowing(followingData);
+      setBlockedUsers(blockedData.blocked_users || []);
     } catch (e) { console.error(e); }
     setLoading(false);
   };
