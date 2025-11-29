@@ -353,48 +353,48 @@ const HomePage = ({ user, setPage, onLogout }) => {
   ];
 
   return (
-    <div className="min-h-screen pb-24 md:pb-8 md:pt-24">
+    <div className="min-h-screen pb-24 md:pb-8 md:pt-28">
       <div className="animated-bg" />
       
       {/* Hero Section */}
-      <section className="relative py-16 md:py-24 px-4 overflow-hidden">
+      <section className="relative pt-32 pb-16 md:pt-36 md:pb-24 px-4 overflow-hidden">
         <div className="max-w-6xl mx-auto text-center relative z-10">
           {/* Mobile User Menu */}
-          <div className="md:hidden absolute top-0 right-0">
+          <div className="md:hidden fixed top-20 right-4 z-50">
             {user ? (
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 bg-slate-900/90 backdrop-blur-xl rounded-2xl p-2 border border-white/10">
                 <button onClick={() => setPage('profile')} className="p-1">
                   <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=32'} alt="" className="w-10 h-10 rounded-xl border-2 border-yellow-500/50" />
                 </button>
-                <button onClick={onLogout} className="p-2 bg-white/5 rounded-xl text-gray-400"><LogOut size={18} /></button>
+                <button onClick={onLogout} className="p-2 bg-white/5 rounded-xl text-gray-400 hover:text-red-500 transition"><LogOut size={18} /></button>
               </div>
             ) : (
-              <button onClick={() => setPage('login')} className="btn-primary text-sm py-2 px-4">Giriş</button>
+              <button onClick={() => setPage('login')} className="btn-primary text-sm py-2 px-4 shadow-lg">Giriş</button>
             )}
           </div>
 
-          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-6">
-            <div className="inline-flex items-center gap-2 bg-white/5 border border-white/10 rounded-full px-4 py-2 mb-6">
-              <Rocket size={16} className="text-yellow-500" />
-              <span className="text-sm text-gray-400">Yapay Zeka Destekli Platform</span>
+          <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-8">
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-full px-6 py-3 mb-6 backdrop-blur-xl">
+              <Rocket size={20} className="text-yellow-500 animate-pulse" />
+              <span className="text-sm font-semibold text-yellow-500">Yapay Zeka Destekli Platform</span>
             </div>
           </motion.div>
 
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }} className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-tight">
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }} className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight">
             SINIRLARINI<br />
             <span className="gradient-text">YENİDEN ÇİZ</span>
           </motion.h1>
 
-          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-lg md:text-xl text-gray-400 max-w-2xl mx-auto mb-10">
+          <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
             AI analizleri, sosyal bağlantılar, egzersiz takibi ve topluma katkı - hepsi tek platformda.
           </motion.p>
 
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.3 }} className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button onClick={() => setPage('social')} className="btn-primary flex items-center justify-center gap-2 text-lg">
-              <Users size={22} />Keşfet
+            <button onClick={() => setPage('social')} className="btn-primary flex items-center justify-center gap-3 text-lg px-8 py-4 shadow-2xl">
+              <Users size={24} />Keşfet
             </button>
-            <button onClick={() => setPage('donate')} className="btn-secondary flex items-center justify-center gap-2 text-lg">
-              <Heart size={22} />Bağış Yap
+            <button onClick={() => setPage('donate')} className="btn-secondary flex items-center justify-center gap-3 text-lg px-8 py-4 shadow-2xl">
+              <Heart size={24} />Bağış Yap
             </button>
           </motion.div>
         </div>
