@@ -1450,9 +1450,8 @@ async def populate_demo_bots():
         "Pilates dersi harika geçti 🤸‍♀️ Esneklik arttı! #pilates #flexibility",
     ]
     
-    users = await db.users.find({}, {"_id": 0}).to_list(100)
     for i, content in enumerate(post_contents):
-        user = users[i % len(users)]
+        user = all_users[i % len(all_users)]
         post_doc = {
             "id": str(uuid.uuid4()),
             "user_id": user["firebase_uid"],
