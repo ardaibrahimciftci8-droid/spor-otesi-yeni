@@ -18,6 +18,7 @@ import api from './api';
 
 // Import components
 import AdBanner from './components/common/AdBanner';
+import AICoach from './components/common/AICoach';
 
 // Firebase initialization
 let app, auth, googleProvider;
