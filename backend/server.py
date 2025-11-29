@@ -1504,7 +1504,7 @@ async def populate_demo_bots():
     # Create demo activities
     activity_types = ["running", "cycling", "swimming", "gym", "yoga"]
     for i in range(20):
-        user = users[i % len(users)]
+        user = all_users[i % len(all_users)]
         activity_doc = {
             "id": str(uuid.uuid4()),
             "user_id": user["firebase_uid"],
