@@ -173,25 +173,17 @@ const ReelsViewer = ({ reels, currentIndex, onIndexChange, user, onLike, onComme
           </span>
         </motion.button>
 
-        {/* Share */}
+        {/* Send to Message */}
         <motion.button 
           whileTap={{ scale: 0.8 }} 
           onClick={() => {
-            if (navigator.share) {
-              navigator.share({
-                title: 'Spor Ötesi Reels',
-                text: currentReel.description || 'Bu reel\'i izle!',
-                url: window.location.href
-              }).catch(console.error);
-            } else {
-              // Fallback: Copy to clipboard
-              navigator.clipboard.writeText(window.location.href);
-              alert('Link kopyalandı!');
-            }
+            // Open message modal or navigate to messages
+            alert('Mesaj gönderme özelliği yakında aktif olacak!');
           }}
           className="flex flex-col items-center"
         >
           <Send size={32} className="text-white" />
+          <span className="text-white text-xs font-semibold mt-1">Gönder</span>
         </motion.button>
 
         {/* Sound */}
