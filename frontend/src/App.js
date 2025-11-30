@@ -1513,7 +1513,7 @@ const SocialPage = ({ user, setPage }) => {
       const uploadRes = await api.uploadImage(file);
       await api.updateUser(user.uid, { photo_url: uploadRes.secure_url });
       
-      // Update Firebase auth profile
+      // Update Firebase auth profile (v9 modular syntax)
       const currentUser = auth.currentUser;
       if (currentUser) {
         await updateProfile(currentUser, { photoURL: uploadRes.secure_url });
@@ -2548,7 +2548,7 @@ const ProfilePage = ({ user, setPage }) => {
       const uploadRes = await api.uploadImage(file);
       await api.updateUser(user.uid, { photo_url: uploadRes.secure_url });
       
-      // Update Firebase auth profile
+      // Update Firebase auth profile (v9 modular syntax)
       const currentUser = auth.currentUser;
       if (currentUser) {
         await updateProfile(currentUser, { photoURL: uploadRes.secure_url });
