@@ -95,10 +95,12 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
 // --- POST CARD ---
 const PostCard = ({ post, user, onDelete }) => {
   const [liked, setLiked] = useState(false);
+  const [saved, setSaved] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes_count || 0);
   const [showComments, setShowComments] = useState(false);
   const [comments, setComments] = useState([]);
   const [newComment, setNewComment] = useState('');
+  const [showLikeAnimation, setShowLikeAnimation] = useState(false);
 
   useEffect(() => {
     if (user) {
@@ -117,6 +119,21 @@ const PostCard = ({ post, user, onDelete }) => {
         setLikesCount(prev => prev + 1);
       }
       setLiked(!liked);
+    } catch (e) { console.error(e); }
+  };
+
+  const handleDoubleTap = () => {
+    if (!user || liked) return;
+    handleLike();
+    setShowLikeAnimation(true);
+    setTimeout(() => setShowLikeAnimation(false), 1000);
+  };
+
+  const handleSave = async () => {
+    if (!user) return;
+    try {
+      const res = await api.savePost(post.id, user.uid);
+      setSaved(res.saved);
     } catch (e) { console.error(e); }
   };
 
