@@ -20,6 +20,7 @@ import api from './api';
 import AdBanner from './components/common/AdBanner';
 import AICoach from './components/common/AICoach';
 import ReelsViewer from './components/common/ReelsViewer';
+import UserProfileModal from './components/common/UserProfileModal';
 
 // Firebase initialization
 let app, auth, googleProvider;
