@@ -2341,7 +2341,22 @@ const ProfilePage = ({ user, setPage }) => {
       <div className="animated-bg" />
       <div className="max-w-2xl mx-auto">
         <div className="glass-card p-8 text-center mb-8">
-          <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=120'} alt="" className="w-24 h-24 rounded-2xl border-4 border-yellow-500/50 mx-auto mb-4" />
+          <div className="relative inline-block">
+            <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=120'} alt="" className="w-24 h-24 rounded-2xl border-4 border-yellow-500/50 mb-4" />
+            <label htmlFor="photoUpload" className="absolute bottom-2 right-2 p-2 bg-yellow-500 hover:bg-yellow-600 rounded-full cursor-pointer transition">
+              <Camera size={16} className="text-black" />
+            </label>
+            <input
+              id="photoUpload"
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={(e) => {
+                const file = e.target.files?.[0];
+                if (file) handleProfilePhotoUpload(file);
+              }}
+            />
+          </div>
           <h1 className="text-2xl font-bold text-white">{user.displayName}</h1>
           {editMode ? (
             <div className="mt-4 space-y-2">
