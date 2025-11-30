@@ -1479,7 +1479,9 @@ const SocialPage = ({ user, setPage }) => {
                 <button onClick={() => setShowSearch(false)} className="text-gray-400 hover:text-white"><X size={20} /></button>
               </div>
               {searchResults.map(profile => (
-                <UserCard key={profile.id} profile={profile} currentUser={user} onViewProfile={() => setPage('profile')} />
+                <div key={profile.id} onClick={() => setSelectedUserId(profile.firebase_uid)} className="cursor-pointer">
+                  <UserCard profile={profile} currentUser={user} />
+                </div>
               ))}
             </div>
           )}
