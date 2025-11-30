@@ -1241,6 +1241,12 @@ const SocialPage = ({ user, setPage }) => {
   const [showSearch, setShowSearch] = useState(false);
   const [selectedUserId, setSelectedUserId] = useState(null);
   
+  // Stories state
+  const [stories, setStories] = useState([]);
+  const [showStoryViewer, setShowStoryViewer] = useState(false);
+  const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
+  const [showCreateStory, setShowCreateStory] = useState(false);
+  
   // Reels state
   const [reels, setReels] = useState([]);
   const [currentReelIndex, setCurrentReelIndex] = useState(0);
