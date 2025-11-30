@@ -2966,6 +2966,7 @@ function App() {
   const [page, setPage] = useState('home');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(!!auth);
+  const [viewingUserId, setViewingUserId] = useState(null);
 
   useEffect(() => {
     if (auth) {
