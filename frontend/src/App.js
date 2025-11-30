@@ -2949,9 +2949,8 @@ const Footer = () => (
 
 // --- MAIN APP ---
 function App() {
-  // 🎯 SUNUM VERSİYONU v3.0.0 - Instagram Benzeri Tasarım
-  console.log('%c🚀 SPOR ÖTESİ v3.0.0 YÜKLENDI!', 'color: #ec4899; font-size: 16px; font-weight: bold;');
-  console.log('%c📱 Instagram-style Social Media Platform', 'color: #8b5cf6; font-size: 12px;');
+  console.log('%c🚀 SPOR ÖTESİ - SUNUM VERSİYONU', 'color: #ec4899; font-size: 20px; font-weight: bold; background: black; padding: 10px;');
+  console.log('%c✅ Instagram Benzeri Sosyal Medya - YENİ TASARIM AKTİF', 'color: #10b981; font-size: 14px;');
   
   const [page, setPage] = useState('home');
   const [user, setUser] = useState(null);
