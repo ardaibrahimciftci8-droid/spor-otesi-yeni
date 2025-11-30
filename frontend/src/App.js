@@ -2503,7 +2503,7 @@ const LoginPage = ({ onLogin, setPage }) => {
 };
 
 // --- PROFILE PAGE ---
-const ProfilePage = ({ user, setPage }) => {
+const ProfilePage = ({ user, setPage, onViewProfile }) => {
   const [profile, setProfile] = useState(null);
   const [posts, setPosts] = useState([]);
   const [followers, setFollowers] = useState([]);
