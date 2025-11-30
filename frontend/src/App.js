@@ -1269,6 +1269,46 @@ const SocialPage = ({ user, setPage }) => {
     setLoading(false);
   };
 
+  const loadStories = async () => {
+    try {
+      const data = await api.getStoriesFeed(user?.uid);
+      setStories(data);
+    } catch (e) { console.error(e); }
+  };
+
+  const handleCreateStory = async () => {
+    if (!user) {
+      alert('Hikaye paylaşmak için giriş yapmalısınız');
+      return;
+    }
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*,video/*';
+    input.onchange = async (e) => {
+      const file = e.target.files[0];
+      if (!file) return;
+      
+      try {
+        const uploadRes = await api.uploadImage(file);
+        const storyData = {
+          user_id: user.uid,
+          user_name: user.displayName,
+          user_photo: user.photoURL,
+          media_url: uploadRes.secure_url,
+          media_type: file.type.startsWith('video') ? 'video' : 'image',
+          duration: file.type.startsWith('video') ? 15 : 5
+        };
+        await api.createStory(storyData);
+        await loadStories();
+        alert('✅ Hikaye paylaşıldı!');
+      } catch (e) {
+        console.error(e);
+        alert('❌ Hikaye paylaşılamadı');
+      }
+    };
+    input.click();
+  };
+
   const loadConversations = async () => {
     if (!user) return;
     try {
