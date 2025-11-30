@@ -177,26 +177,22 @@ const PostCard = ({ post, user, onDelete }) => {
   };
 
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="post-card">
-      <div className="p-4 flex items-center justify-between">
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white/5 border border-white/10 rounded-xl mb-4 overflow-hidden">
+      {/* Header */}
+      <div className="p-3 flex items-center justify-between">
         <div className="flex items-center gap-3">
-          <img src={post.user_photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl border-2 border-white/10" />
+          <img src={post.user_photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=40'} alt="" className="w-10 h-10 rounded-full object-cover" />
           <div>
-            <h4 className="font-bold text-white">{post.user_name}</h4>
-            <span className="text-xs text-gray-500">{timeAgo(post.created_at)}</span>
+            <h4 className="font-semibold text-white text-sm">{post.user_name}</h4>
+            {post.location && (
+              <p className="text-xs text-gray-400">{post.location}</p>
+            )}
           </div>
         </div>
         {user?.uid === post.user_id && (
-          <button onClick={() => onDelete && onDelete(post.id)} className="p-2 text-gray-500 hover:text-red-500 rounded-lg transition">
+          <button onClick={() => onDelete && onDelete(post.id)} className="text-gray-400 hover:text-red-500 transition">
             <Trash2 size={18} />
           </button>
-        )}
-      </div>
-
-      <div className="px-4 pb-3">
-        <p className="text-gray-200 whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
-        {post.location && (
-          <p className="text-xs text-gray-500 mt-1">📍 {post.location}</p>
         )}
       </div>
 
