@@ -410,6 +410,30 @@ backend:
         agent: "testing"
         comment: "⚠️ NOT IMPLEMENTED: Notification endpoints return 404 Not Found. Notification system is defined in server.py but routes are not properly registered or accessible."
 
+  - task: "User Search Functionality Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test real-time user search functionality in Social page. Test searching for 'arda' and verify search results display correctly with user profiles, photos, and names. Verify empty search clears results and short queries work properly."
+
+  - task: "Profile Photo Upload Testing"
+    implemented: true
+    working: "NA"
+    file: "/app/frontend/src/App.js"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: true
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test profile photo upload functionality in ProfilePage. Verify camera icon is visible on profile photo, file upload dialog opens, and upload process works with proper success/error messages. Test with mock file upload."
+
 agent_communication:
   - agent: "testing"
     message: "Starting comprehensive end-to-end testing for Spor Ötesi application including all major features, AI coaches, responsive design, and performance testing"
