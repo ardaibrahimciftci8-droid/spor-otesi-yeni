@@ -525,7 +525,17 @@ async def get_following(user_id: str):
 
 @api_router.post("/posts", response_model=Post)
 async def create_post(post: PostCreate):
-    post_obj = Post(**post.model_dump())
+    import re
+    
+    # Extract hashtags and mentions
+    hashtags = re.findall(r'#(\w+)', post.content)
+    mentions = re.findall(r'@(\w+)', post.content)
+    
+    post_obj = Post(
+        **post.model_dump(),
+        hashtags=hashtags,
+        mentions=mentions
+    )
     doc = post_obj.model_dump()
     doc['created_at'] = doc['created_at'].isoformat()
     await db.posts.insert_one(doc)
