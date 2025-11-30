@@ -232,16 +232,10 @@ metadata:
 
 test_plan:
   current_focus:
-    - "Homepage & Navigation Testing"
-    - "Yoga & Meditation Page Testing"
-    - "Social Page Testing"
-    - "Tracker Page Testing"
-    - "Donation Page Testing"
-    - "AI Coach Components Testing"
-    - "Responsive Design Testing"
-    - "Performance & Error Testing"
+    - "User Search Functionality Testing"
+    - "Profile Photo Upload Testing"
   stuck_tasks: []
-  test_all: true
+  test_all: false
   test_priority: "high_first"
 
 backend:
