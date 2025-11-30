@@ -1852,13 +1852,14 @@ async def get_saved_posts(user_id: str = Query(...)):
 # Include the router in the main app (MUST be after all route definitions)
 app.include_router(api_router)
 
-# Add CORS middleware - ALLOW ALL ORIGINS
+# CORS - FULLY OPEN FOR ALL DOMAINS
 app.add_middleware(
     CORSMiddleware,
-    allow_credentials=True,
     allow_origins=["*"],
+    allow_credentials=False,
     allow_methods=["*"],
     allow_headers=["*"],
+    expose_headers=["*"],
 )
 
 @app.on_event("shutdown")
