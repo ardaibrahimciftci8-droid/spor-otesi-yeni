@@ -261,26 +261,27 @@ const PostCard = ({ post, user, onDelete }) => {
         </div>
       </div>
 
+      {/* Comments Section - Instagram Style */}
       <AnimatePresence>
         {showComments && (
-          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="border-t border-white/5 overflow-hidden">
-            <div className="p-4 space-y-4 max-h-64 overflow-y-auto">
+          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="border-t border-white/10 overflow-hidden">
+            <div className="p-3 space-y-3 max-h-64 overflow-y-auto">
               {comments.map(comment => (
                 <div key={comment.id} className="flex gap-3">
-                  <img src={comment.user_photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=32'} alt="" className="w-8 h-8 rounded-lg" />
-                  <div className="flex-1 bg-white/5 rounded-xl p-3">
-                    <span className="font-medium text-sm text-yellow-500">{comment.user_name}</span>
-                    <p className="text-sm text-gray-300">{comment.content}</p>
+                  <img src={comment.user_photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=32'} alt="" className="w-8 h-8 rounded-full object-cover" />
+                  <div className="flex-1">
+                    <span className="font-semibold text-sm text-white mr-2">{comment.user_name}</span>
+                    <span className="text-sm text-gray-200">{comment.content}</span>
                   </div>
                 </div>
               ))}
-              {comments.length === 0 && <p className="text-center text-gray-500 text-sm">Henüz yorum yok</p>}
+              {comments.length === 0 && <p className="text-center text-gray-400 text-sm py-4">Henüz yorum yok</p>}
             </div>
             {user && (
-              <form onSubmit={handleSubmitComment} className="p-4 pt-0 flex gap-2">
-                <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Yorum yaz..." className="flex-1 input-modern py-2 text-sm" />
-                <button type="submit" disabled={!newComment.trim()} className="btn-primary py-2 px-4 disabled:opacity-50">
-                  <Send size={18} />
+              <form onSubmit={handleSubmitComment} className="p-3 border-t border-white/10 flex gap-2 items-center">
+                <input type="text" value={newComment} onChange={(e) => setNewComment(e.target.value)} placeholder="Yorum ekle..." className="flex-1 bg-transparent text-white text-sm focus:outline-none" />
+                <button type="submit" disabled={!newComment.trim()} className="text-blue-500 font-semibold text-sm disabled:opacity-30 hover:text-blue-400 transition">
+                  Paylaş
                 </button>
               </form>
             )}
