@@ -1516,7 +1516,7 @@ const SocialPage = ({ user, setPage }) => {
       // Update Firebase auth profile
       const currentUser = auth.currentUser;
       if (currentUser) {
-        await currentUser.updateProfile({ photoURL: uploadRes.secure_url });
+        await updateProfile(currentUser, { photoURL: uploadRes.secure_url });
       }
       
       alert('✅ Profil resmi başarıyla güncellendi!');
@@ -2551,7 +2551,7 @@ const ProfilePage = ({ user, setPage }) => {
       // Update Firebase auth profile
       const currentUser = auth.currentUser;
       if (currentUser) {
-        await currentUser.updateProfile({ photoURL: uploadRes.secure_url });
+        await updateProfile(currentUser, { photoURL: uploadRes.secure_url });
       }
       
       alert('✅ Profil resmi başarıyla güncellendi!');
