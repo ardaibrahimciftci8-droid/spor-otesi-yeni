@@ -28,6 +28,8 @@ import PostCard from './components/social/PostCard';
 import CreatePostModal from './components/social/CreatePostModal';
 import UserCard from './components/social/UserCard';
 import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import Footer from './components/common/Footer';
 
 // Firebase initialization
 let app, auth, googleProvider;
