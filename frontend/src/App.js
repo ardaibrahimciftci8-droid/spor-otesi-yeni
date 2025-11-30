@@ -95,7 +95,7 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
 };
 
 // --- POST CARD ---
-const PostCard = ({ post, user, onDelete }) => {
+const PostCard = ({ post, user, onDelete, onViewProfile }) => {
   const [liked, setLiked] = useState(false);
   const [saved, setSaved] = useState(false);
   const [likesCount, setLikesCount] = useState(post.likes_count || 0);
