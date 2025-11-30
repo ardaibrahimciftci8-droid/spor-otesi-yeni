@@ -1265,14 +1265,20 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
 
           {/* Create Post - Instagram Style */}
           {user && (
-            <button onClick={() => setShowCreatePost(true)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-4 mb-4 hover:bg-white/10 transition text-left">
-              <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=40'} alt="" className="w-10 h-10 rounded-full object-cover" />
-              <span className="text-gray-400 flex-1">Ne düşünüyorsun?</span>
-              <div className="flex gap-2">
-                <Image size={20} className="text-green-500" />
+            <div className="space-y-2 mb-4">
+              <button onClick={() => setShowCreatePost(true)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-4 hover:bg-white/10 transition text-left">
+                <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=40'} alt="" className="w-10 h-10 rounded-full object-cover" />
+                <span className="text-gray-400 flex-1">Ne düşünüyorsun?</span>
+                <div className="flex gap-2">
+                  <Image size={20} className="text-green-500" />
+                  <Video size={20} className="text-red-500" />
+                </div>
+              </button>
+              <button onClick={() => setShowCreateReel(true)} className="w-full bg-gradient-to-r from-red-500/10 to-pink-500/10 border border-red-500/20 rounded-xl p-3 flex items-center justify-center gap-2 hover:from-red-500/20 hover:to-pink-500/20 transition">
                 <Video size={20} className="text-red-500" />
-              </div>
-            </button>
+                <span className="text-white font-semibold">Reel Yükle</span>
+              </button>
+            </div>
           )}
 
           {/* Posts */}
