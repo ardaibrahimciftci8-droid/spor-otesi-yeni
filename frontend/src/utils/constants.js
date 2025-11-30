@@ -33,7 +33,7 @@ export const ADS = [
 ];
 
 // Backend URL
-export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://fitintegrate.preview.emergentagent.com";
+export const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://sportreels.preview.emergentagent.com";
 export const API = `${BACKEND_URL}/api`;
 
 // Firebase Config
