@@ -3005,10 +3005,21 @@ function App() {
   };
 
   const renderPage = () => {
+    // User Profile View
+    if (viewingUserId) {
+      return (
+        <UserProfilePage
+          userId={viewingUserId}
+          currentUser={user}
+          onBack={() => setViewingUserId(null)}
+        />
+      );
+    }
+
     switch (page) {
       case 'home': return <HomePage user={user} setPage={setPage} onLogout={handleLogout} />;
       case 'login': return <LoginPage onLogin={handleLogin} setPage={setPage} />;
-      case 'social': return <SocialPage user={user} setPage={setPage} />;
+      case 'social': return <SocialPage user={user} setPage={setPage} onViewProfile={setViewingUserId} />;
       case 'tracker': return <TrackerPage user={user} setPage={setPage} />;
       case 'yoga': return <YogaPage user={user} setPage={setPage} />;
       case 'donate': return <DonatePage user={user} setPage={setPage} />;
