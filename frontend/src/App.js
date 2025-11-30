@@ -1261,6 +1261,7 @@ const SocialPage = ({ user, setPage }) => {
   const [showStoryViewer, setShowStoryViewer] = useState(false);
   const [currentStoryIndex, setCurrentStoryIndex] = useState(0);
   const [showCreateStory, setShowCreateStory] = useState(false);
+  const [showSearchModal, setShowSearchModal] = useState(false);
   
   // Reels state
   const [reels, setReels] = useState([]);
