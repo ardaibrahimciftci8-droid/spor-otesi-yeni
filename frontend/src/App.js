@@ -1746,6 +1746,14 @@ const SocialPage = ({ user, setPage }) => {
       )}
 
       <AnimatePresence>
+        {showStoryViewer && (
+          <StoryViewer
+            userStories={stories}
+            currentUserIndex={currentStoryIndex}
+            onClose={() => setShowStoryViewer(false)}
+            onViewStory={(storyId) => user && api.viewStory(storyId, user.uid)}
+          />
+        )}
         {showCreatePost && user && <CreatePostModal user={user} onClose={() => setShowCreatePost(false)} onPostCreated={(p) => setPosts([p, ...posts])} />}
         {selectedUserId && (
           <UserProfileModal
