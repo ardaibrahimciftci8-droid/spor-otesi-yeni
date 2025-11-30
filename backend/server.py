@@ -1395,9 +1395,27 @@ async def create_reel(reel: ReelCreate):
     return created_reel
 
 @api_router.get("/reels/feed")
-async def get_reels_feed(limit: int = 20):
-    """Get reels feed"""
-    reels = await db.reels.find({}, {"_id": 0}).sort("created_at", -1).limit(limit).to_list(limit)
+async def get_reels_feed(user_id: str = Query(None), limit: int = 20):
+    """Get reels feed - only from public accounts"""
+    # Get all public users
+    public_users = await db.users.find(
+        {"$or": [{"is_private": False}, {"is_private": {"$exists": False}}]},
+        {"firebase_uid": 1}
+    ).to_list(10000)
+    public_user_ids = [u["firebase_uid"] for u in public_users]
+    
+    if user_id:
+        # Add user's following
+        follows = await db.follows.find({"follower_id": user_id}).to_list(1000)
+        following_ids = [f["following_id"] for f in follows]
+        allowed_ids = list(set(public_user_ids + following_ids + [user_id]))
+    else:
+        allowed_ids = public_user_ids
+    
+    reels = await db.reels.find(
+        {"user_id": {"$in": allowed_ids}},
+        {"_id": 0}
+    ).sort("created_at", -1).limit(limit).to_list(limit)
     return reels
 
 @api_router.post("/reels/{reel_id}/like")
