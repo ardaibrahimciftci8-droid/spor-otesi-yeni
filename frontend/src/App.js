@@ -1620,33 +1620,17 @@ const SocialPage = ({ user, setPage }) => {
               </button>
             </div>
 
-          {/* Search Results */}
-          {showSearch && searchResults.length > 0 && (
-            <div className="mb-6 space-y-3">
-              <div className="flex items-center justify-between">
-                <h3 className="text-lg font-bold text-white">Arama Sonuçları</h3>
-                <button onClick={() => setShowSearch(false)} className="text-gray-400 hover:text-white"><X size={20} /></button>
-              </div>
-              {searchResults.map(profile => (
-                <div key={profile.id} onClick={() => setSelectedUserId(profile.firebase_uid)} className="cursor-pointer">
-                  <UserCard profile={profile} currentUser={user} />
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Create Post */}
+          {/* Create Post - Instagram Style */}
           {user && (
-            <button onClick={() => setShowCreatePost(true)} className="w-full glass-card p-4 flex items-center gap-4 mb-6 hover:border-white/20 transition text-left">
-              <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl" />
-              <span className="text-gray-500">Ne düşünüyorsun?</span>
+            <button onClick={() => setShowCreatePost(true)} className="w-full bg-white/5 border border-white/10 rounded-xl p-4 flex items-center gap-4 mb-4 hover:bg-white/10 transition text-left">
+              <img src={user.photoURL || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=40'} alt="" className="w-10 h-10 rounded-full object-cover" />
+              <span className="text-gray-400 flex-1">Ne düşünüyorsun?</span>
+              <div className="flex gap-2">
+                <Image size={20} className="text-green-500" />
+                <Video size={20} className="text-red-500" />
+              </div>
             </button>
           )}
-
-          {/* Ad Banner */}
-          <div className="mb-6">
-            <AdBanner />
-          </div>
 
           {/* Posts */}
           <div className="space-y-4">
