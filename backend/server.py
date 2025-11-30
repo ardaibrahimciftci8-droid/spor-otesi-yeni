@@ -141,6 +141,34 @@ class Like(BaseModel):
     user_id: str
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
+class Story(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    user_name: str
+    user_photo: Optional[str] = None
+    media_url: str
+    media_type: str  # 'image' or 'video'
+    duration: int = 5  # seconds, default 5 for images
+    views: List[str] = []  # user_ids who viewed
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    expires_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc) + timedelta(hours=24))
+
+class StoryCreate(BaseModel):
+    user_id: str
+    user_name: str
+    user_photo: Optional[str] = None
+    media_url: str
+    media_type: str
+    duration: int = 5
+
+class SavedPost(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_id: str
+    post_id: str
+    created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+
 class Conversation(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
