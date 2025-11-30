@@ -1369,6 +1369,7 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
           />
         )}
         {showCreatePost && user && <CreatePostModal user={user} onClose={() => setShowCreatePost(false)} onPostCreated={(p) => setPosts([p, ...posts])} />}
+        {showCreateReel && user && <CreateReelModal user={user} onClose={() => setShowCreateReel(false)} onReelCreated={(r) => { setReels([r, ...reels]); setShowCreateReel(false); }} />}
         {selectedUserId && (
           <UserProfileModal
             userId={selectedUserId}
