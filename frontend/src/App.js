@@ -182,10 +182,10 @@ const PostCard = ({ post, user, onDelete, onViewProfile }) => {
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="bg-white/5 border border-white/10 rounded-xl mb-4 overflow-hidden">
       {/* Header */}
       <div className="p-3 flex items-center justify-between">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 cursor-pointer" onClick={() => onViewProfile && onViewProfile(post.user_id)}>
           <img src={post.user_photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=40'} alt="" className="w-10 h-10 rounded-full object-cover" />
           <div>
-            <h4 className="font-semibold text-white text-sm">{post.user_name}</h4>
+            <h4 className="font-semibold text-white text-sm hover:text-gray-300 transition">{post.user_name}</h4>
             {post.location && (
               <p className="text-xs text-gray-400">{post.location}</p>
             )}
