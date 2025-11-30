@@ -417,6 +417,21 @@ async def search_users(q: str = Query(..., min_length=1)):
 # =============== FOLLOW ROUTES ===============
 
 @api_router.post("/follow/{following_id}")
+
+@api_router.get("/users/search")
+async def search_users(query: str = Query(...), limit: int = 20):
+    """Search users by name"""
+    if not query or len(query) < 2:
+        return []
+    
+    # Case-insensitive search using regex
+    users = await db.users.find(
+        {"display_name": {"$regex": query, "$options": "i"}},
+        {"_id": 0}
+    ).limit(limit).to_list(limit)
+    
+    return users
+
 async def follow_user(following_id: str, follower_id: str = Query(...)):
     if follower_id == following_id:
         raise HTTPException(status_code=400, detail="Cannot follow yourself")
