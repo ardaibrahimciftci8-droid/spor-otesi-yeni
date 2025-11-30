@@ -12,8 +12,8 @@ class BugFixAPITester:
         self.tests_run = 0
         self.tests_passed = 0
         # Use existing test users from the review request
-        self.test_user_1 = "arda_ciftci_uid"  # Arda Çiftçi
-        self.test_user_2 = "ahmet_arda_uid"   # ahmet arda keskinoğlu
+        self.test_user_1 = "plepYiy57abmoFDS7a3LoIUXDNl1"  # Arda Çiftçi
+        self.test_user_2 = "patukQYrBzWTt8RmdPaCW89r8tA3"   # ahmet arda keskinoğlu
         self.private_user = f"private_user_{str(uuid.uuid4())[:8]}"  # New private user for testing
         self.test_results = []
         self.created_post_id = None
