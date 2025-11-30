@@ -18,6 +18,7 @@ import api from './api';
 
 // Import components
 import AdBanner from './components/common/AdBanner';
+import StoryViewer from './components/common/StoryViewer';
 import AICoach from './components/common/AICoach';
 import ReelsViewer from './components/common/ReelsViewer';
 import UserProfileModal from './components/common/UserProfileModal';
