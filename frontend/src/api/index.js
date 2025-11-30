@@ -360,11 +360,7 @@ const api = {
     return res.data;
   },
 
-  // Search Users
-  searchUsers: async (query) => {
-    const res = await axios.get(`${API}/users/search?query=${encodeURIComponent(query)}`);
-    return res.data;
-  },
+  // Search Users (removed duplicate - using the one at line 22-25)
 
   // Update Profile Photo
   updateProfilePhoto: async (userId, photoUrl) => {
