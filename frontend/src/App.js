@@ -196,12 +196,13 @@ const PostCard = ({ post, user, onDelete }) => {
         )}
       </div>
 
+      {/* Media */}
       {post.media_url && (
-        <div className="relative" onDoubleClick={handleDoubleTap}>
+        <div className="relative bg-black" onDoubleClick={handleDoubleTap}>
           {post.media_type === 'video' ? (
-            <video src={post.media_url} controls className="w-full max-h-[500px] object-cover" />
+            <video src={post.media_url} controls className="w-full max-h-[600px] object-contain" />
           ) : (
-            <img src={post.media_url} alt="" className="w-full max-h-[500px] object-cover" />
+            <img src={post.media_url} alt="" className="w-full max-h-[600px] object-contain" />
           )}
           {showLikeAnimation && (
             <motion.div
@@ -215,25 +216,49 @@ const PostCard = ({ post, user, onDelete }) => {
         </div>
       )}
 
-      <div className="p-4 flex items-center justify-between border-t border-white/5">
-        <div className="flex items-center gap-6">
-          <button onClick={handleLike} className={`flex items-center gap-2 transition ${liked ? 'text-red-500' : 'text-gray-400 hover:text-red-500'}`}>
-            <Heart size={22} fill={liked ? 'currentColor' : 'none'} />
-            <span className="text-sm font-medium">{likesCount}</span>
-          </button>
-          <button onClick={handleShowComments} className="flex items-center gap-2 text-gray-400 hover:text-blue-500 transition">
-            <MessageSquare size={22} />
-            <span className="text-sm font-medium">{post.comments_count || 0}</span>
-          </button>
-          <button className="flex items-center gap-2 text-gray-400 hover:text-green-500 transition">
-            <Share size={22} />
-          </button>
+      {/* Actions - Instagram Style */}
+      <div className="p-3">
+        <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center gap-4">
+            <button onClick={handleLike} className={`transition ${liked ? 'text-red-500 scale-110' : 'text-white hover:text-gray-400'}`}>
+              <Heart size={26} fill={liked ? 'currentColor' : 'none'} strokeWidth={liked ? 0 : 2} />
+            </button>
+            <button onClick={handleShowComments} className="text-white hover:text-gray-400 transition">
+              <MessageSquare size={26} />
+            </button>
+            <button className="text-white hover:text-gray-400 transition">
+              <Share size={26} />
+            </button>
+          </div>
+          {user && (
+            <button onClick={handleSave} className={`transition ${saved ? 'text-yellow-500' : 'text-white hover:text-gray-400'}`}>
+              <Bookmark size={26} fill={saved ? 'currentColor' : 'none'} strokeWidth={saved ? 0 : 2} />
+            </button>
+          )}
         </div>
-        {user && (
-          <button onClick={handleSave} className={`transition ${saved ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}`}>
-            <Bookmark size={22} fill={saved ? 'currentColor' : 'none'} />
+
+        {/* Likes Count */}
+        <div className="mb-2">
+          <span className="font-semibold text-white text-sm">{likesCount} beğeni</span>
+        </div>
+
+        {/* Caption */}
+        <div className="text-sm">
+          <span className="font-semibold text-white mr-2">{post.user_name}</span>
+          <span className="text-gray-200" dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
+        </div>
+
+        {/* View Comments */}
+        {post.comments_count > 0 && !showComments && (
+          <button onClick={handleShowComments} className="text-gray-400 text-sm mt-1 hover:text-gray-300">
+            {post.comments_count} yorumun tümünü gör
           </button>
         )}
+
+        {/* Time */}
+        <div className="text-xs text-gray-500 mt-1 uppercase">
+          {timeAgo(post.created_at)}
+        </div>
       </div>
 
       <AnimatePresence>
