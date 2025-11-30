@@ -246,7 +246,12 @@ const PostCard = ({ post, user, onDelete, onViewProfile }) => {
 
         {/* Caption */}
         <div className="text-sm">
-          <span className="font-semibold text-white mr-2">{post.user_name}</span>
+          <span 
+            className="font-semibold text-white mr-2 cursor-pointer hover:text-gray-300 transition"
+            onClick={() => onViewProfile && onViewProfile(post.user_id)}
+          >
+            {post.user_name}
+          </span>
           <span className="text-gray-200" dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
         </div>
 
