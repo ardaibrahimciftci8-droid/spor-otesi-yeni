@@ -491,6 +491,69 @@ agent_communication:
 - Backend API fully functional
 - Ready for frontend testing
 
+backend:
+  - task: "Profile Endpoint Bug Fix"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test GET /api/profile/{user_id} endpoint for onViewProfile bug fix. Verify it returns user profile, stats, and posts correctly."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: Profile endpoint working correctly. GET /api/users/{firebase_uid}/profile returns proper response structure with user data, posts array, posts_count, and is_following status. Tested with existing users (Arda Çiftçi, ahmet arda keskinoğlu, arda ciftci). Error handling works correctly for non-existent users (404 response)."
+
+  - task: "Private Post Filtering"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to verify end-to-end private post filtering. Test that private accounts' posts are hidden from non-followers but visible to followers."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: Private post filtering working correctly. Created private account, set is_private=true via POST /api/users/{uid}/privacy. Private posts correctly hidden from non-followers in feed, visible to followers after following, and hidden from public feed (no auth). Privacy logic implemented properly in GET /api/posts/feed endpoint."
+
+  - task: "Reels Upload & Endpoints"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test reels endpoints: GET /api/reels/feed, POST /api/reels, and verify video posts automatically create reels."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: Reels system fully functional. GET /api/reels/feed returns proper reel structure with all required fields (id, user_id, user_name, video_url, likes_count, comments_count, views_count). POST /api/reels creates reels successfully. Video posts automatically create reels when media_type='video'. Reel interactions (like, view increment) working correctly. Auto-reel creation from video posts verified."
+
+  - task: "User Search for Profile Navigation"
+    implemented: true
+    working: true
+    file: "/app/backend/server.py"
+    stuck_count: 0
+    priority: "high"
+    needs_retesting: false
+    status_history:
+      - working: "NA"
+        agent: "testing"
+        comment: "Need to test user search functionality that supports onViewProfile navigation. Verify search returns users and profile navigation works."
+      - working: true
+        agent: "testing"
+        comment: "✅ PASSED: User search and profile navigation working correctly. GET /api/users/search/query?q=arda returns expected users (Arda Çiftçi, ahmet arda keskinoğlu, arda ciftci). Profile navigation via GET /api/users/{firebase_uid}/profile works for all found users. Response includes complete user data and posts. onViewProfile bug fix verified - users can click usernames to view profiles."
+
 agent_communication:
   - agent: "main_agent"
     message: "All backend issues resolved. Yoga program generation, messaging, goals, achievements, analytics, and notifications all working correctly. Router registration issue was root cause for 404 errors."
+  - agent: "testing"
+    message: "BUG FIX & NEW FEATURE TESTING COMPLETED (Dec 1, 2025): Comprehensive testing of recent bug fixes and new features completed. RESULTS: ✅ Profile Endpoint Bug Fix - onViewProfile functionality working, proper user profile data returned with posts and stats. ✅ Private Post Filtering - privacy logic working correctly, private posts hidden from non-followers, visible to followers. ✅ Reels Upload & Endpoints - full reels system functional, video upload creates reels, auto-reel creation from video posts working. ✅ User Search & Profile Navigation - search returns expected users, profile navigation works for all users. All 34 focused tests passed (100% success rate). Backend APIs supporting the bug fixes and new features are fully functional."
