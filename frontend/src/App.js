@@ -26,6 +26,7 @@ import UserProfileModal from './components/common/UserProfileModal';
 import NavBar from './components/common/NavBar';
 import PostCard from './components/social/PostCard';
 import CreatePostModal from './components/social/CreatePostModal';
+import CreateReelModal from './components/social/CreateReelModal';
 import UserCard from './components/social/UserCard';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
