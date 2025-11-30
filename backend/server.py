@@ -1676,6 +1676,108 @@ async def increment_reel_views(reel_id: str):
     return {"success": True}
 
 
+# ==================== STORIES ENDPOINTS ====================
+
+@api_router.post("/stories")
+async def create_story(story: StoryCreate):
+    """Create a new story - expires in 24 hours"""
+    new_story = Story(**story.model_dump())
+    doc = new_story.model_dump()
+    doc['created_at'] = doc['created_at'].isoformat()
+    doc['expires_at'] = doc['expires_at'].isoformat()
+    await db.stories.insert_one(doc)
+    return new_story
+
+@api_router.get("/stories/feed")
+async def get_stories_feed(user_id: str = Query(None)):
+    """Get active stories from following + own stories"""
+    now = datetime.now(timezone.utc)
+    
+    if user_id:
+        # Get following
+        follows = await db.follows.find({"follower_id": user_id}).to_list(1000)
+        following_ids = [f["following_id"] for f in follows]
+        following_ids.append(user_id)
+        
+        # Get active stories from following
+        stories = await db.stories.find(
+            {
+                "user_id": {"$in": following_ids},
+                "expires_at": {"$gt": now.isoformat()}
+            },
+            {"_id": 0}
+        ).sort("created_at", -1).to_list(1000)
+    else:
+        # Get all active public stories
+        stories = await db.stories.find(
+            {"expires_at": {"$gt": now.isoformat()}},
+            {"_id": 0}
+        ).sort("created_at", -1).limit(50).to_list(50)
+    
+    # Group by user
+    user_stories = {}
+    for story in stories:
+        uid = story['user_id']
+        if uid not in user_stories:
+            user_stories[uid] = {
+                'user_id': story['user_id'],
+                'user_name': story['user_name'],
+                'user_photo': story['user_photo'],
+                'stories': []
+            }
+        user_stories[uid]['stories'].append(story)
+    
+    return list(user_stories.values())
+
+@api_router.post("/stories/{story_id}/view")
+async def view_story(story_id: str, user_id: str = Query(...)):
+    """Mark story as viewed by user"""
+    await db.stories.update_one(
+        {"id": story_id},
+        {"$addToSet": {"views": user_id}}
+    )
+    return {"success": True}
+
+@api_router.delete("/stories/{story_id}")
+async def delete_story(story_id: str, user_id: str = Query(...)):
+    """Delete own story"""
+    story = await db.stories.find_one({"id": story_id})
+    if not story or story["user_id"] != user_id:
+        raise HTTPException(status_code=403, detail="Not authorized")
+    
+    await db.stories.delete_one({"id": story_id})
+    return {"success": True}
+
+
+# ==================== SAVED POSTS ENDPOINTS ====================
+
+@api_router.post("/posts/{post_id}/save")
+async def save_post(post_id: str, user_id: str = Query(...)):
+    """Save/unsave a post"""
+    existing = await db.saved_posts.find_one({"user_id": user_id, "post_id": post_id})
+    
+    if existing:
+        # Unsave
+        await db.saved_posts.delete_one({"user_id": user_id, "post_id": post_id})
+        return {"saved": False}
+    else:
+        # Save
+        saved = SavedPost(user_id=user_id, post_id=post_id)
+        doc = saved.model_dump()
+        doc['created_at'] = doc['created_at'].isoformat()
+        await db.saved_posts.insert_one(doc)
+        return {"saved": True}
+
+@api_router.get("/posts/saved")
+async def get_saved_posts(user_id: str = Query(...)):
+    """Get user's saved posts"""
+    saved = await db.saved_posts.find({"user_id": user_id}, {"_id": 0}).sort("created_at", -1).to_list(1000)
+    post_ids = [s["post_id"] for s in saved]
+    
+    posts = await db.posts.find({"id": {"$in": post_ids}}, {"_id": 0}).to_list(1000)
+    return [serialize_doc(p) for p in posts]
+
+
 # Include the router in the main app (MUST be after all route definitions)
 app.include_router(api_router)
 
