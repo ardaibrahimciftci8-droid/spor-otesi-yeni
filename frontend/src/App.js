@@ -1247,7 +1247,7 @@ const AnalyticsPage = ({ user, setPage }) => {
 };
 
 // --- SOCIAL PAGE ---
-const SocialPage = ({ user, setPage }) => {
+const SocialPage = ({ user, setPage, onViewProfile }) => {
   const [activeTab, setActiveTab] = useState('feed'); // 'feed' or 'reels'
   const [posts, setPosts] = useState([]);
   const [loading, setLoading] = useState(true);
