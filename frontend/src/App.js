@@ -170,6 +170,12 @@ const PostCard = ({ post, user, onDelete }) => {
     return `${Math.floor(diff / 86400)} gün`;
   };
 
+  const formatContent = (text) => {
+    if (!text) return '';
+    return text.replace(/#(\w+)/g, '<span class="text-blue-400 font-semibold">#$1</span>')
+               .replace(/@(\w+)/g, '<span class="text-yellow-500 font-semibold">@$1</span>');
+  };
+
   return (
     <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="post-card">
       <div className="p-4 flex items-center justify-between">
@@ -188,31 +194,50 @@ const PostCard = ({ post, user, onDelete }) => {
       </div>
 
       <div className="px-4 pb-3">
-        <p className="text-gray-200 whitespace-pre-wrap">{post.content}</p>
+        <p className="text-gray-200 whitespace-pre-wrap" dangerouslySetInnerHTML={{ __html: formatContent(post.content) }} />
+        {post.location && (
+          <p className="text-xs text-gray-500 mt-1">📍 {post.location}</p>
+        )}
       </div>
 
       {post.media_url && (
-        <div className="relative">
+        <div className="relative" onDoubleClick={handleDoubleTap}>
           {post.media_type === 'video' ? (
             <video src={post.media_url} controls className="w-full max-h-[500px] object-cover" />
           ) : (
             <img src={post.media_url} alt="" className="w-full max-h-[500px] object-cover" />
           )}
+          {showLikeAnimation && (
+            <motion.div
+              initial={{ scale: 0, opacity: 1 }}
+              animate={{ scale: 1.5, opacity: 0 }}
+              className="absolute inset-0 flex items-center justify-center pointer-events-none"
+            >
+              <Heart size={100} fill="white" className="text-white" />
+            </motion.div>
+          )}
         </div>
       )}
 
-      <div className="p-4 flex items-center gap-6 border-t border-white/5">
-        <button onClick={handleLike} className={`flex items-center gap-2 transition ${liked ? 'text-red-500' : 'text-gray-400 hover:text-red-500'}`}>
-          <Heart size={22} fill={liked ? 'currentColor' : 'none'} />
-          <span className="text-sm font-medium">{likesCount}</span>
-        </button>
-        <button onClick={handleShowComments} className="flex items-center gap-2 text-gray-400 hover:text-blue-500 transition">
-          <MessageSquare size={22} />
-          <span className="text-sm font-medium">{post.comments_count || 0}</span>
-        </button>
-        <button className="flex items-center gap-2 text-gray-400 hover:text-green-500 transition">
-          <Share size={22} />
-        </button>
+      <div className="p-4 flex items-center justify-between border-t border-white/5">
+        <div className="flex items-center gap-6">
+          <button onClick={handleLike} className={`flex items-center gap-2 transition ${liked ? 'text-red-500' : 'text-gray-400 hover:text-red-500'}`}>
+            <Heart size={22} fill={liked ? 'currentColor' : 'none'} />
+            <span className="text-sm font-medium">{likesCount}</span>
+          </button>
+          <button onClick={handleShowComments} className="flex items-center gap-2 text-gray-400 hover:text-blue-500 transition">
+            <MessageSquare size={22} />
+            <span className="text-sm font-medium">{post.comments_count || 0}</span>
+          </button>
+          <button className="flex items-center gap-2 text-gray-400 hover:text-green-500 transition">
+            <Share size={22} />
+          </button>
+        </div>
+        {user && (
+          <button onClick={handleSave} className={`transition ${saved ? 'text-yellow-500' : 'text-gray-400 hover:text-yellow-500'}`}>
+            <Bookmark size={22} fill={saved ? 'currentColor' : 'none'} />
+          </button>
+        )}
       </div>
 
       <AnimatePresence>
