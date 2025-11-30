@@ -1243,6 +1243,45 @@ const SocialPage = ({ user, setPage }) => {
     } catch (e) { console.error(e); }
   };
 
+  // Real-time search as user types
+  useEffect(() => {
+    const delaySearch = setTimeout(async () => {
+      if (searchQuery.trim().length >= 2) {
+        try {
+          const results = await api.searchUsers(searchQuery);
+          setSearchResults(results);
+          setShowSearch(true);
+        } catch (e) {
+          console.error(e);
+        }
+      } else {
+        setSearchResults([]);
+        setShowSearch(false);
+      }
+    }, 300);
+
+    return () => clearTimeout(delaySearch);
+  }, [searchQuery]);
+
+  const startChatWithUser = async (profile) => {
+    if (!user) return;
+    try {
+      const conv = await api.getOrCreateConversation(
+        user.uid,
+        user.displayName,
+        user.photoURL,
+        profile.firebase_uid,
+        profile.display_name,
+        profile.photo_url
+      );
+      setActiveConversation(conv);
+      setShowMessages(true);
+      await loadMessages(conv.id);
+    } catch (e) {
+      console.error(e);
+    }
+  };
+
   const handleDeletePost = async (postId) => {
     if (!window.confirm('Bu gönderiyi silmek istediğinize emin misiniz?')) return;
     try {
