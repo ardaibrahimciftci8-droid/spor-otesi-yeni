@@ -1524,55 +1524,101 @@ const SocialPage = ({ user, setPage }) => {
         </div>
       ) : (
         <>
-          <div className="max-w-7xl mx-auto flex gap-4">
-          {/* Main Content */}
-          <div className={`flex-1 ${showMessages && activeConversation ? 'hidden md:block' : 'block'}`}>
-            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="mb-8">
-              <div className="flex items-center justify-between mb-4">
-                <div>
-                  <h1 className="text-3xl font-bold text-white mb-2">Sosyal</h1>
-                  <p className="text-gray-400">Sporcularla bağlan, paylaş, ilham ol</p>
-                </div>
+          {/* Instagram-style Header */}
+          <div className="sticky top-0 z-40 bg-gray-900/80 backdrop-blur-xl border-b border-white/10">
+            <div className="max-w-4xl mx-auto px-4 py-3 flex items-center justify-between">
+              <h1 className="text-2xl font-bold bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 bg-clip-text text-transparent" style={{fontFamily: 'Pacifico, cursive'}}>
+                Spor Ötesi
+              </h1>
+              <div className="flex items-center gap-4">
                 {user && (
-                  <button onClick={() => setShowMessages(!showMessages)} className={`btn-primary flex items-center gap-2 ${showMessages ? 'bg-gradient-to-r from-green-500 to-emerald-500' : ''}`}>
-                    <MessageCircle size={20} />
-                    <span className="hidden md:inline">{showMessages ? 'Mesajları Gizle' : 'Mesajlar'}</span>
+                  <button onClick={() => setShowMessages(!showMessages)} className="relative p-2 hover:bg-white/10 rounded-lg transition">
+                    <MessageCircle size={24} className="text-white" />
+                    {conversations.length > 0 && (
+                      <span className="absolute -top-1 -right-1 w-5 h-5 bg-red-500 rounded-full text-xs text-white flex items-center justify-center">{conversations.length}</span>
+                    )}
                   </button>
                 )}
               </div>
-
-              {/* Tabs */}
-              <div className="flex gap-2 p-1 bg-white/5 rounded-2xl backdrop-blur-sm">
-                <button
-                  onClick={() => setActiveTab('feed')}
-                  className={`flex-1 py-3 px-6 rounded-xl font-semibold transition-all ${
-                    activeTab === 'feed'
-                      ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black'
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  📰 Feed
-                </button>
-                <button
-                  onClick={() => setActiveTab('reels')}
-                  className={`flex-1 py-3 px-6 rounded-xl font-semibold transition-all ${
-                    activeTab === 'reels'
-                      ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black'
-                      : 'text-gray-400 hover:text-white'
-                  }`}
-                >
-                  🎬 Reels
-                </button>
-              </div>
-            </motion.div>
-
-          {/* Search */}
-          <form onSubmit={handleSearch} className="mb-6">
-            <div className="relative">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
-              <input type="text" value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} placeholder="Kullanıcı ara..." className="input-modern pl-12" />
             </div>
-          </form>
+          </div>
+
+          <div className="max-w-7xl mx-auto flex gap-6 pt-4">
+          {/* Main Content - Instagram Feed Style */}
+          <div className={`flex-1 max-w-[630px] mx-auto ${showMessages && activeConversation ? 'hidden md:block' : 'block'}`}>
+            
+            {/* Stories Bar - Instagram Style */}
+            <div className="mb-4 glass-card p-4 rounded-xl">
+              <div className="flex gap-4 overflow-x-auto pb-2 scrollbar-hide">
+                {/* Create Story Button */}
+                {user && (
+                  <div onClick={handleCreateStory} className="flex-shrink-0 cursor-pointer group">
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600 p-[2px]">
+                        <div className="w-full h-full rounded-full bg-gray-900 flex items-center justify-center">
+                          <Plus className="text-yellow-500" size={24} />
+                        </div>
+                      </div>
+                    </div>
+                    <p className="text-xs text-center mt-1 text-white truncate w-16">Hikaye</p>
+                  </div>
+                )}
+                
+                {/* User Stories */}
+                {stories.map((userStory) => (
+                  <div 
+                    key={userStory.user_id}
+                    onClick={() => {
+                      setCurrentStoryIndex(stories.indexOf(userStory));
+                      setShowStoryViewer(true);
+                    }}
+                    className="flex-shrink-0 cursor-pointer group"
+                  >
+                    <div className="relative">
+                      <div className="w-16 h-16 rounded-full bg-gradient-to-br from-yellow-400 via-red-500 to-purple-600 p-[2px] group-hover:scale-105 transition">
+                        <img 
+                          src={userStory.user_photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=64'}
+                          alt={userStory.user_name}
+                          className="w-full h-full rounded-full object-cover border-2 border-gray-900"
+                        />
+                      </div>
+                    </div>
+                    <p className="text-xs text-center mt-1 text-white truncate w-16">
+                      {userStory.user_id === user?.uid ? 'Sen' : userStory.user_name.split(' ')[0]}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Tabs - Modern Style */}
+            <div className="flex gap-8 mb-6 border-b border-white/10">
+              <button
+                onClick={() => setActiveTab('feed')}
+                className={`pb-3 font-semibold transition-all relative ${
+                  activeTab === 'feed'
+                    ? 'text-white'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                <Home size={24} className="mx-auto mb-1" />
+                {activeTab === 'feed' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>}
+              </button>
+              <button
+                onClick={() => setActiveTab('reels')}
+                className={`pb-3 font-semibold transition-all relative ${
+                  activeTab === 'reels'
+                    ? 'text-white'
+                    : 'text-gray-400 hover:text-white'
+                }`}
+              >
+                <Video size={24} className="mx-auto mb-1" />
+                {activeTab === 'reels' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>}
+              </button>
+              <button className="pb-3 text-gray-400 hover:text-white transition-all">
+                <Search size={24} className="mx-auto mb-1" />
+              </button>
+            </div>
 
           {/* Search Results */}
           {showSearch && searchResults.length > 0 && (
