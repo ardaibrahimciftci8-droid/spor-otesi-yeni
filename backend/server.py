@@ -436,6 +436,32 @@ async def get_user(firebase_uid: str):
         raise HTTPException(status_code=404, detail="User not found")
     return serialize_doc(user)
 
+@api_router.get("/users/{firebase_uid}/profile")
+async def get_user_profile(firebase_uid: str, current_user_id: str = Query(None)):
+    """Get user profile with posts and follow stats"""
+    user = await db.users.find_one({"firebase_uid": firebase_uid}, {"_id": 0})
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    # Get user's posts
+    posts = await db.posts.find({"user_id": firebase_uid}, {"_id": 0}).sort("created_at", -1).to_list(100)
+    
+    # Check if current user is following this user
+    is_following = False
+    if current_user_id:
+        follow = await db.follows.find_one({
+            "follower_id": current_user_id,
+            "following_id": firebase_uid
+        })
+        is_following = follow is not None
+    
+    return {
+        "user": serialize_doc(user),
+        "posts": [serialize_doc(p) for p in posts],
+        "posts_count": len(posts),
+        "is_following": is_following
+    }
+
 @api_router.get("/users/id/{user_id}")
 async def get_user_by_id(user_id: str):
     user = await db.users.find_one({"id": user_id}, {"_id": 0})
