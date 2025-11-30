@@ -2627,7 +2627,7 @@ const ProfilePage = ({ user, setPage }) => {
 
         {activeTab === 'posts' && (
           <div className="space-y-4">
-            {posts.length > 0 ? posts.map(post => <PostCard key={post.id} post={post} user={user} />) : <p className="text-center text-gray-500 py-10">Henüz gönderi yok</p>}
+            {posts.length > 0 ? posts.map(post => <PostCard key={post.id} post={post} user={user} onViewProfile={onViewProfile} />) : <p className="text-center text-gray-500 py-10">Henüz gönderi yok</p>}
           </div>
         )}
         {activeTab === 'followers' && (
