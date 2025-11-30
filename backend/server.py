@@ -1765,6 +1765,35 @@ async def delete_story(story_id: str, user_id: str = Query(...)):
     return {"success": True}
 
 
+# ==================== HASHTAG & EXPLORE ENDPOINTS ====================
+
+@api_router.get("/explore/hashtag/{tag}")
+async def explore_hashtag(tag: str, skip: int = 0, limit: int = 20):
+    """Get posts by hashtag"""
+    posts = await db.posts.find(
+        {"hashtags": {"$in": [tag.lower()]}},
+        {"_id": 0}
+    ).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+    return [serialize_doc(p) for p in posts]
+
+@api_router.get("/explore/trending")
+async def get_trending_hashtags():
+    """Get trending hashtags"""
+    # Aggregate most used hashtags in last 7 days
+    seven_days_ago = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+    
+    pipeline = [
+        {"$match": {"created_at": {"$gte": seven_days_ago}}},
+        {"$unwind": "$hashtags"},
+        {"$group": {"_id": "$hashtags", "count": {"$sum": 1}}},
+        {"$sort": {"count": -1}},
+        {"$limit": 20}
+    ]
+    
+    result = await db.posts.aggregate(pipeline).to_list(20)
+    return [{"tag": r["_id"], "count": r["count"]} for r in result]
+
+
 # ==================== SAVED POSTS ENDPOINTS ====================
 
 @api_router.post("/posts/{post_id}/save")
