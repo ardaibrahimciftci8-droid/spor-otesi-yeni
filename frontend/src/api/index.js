@@ -371,6 +371,15 @@ const api = {
     return res.data;
   },
 
+  // Get User Profile (with posts)
+  getUserProfile: async (userId, currentUserId = null) => {
+    const url = currentUserId 
+      ? `${API}/users/${userId}/profile?current_user_id=${currentUserId}`
+      : `${API}/users/${userId}/profile`;
+    const res = await axios.get(url);
+    return res.data;
+  },
+
   // Stories APIs
   createStory: async (storyData) => {
     const res = await axios.post(`${API}/stories`, storyData);
