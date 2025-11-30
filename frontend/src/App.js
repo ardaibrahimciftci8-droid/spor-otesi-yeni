@@ -1400,17 +1400,8 @@ const SocialPage = ({ user, setPage }) => {
   const handleProfilePhotoUpload = async (file) => {
     if (!file) return;
     try {
-      // Create FormData for file upload
-      const formData = new FormData();
-      formData.append('file', file);
-
-      // Upload to Cloudinary (already configured in backend)
-      const uploadRes = await api.uploadImage(formData);
-      
-      // Update user profile with new photo URL
-      await api.updateProfilePhoto(user.uid, uploadRes.secure_url);
-      
-      // Update Firebase user photoURL
+      const uploadRes = await api.uploadImage(file);
+      await api.updateUser(user.uid, { photo_url: uploadRes.secure_url });
       await user.updateProfile({ photoURL: uploadRes.secure_url });
       
       alert('✅ Profil resmi başarıyla güncellendi!');
