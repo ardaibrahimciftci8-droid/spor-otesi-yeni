@@ -2336,10 +2336,7 @@ const ProfilePage = ({ user, setPage }) => {
   const handleProfilePhotoUpload = async (file) => {
     if (!file) return;
     try {
-      const formData = new FormData();
-      formData.append('file', file);
-
-      const uploadRes = await api.uploadImage(formData);
+      const uploadRes = await api.uploadImage(file);
       await api.updateUser(user.uid, { photo_url: uploadRes.secure_url });
       await user.updateProfile({ photoURL: uploadRes.secure_url });
       
