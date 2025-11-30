@@ -8,6 +8,15 @@
 ::-webkit-scrollbar-thumb { background: linear-gradient(135deg, #f59e0b, #d97706); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: linear-gradient(135deg, #d97706, #b45309); }
 
+/* Hide Scrollbar */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
 /* Glass Card Effect - Enhanced */
 .glass-card {
   background: rgba(255, 255, 255, 0.04);
