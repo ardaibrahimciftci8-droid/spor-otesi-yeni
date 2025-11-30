@@ -2745,6 +2745,7 @@ const Footer = () => (
 
 // --- MAIN APP ---
 function App() {
+  // Version: 2.0.1 - Fixed search API endpoint and profile photo upload
   const [page, setPage] = useState('home');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(!!auth);
