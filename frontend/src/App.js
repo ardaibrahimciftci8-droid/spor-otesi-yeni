@@ -1374,6 +1374,12 @@ const SocialPage = ({ user, setPage }) => {
     return () => clearTimeout(delaySearch);
   }, [searchQuery]);
 
+  useEffect(() => {
+    loadPosts();
+    loadStories();
+    if (user) loadConversations();
+  }, [user]);
+
   const startChatWithUser = async (profile) => {
     if (!user) return;
     try {
