@@ -73,8 +73,13 @@ class Post(BaseModel):
     content: str
     media_url: Optional[str] = None
     media_type: Optional[str] = None
+    hashtags: List[str] = []  # Extracted from content
+    mentions: List[str] = []  # Extracted from content
+    location: Optional[str] = None
     likes_count: int = 0
     comments_count: int = 0
+    saves_count: int = 0
+    shares_count: int = 0
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class PostCreate(BaseModel):
@@ -84,6 +89,7 @@ class PostCreate(BaseModel):
     content: str
     media_url: Optional[str] = None
     media_type: Optional[str] = None
+    location: Optional[str] = None
 
 
 class Reel(BaseModel):
