@@ -2015,8 +2015,6 @@ const MessagesPage = ({ user, setPage }) => {
     </div>
   );
 };
-  );
-};
 
 // --- PROFILE PAGE ---
 const ProfilePage = ({ user, setPage, onViewProfile }) => {
