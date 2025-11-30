@@ -181,7 +181,7 @@
 
 ### ✅ Emergent (Backend)
 - **Durum:** Running
-- **API:** `https://sportreels.preview.emergentagent.com/api`
+- **API:** `https://sportgram.preview.emergentagent.com/api`
 - **MongoDB:** Bağlı
 - **Cloudinary:** Çalışıyor
 

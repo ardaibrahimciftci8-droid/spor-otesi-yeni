@@ -32,7 +32,7 @@ def test_endpoint(name, method, url, data=None, params=None, expected_status=200
         return False, None
 
 def main():
-    base_url = 'https://sportreels.preview.emergentagent.com/api'
+    base_url = 'https://sportgram.preview.emergentagent.com/api'
     test_user = f"test_{str(uuid.uuid4())[:8]}"
     
     print("🔍 FOCUSED BACKEND API TESTING")
