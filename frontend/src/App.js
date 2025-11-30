@@ -2333,6 +2333,24 @@ const ProfilePage = ({ user, setPage }) => {
     } catch (e) { console.error(e); }
   };
 
+  const handleProfilePhotoUpload = async (file) => {
+    if (!file) return;
+    try {
+      const formData = new FormData();
+      formData.append('file', file);
+
+      const uploadRes = await api.uploadImage(formData);
+      await api.updateUser(user.uid, { photo_url: uploadRes.secure_url });
+      await user.updateProfile({ photoURL: uploadRes.secure_url });
+      
+      alert('✅ Profil resmi başarıyla güncellendi!');
+      window.location.reload();
+    } catch (e) {
+      console.error('Profil resmi yükleme hatası:', e);
+      alert('❌ Profil resmi yüklenemedi. Lütfen tekrar deneyin.');
+    }
+  };
+
   if (!user) return <div className="min-h-screen flex items-center justify-center"><button onClick={() => setPage('login')} className="btn-primary">Giriş Yap</button></div>;
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin"></div></div>;
 
