@@ -1738,7 +1738,7 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
               </div>
             ) : posts.length > 0 ? (
               posts.map(post => (
-                <PostCard key={post.id} post={post} user={user} onDelete={handleDeletePost} />
+                <PostCard key={post.id} post={post} user={user} onDelete={handleDeletePost} onViewProfile={onViewProfile} />
               ))
             ) : (
               <div className="text-center py-10 glass-card">
