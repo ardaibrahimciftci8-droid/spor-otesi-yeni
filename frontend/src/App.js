@@ -4,7 +4,7 @@ import {
   Sparkles, Dumbbell, Utensils, ChefHat, Heart, Wallet, Search, MapPin, Send, Video, 
   Image, Users, Home, Footprints, Timer, Zap, TrendingUp, Moon as MoonIcon, ChevronLeft,
   Trash2, Share, MessageSquare, Trophy, Target, Gift, Megaphone, Star, Crown, Rocket,
-  Globe, Award, Coffee, ShoppingBag, Smartphone, Headphones, Volume2, Camera
+  Globe, Award, Coffee, ShoppingBag, Smartphone, Headphones, Volume2, Camera, Bookmark, Plus
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { initializeApp, getApps, getApp } from "firebase/app";
