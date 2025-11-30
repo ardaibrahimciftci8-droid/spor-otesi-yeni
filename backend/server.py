@@ -407,9 +407,19 @@ async def update_user(firebase_uid: str, update: UserProfileUpdate):
     return serialize_doc(user)
 
 @api_router.get("/users/search/query")
-async def search_users(q: str = Query(..., min_length=1)):
+async def search_users_by_q(q: str = Query(..., min_length=1)):
+    """Search users by name using 'q' parameter"""
     users = await db.users.find(
         {"display_name": {"$regex": q, "$options": "i"}},
+        {"_id": 0}
+    ).limit(20).to_list(20)
+    return [serialize_doc(u) for u in users]
+
+@api_router.get("/users/search")
+async def search_users_by_query(query: str = Query(..., min_length=1)):
+    """Search users by name using 'query' parameter (for backwards compatibility)"""
+    users = await db.users.find(
+        {"display_name": {"$regex": query, "$options": "i"}},
         {"_id": 0}
     ).limit(20).to_list(20)
     return [serialize_doc(u) for u in users]
@@ -417,20 +427,6 @@ async def search_users(q: str = Query(..., min_length=1)):
 # =============== FOLLOW ROUTES ===============
 
 @api_router.post("/follow/{following_id}")
-
-@api_router.get("/users/search")
-async def search_users(query: str = Query(...), limit: int = 20):
-    """Search users by name"""
-    if not query or len(query) < 2:
-        return []
-    
-    # Case-insensitive search using regex
-    users = await db.users.find(
-        {"display_name": {"$regex": query, "$options": "i"}},
-        {"_id": 0}
-    ).limit(limit).to_list(limit)
-    
-    return users
 
 async def follow_user(following_id: str, follower_id: str = Query(...)):
     if follower_id == following_id:
