@@ -1325,7 +1325,7 @@ const SocialPage = ({ user, setPage }) => {
 
   const loadReels = async () => {
     try {
-      const data = await api.getReelsFeed(20);
+      const data = await api.getReelsFeed(user?.uid, 20);
       if (data && data.length > 0) {
         setReels(data);
       } else {
