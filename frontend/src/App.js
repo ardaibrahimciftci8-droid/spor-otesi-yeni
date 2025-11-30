@@ -1082,6 +1082,15 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
           >
             <X size={24} />
           </button>
+          {user && (
+            <button
+              onClick={() => setShowCreateReel(true)}
+              className="absolute top-4 right-4 z-50 p-3 bg-gradient-to-r from-red-500 to-pink-500 backdrop-blur-sm rounded-full text-white font-semibold flex items-center gap-2 hover:from-red-600 hover:to-pink-600 transition shadow-lg"
+            >
+              <Plus size={20} />
+              <span className="hidden md:inline">Reel Yükle</span>
+            </button>
+          )}
           <ReelsViewer
             reels={reels}
             currentIndex={currentReelIndex}
