@@ -1247,12 +1247,14 @@ const SocialPage = ({ user, setPage }) => {
   useEffect(() => {
     const delaySearch = setTimeout(async () => {
       if (searchQuery.trim().length >= 2) {
+        console.log('🔍 Searching for:', searchQuery);
         try {
           const results = await api.searchUsers(searchQuery);
+          console.log('✅ Search results:', results.length, 'users found');
           setSearchResults(results);
           setShowSearch(true);
         } catch (e) {
-          console.error(e);
+          console.error('❌ Search error:', e);
         }
       } else {
         setSearchResults([]);
