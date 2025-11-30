@@ -2360,12 +2360,8 @@ const ProfilePage = ({ user, setPage }) => {
               accept="image/*"
               className="hidden"
               onChange={(e) => {
-                console.log('📁 File input changed');
                 const file = e.target.files?.[0];
-                if (file) {
-                  console.log('✅ File selected:', file.name);
-                  handleProfilePhotoUpload(file);
-                }
+                if (file) handleProfilePhotoUpload(file);
               }}
             />
           </div>
