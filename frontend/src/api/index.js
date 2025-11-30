@@ -317,8 +317,11 @@ const api = {
   },
 
   // Reels APIs
-  getReelsFeed: async (limit = 20) => {
-    const res = await axios.get(`${API}/reels/feed?limit=${limit}`);
+  getReelsFeed: async (userId = null, limit = 20) => {
+    const url = userId 
+      ? `${API}/reels/feed?user_id=${userId}&limit=${limit}`
+      : `${API}/reels/feed?limit=${limit}`;
+    const res = await axios.get(url);
     return res.data;
   },
   createReel: async (reelData) => {
