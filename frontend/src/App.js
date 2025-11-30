@@ -2328,7 +2328,6 @@ const ProfilePage = ({ user, setPage }) => {
 
   const handleProfilePhotoUpload = async (file) => {
     if (!file) return;
-    console.log('📸 Profile photo upload started:', file.name);
     try {
       const uploadRes = await api.uploadImage(file);
       await api.updateUser(user.uid, { photo_url: uploadRes.secure_url });
@@ -2341,8 +2340,6 @@ const ProfilePage = ({ user, setPage }) => {
       alert('❌ Profil resmi yüklenemedi. Lütfen tekrar deneyin.');
     }
   };
-
-  console.log('🔍 ProfilePage rendered, handleProfilePhotoUpload defined:', typeof handleProfilePhotoUpload);
 
   if (!user) return <div className="min-h-screen flex items-center justify-center"><button onClick={() => setPage('login')} className="btn-primary">Giriş Yap</button></div>;
   if (loading) return <div className="min-h-screen flex items-center justify-center"><div className="w-8 h-8 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin"></div></div>;
