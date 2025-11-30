@@ -370,6 +370,45 @@ const api = {
     const res = await axios.put(`${API}/users/${userId}`, { photo_url: photoUrl });
     return res.data;
   },
+
+  // Stories APIs
+  createStory: async (storyData) => {
+    const res = await axios.post(`${API}/stories`, storyData);
+    return res.data;
+  },
+  getStoriesFeed: async (userId = null) => {
+    const url = userId ? `${API}/stories/feed?user_id=${userId}` : `${API}/stories/feed`;
+    const res = await axios.get(url);
+    return res.data;
+  },
+  viewStory: async (storyId, userId) => {
+    const res = await axios.post(`${API}/stories/${storyId}/view?user_id=${userId}`);
+    return res.data;
+  },
+  deleteStory: async (storyId, userId) => {
+    const res = await axios.delete(`${API}/stories/${storyId}?user_id=${userId}`);
+    return res.data;
+  },
+
+  // Saved Posts APIs
+  savePost: async (postId, userId) => {
+    const res = await axios.post(`${API}/posts/${postId}/save?user_id=${userId}`);
+    return res.data;
+  },
+  getSavedPosts: async (userId) => {
+    const res = await axios.get(`${API}/posts/saved?user_id=${userId}`);
+    return res.data;
+  },
+
+  // Explore APIs
+  exploreHashtag: async (tag, skip = 0, limit = 20) => {
+    const res = await axios.get(`${API}/explore/hashtag/${tag}?skip=${skip}&limit=${limit}`);
+    return res.data;
+  },
+  getTrendingHashtags: async () => {
+    const res = await axios.get(`${API}/explore/trending`);
+    return res.data;
+  },
 };
 
 export default api;
