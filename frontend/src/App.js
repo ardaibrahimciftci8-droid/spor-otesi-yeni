@@ -23,6 +23,11 @@ import UserProfilePage from './pages/UserProfilePage';
 import AICoach from './components/common/AICoach';
 import ReelsViewer from './components/common/ReelsViewer';
 import UserProfileModal from './components/common/UserProfileModal';
+import NavBar from './components/common/NavBar';
+import PostCard from './components/social/PostCard';
+import CreatePostModal from './components/social/CreatePostModal';
+import UserCard from './components/social/UserCard';
+import HomePage from './pages/HomePage';
 
 // Firebase initialization
 let app, auth, googleProvider;
