@@ -2949,7 +2949,10 @@ const Footer = () => (
 
 // --- MAIN APP ---
 function App() {
-  // Version: 2.0.1 - Fixed search API endpoint and profile photo upload
+  // 🎯 SUNUM VERSİYONU v3.0.0 - Instagram Benzeri Tasarım
+  console.log('%c🚀 SPOR ÖTESİ v3.0.0 YÜKLENDI!', 'color: #ec4899; font-size: 16px; font-weight: bold;');
+  console.log('%c📱 Instagram-style Social Media Platform', 'color: #8b5cf6; font-size: 12px;');
+  
   const [page, setPage] = useState('home');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(!!auth);
