@@ -376,6 +376,25 @@ async def create_or_update_user(user: UserProfileCreate):
     await db.users.insert_one(doc)
     return user_obj
 
+# Search routes MUST come before parameterized routes to avoid conflicts
+@api_router.get("/users/search/query")
+async def search_users_by_q(q: str = Query(..., min_length=1)):
+    """Search users by name using 'q' parameter"""
+    users = await db.users.find(
+        {"display_name": {"$regex": q, "$options": "i"}},
+        {"_id": 0}
+    ).limit(20).to_list(20)
+    return [serialize_doc(u) for u in users]
+
+@api_router.get("/users/search")
+async def search_users_by_query(query: str = Query(..., min_length=1)):
+    """Search users by name using 'query' parameter (for backwards compatibility)"""
+    users = await db.users.find(
+        {"display_name": {"$regex": query, "$options": "i"}},
+        {"_id": 0}
+    ).limit(20).to_list(20)
+    return [serialize_doc(u) for u in users]
+
 @api_router.get("/users/{firebase_uid}")
 async def get_user(firebase_uid: str):
     user = await db.users.find_one({"firebase_uid": firebase_uid}, {"_id": 0})
@@ -405,24 +424,6 @@ async def update_user(firebase_uid: str, update: UserProfileUpdate):
     
     user = await db.users.find_one({"firebase_uid": firebase_uid}, {"_id": 0})
     return serialize_doc(user)
-
-@api_router.get("/users/search/query")
-async def search_users_by_q(q: str = Query(..., min_length=1)):
-    """Search users by name using 'q' parameter"""
-    users = await db.users.find(
-        {"display_name": {"$regex": q, "$options": "i"}},
-        {"_id": 0}
-    ).limit(20).to_list(20)
-    return [serialize_doc(u) for u in users]
-
-@api_router.get("/users/search")
-async def search_users_by_query(query: str = Query(..., min_length=1)):
-    """Search users by name using 'query' parameter (for backwards compatibility)"""
-    users = await db.users.find(
-        {"display_name": {"$regex": query, "$options": "i"}},
-        {"_id": 0}
-    ).limit(20).to_list(20)
-    return [serialize_doc(u) for u in users]
 
 # =============== FOLLOW ROUTES ===============
 
