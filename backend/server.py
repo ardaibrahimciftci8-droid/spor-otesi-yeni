@@ -521,7 +521,11 @@ async def create_post(post: PostCreate):
 
 @api_router.get("/posts/feed")
 async def get_feed(user_id: str = Query(None), skip: int = 0, limit: int = 20):
-    # Get all public users (not private accounts)
+    """
+    Get feed - Instagram style
+    Shows ALL public posts + private posts from followed users
+    """
+    # Get all public users
     public_users = await db.users.find(
         {"$or": [{"is_private": False}, {"is_private": {"$exists": False}}]},
         {"firebase_uid": 1}
@@ -529,24 +533,20 @@ async def get_feed(user_id: str = Query(None), skip: int = 0, limit: int = 20):
     public_user_ids = [u["firebase_uid"] for u in public_users]
     
     if user_id:
-        # Add user's own posts and following
+        # Get following (for private accounts user follows)
         follows = await db.follows.find({"follower_id": user_id}).to_list(1000)
         following_ids = [f["following_id"] for f in follows]
-        following_ids.append(user_id)
         
-        # Combine: public users OR following
-        allowed_ids = list(set(public_user_ids + following_ids))
-        
-        posts = await db.posts.find(
-            {"user_id": {"$in": allowed_ids}},
-            {"_id": 0}
-        ).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+        # Show: ALL public posts + private posts from following + own posts
+        allowed_ids = list(set(public_user_ids + following_ids + [user_id]))
     else:
-        # Show only public users' posts
-        posts = await db.posts.find(
-            {"user_id": {"$in": public_user_ids}},
-            {"_id": 0}
-        ).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
+        # Not logged in: show only public posts
+        allowed_ids = public_user_ids
+    
+    posts = await db.posts.find(
+        {"user_id": {"$in": allowed_ids}},
+        {"_id": 0}
+    ).sort("created_at", -1).skip(skip).limit(limit).to_list(limit)
     
     return [serialize_doc(p) for p in posts]
 
