@@ -1197,6 +1197,7 @@ const SocialPage = ({ user, setPage }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [showSearch, setShowSearch] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
   
   // Reels state
   const [reels, setReels] = useState([]);
