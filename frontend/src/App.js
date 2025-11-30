@@ -1914,15 +1914,21 @@ const MessagesPage = ({ user, setPage }) => {
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
 
   const loadConversations = async () => {
     if (!user) return;
     setLoading(true);
+    setError(null);
     try {
       const data = await api.getConversations(user.uid);
-      setConversations(data);
-    } catch (e) { console.error(e); }
+      setConversations(Array.isArray(data) ? data : []);
+    } catch (e) { 
+      console.error('Konuşmalar yüklenemedi:', e);
+      setError('Mesajlar yüklenemedi');
+      setConversations([]);
+    }
     setLoading(false);
   };
 
@@ -1930,29 +1936,39 @@ const MessagesPage = ({ user, setPage }) => {
   useEffect(() => { messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' }); }, [messages]);
 
   const openConversation = async (conv) => {
+    if (!conv?.id) return;
     setActiveConversation(conv);
     try {
       const data = await api.getMessages(conv.id);
-      setMessages(data);
-    } catch (e) { console.error(e); }
+      setMessages(Array.isArray(data) ? data : []);
+    } catch (e) { 
+      console.error('Mesajlar yüklenemedi:', e);
+      setMessages([]);
+    }
   };
 
   const handleSendMessage = async (e) => {
     e.preventDefault();
-    if (!newMessage.trim()) return;
+    if (!newMessage.trim() || !user || !activeConversation) return;
     const msgText = newMessage;
     setNewMessage('');
-    const tempMsg = { id: Date.now().toString(), sender_id: user.uid, sender_name: user.displayName, content: msgText, created_at: new Date().toISOString() };
+    const tempMsg = { id: Date.now().toString(), sender_id: user.uid, sender_name: user?.displayName || 'Kullanıcı', content: msgText, created_at: new Date().toISOString() };
     setMessages([...messages, tempMsg]);
     try {
-      await api.sendMessage({ conversation_id: activeConversation.id, sender_id: user.uid, sender_name: user.displayName, sender_photo: user.photoURL, content: msgText });
+      await api.sendMessage({ conversation_id: activeConversation.id, sender_id: user.uid, sender_name: user?.displayName || 'Kullanıcı', sender_photo: user?.photoURL || '', content: msgText });
       loadConversations();
-    } catch (e) { console.error(e); }
+    } catch (e) { console.error('Mesaj gönderilemedi:', e); }
   };
 
   const getOtherParticipant = (conv) => {
+    if (!conv?.participants || !Array.isArray(conv.participants) || !user) {
+      return { name: 'Kullanıcı', photo: '' };
+    }
     const idx = conv.participants.findIndex(p => p !== user.uid);
-    return { name: conv.participant_names[idx] || 'Kullanıcı', photo: conv.participant_photos[idx] || '' };
+    return { 
+      name: conv.participant_names?.[idx] || 'Kullanıcı', 
+      photo: conv.participant_photos?.[idx] || '' 
+    };
   };
 
   if (!user) {
