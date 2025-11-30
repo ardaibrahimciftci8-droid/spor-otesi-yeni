@@ -1585,6 +1585,14 @@ const SocialPage = ({ user, setPage }) => {
 
       <AnimatePresence>
         {showCreatePost && user && <CreatePostModal user={user} onClose={() => setShowCreatePost(false)} onPostCreated={(p) => setPosts([p, ...posts])} />}
+        {selectedUserId && (
+          <UserProfileModal
+            userId={selectedUserId}
+            onClose={() => setSelectedUserId(null)}
+            currentUser={user}
+            onStartChat={startChatWithUser}
+          />
+        )}
       </AnimatePresence>
     </div>
   );
