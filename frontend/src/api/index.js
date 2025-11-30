@@ -359,6 +359,18 @@ const api = {
     const res = await axios.post(`${API}/users/${userId}/privacy?is_private=${isPrivate}`);
     return res.data;
   },
+
+  // Search Users
+  searchUsers: async (query) => {
+    const res = await axios.get(`${API}/users/search?query=${encodeURIComponent(query)}`);
+    return res.data;
+  },
+
+  // Update Profile Photo
+  updateProfilePhoto: async (userId, photoUrl) => {
+    const res = await axios.put(`${API}/users/${userId}`, { photo_url: photoUrl });
+    return res.data;
+  },
 };
 
 export default api;
