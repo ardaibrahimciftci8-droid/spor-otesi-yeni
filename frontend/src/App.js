@@ -1637,10 +1637,75 @@ const SocialPage = ({ user, setPage }) => {
                 <Video size={24} className="mx-auto mb-1" />
                 {activeTab === 'reels' && <div className="absolute bottom-0 left-0 right-0 h-0.5 bg-white"></div>}
               </button>
-              <button className="pb-3 text-gray-400 hover:text-white transition-all">
+              <button onClick={() => setShowSearchModal(true)} className="pb-3 text-gray-400 hover:text-white transition-all">
                 <Search size={24} className="mx-auto mb-1" />
               </button>
             </div>
+
+          {/* Search Modal */}
+          {showSearchModal && (
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-start justify-center pt-20"
+              onClick={() => setShowSearchModal(false)}
+            >
+              <motion.div
+                initial={{ scale: 0.9, y: -50 }}
+                animate={{ scale: 1, y: 0 }}
+                className="glass-card p-6 max-w-md w-full mx-4"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <div className="flex items-center justify-between mb-4">
+                  <h3 className="text-xl font-bold text-white">Kullanıcı Ara</h3>
+                  <button onClick={() => setShowSearchModal(false)} className="text-gray-400 hover:text-white">
+                    <X size={24} />
+                  </button>
+                </div>
+                <div className="relative mb-4">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-500" size={20} />
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Kullanıcı ara..."
+                    className="input-modern pl-12 w-full"
+                    autoFocus
+                  />
+                </div>
+                {showSearch && searchResults.length > 0 && (
+                  <div className="space-y-3 max-h-96 overflow-y-auto">
+                    {searchResults.map(profile => (
+                      <div
+                        key={profile.id}
+                        onClick={() => {
+                          setSelectedUserId(profile.firebase_uid);
+                          setShowSearchModal(false);
+                        }}
+                        className="cursor-pointer hover:bg-white/5 p-3 rounded-xl transition"
+                      >
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={profile.photo_url || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'}
+                            alt={profile.display_name}
+                            className="w-12 h-12 rounded-full object-cover"
+                          />
+                          <div>
+                            <h4 className="font-semibold text-white">{profile.display_name}</h4>
+                            <p className="text-sm text-gray-400">@{profile.display_name.toLowerCase().replace(/\s/g, '')}</p>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+                {searchQuery.length > 0 && searchResults.length === 0 && !showSearch && (
+                  <p className="text-center text-gray-400 py-4">Kullanıcı bulunamadı</p>
+                )}
+              </motion.div>
+            </motion.div>
+          )}
 
           {/* Create Post - Instagram Style */}
           {user && (
