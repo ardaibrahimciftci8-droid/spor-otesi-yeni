@@ -2201,17 +2201,17 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
 
         {activeTab === 'posts' && (
           <div className="space-y-4">
-            {posts.length > 0 ? posts.map(post => <PostCard key={post.id} post={post} user={user} onViewProfile={onViewProfile} />) : <p className="text-center text-gray-500 py-10">Henüz gönderi yok</p>}
+            {posts?.length > 0 ? posts.map(post => post?.id ? <PostCard key={post.id} post={post} user={user} onViewProfile={onViewProfile} /> : null) : <p className="text-center text-gray-500 py-10">Henüz gönderi yok</p>}
           </div>
         )}
         {activeTab === 'followers' && (
           <div className="space-y-3">
-            {followers.length > 0 ? followers.map(f => <UserCard key={f.id} profile={f} currentUser={user} />) : <p className="text-center text-gray-500 py-10">Henüz takipçi yok</p>}
+            {followers?.length > 0 ? followers.map(f => f?.id ? <UserCard key={f.id} profile={f} currentUser={user} /> : null) : <p className="text-center text-gray-500 py-10">Henüz takipçi yok</p>}
           </div>
         )}
         {activeTab === 'following' && (
           <div className="space-y-3">
-            {following.length > 0 ? following.map(f => <UserCard key={f.id} profile={f} currentUser={user} />) : <p className="text-center text-gray-500 py-10">Henüz takip yok</p>}
+            {following?.length > 0 ? following.map(f => f?.id ? <UserCard key={f.id} profile={f} currentUser={user} /> : null) : <p className="text-center text-gray-500 py-10">Henüz takip yok</p>}
           </div>
         )}
         {activeTab === 'settings' && (
