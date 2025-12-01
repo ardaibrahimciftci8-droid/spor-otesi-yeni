@@ -2087,20 +2087,28 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
     try {
       let profileData = await api.getUser(user.uid);
       if (!profileData) {
-        profileData = await api.createUser({ firebase_uid: user.uid, display_name: user.displayName, email: user.email, photo_url: user.photoURL, bio: '' });
+        profileData = await api.createUser({ firebase_uid: user.uid, display_name: user?.displayName || 'Kullanıcı', email: user?.email || '', photo_url: user?.photoURL || '', bio: '' });
       }
-      setProfile(profileData);
-      setBio(profileData.bio || '');
-      setIsPrivate(profileData.is_private || false);
+      setProfile(profileData || {});
+      setBio(profileData?.bio || '');
+      setIsPrivate(profileData?.is_private || false);
       const [postsData, followersData, followingData, blockedData] = await Promise.all([
-        api.getUserPosts(user.uid), 
-        api.getFollowers(user.uid), 
-        api.getFollowing(user.uid),
-        api.getBlockedUsers(user.uid)
+        api.getUserPosts(user.uid).catch(() => []), 
+        api.getFollowers(user.uid).catch(() => []), 
+        api.getFollowing(user.uid).catch(() => []),
+        api.getBlockedUsers(user.uid).catch(() => ({ blocked_users: [] }))
       ]);
-      setPosts(postsData); setFollowers(followersData); setFollowing(followingData);
-      setBlockedUsers(blockedData.blocked_users || []);
-    } catch (e) { console.error(e); }
+      setPosts(Array.isArray(postsData) ? postsData : []); 
+      setFollowers(Array.isArray(followersData) ? followersData : []); 
+      setFollowing(Array.isArray(followingData) ? followingData : []);
+      setBlockedUsers(Array.isArray(blockedData?.blocked_users) ? blockedData.blocked_users : []);
+    } catch (e) { 
+      console.error('Profil yüklenemedi:', e);
+      setProfile({});
+      setPosts([]);
+      setFollowers([]);
+      setFollowing([]);
+    }
     setLoading(false);
   };
 
