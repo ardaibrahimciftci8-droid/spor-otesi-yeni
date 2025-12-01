@@ -2245,18 +2245,18 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
             {/* Blocked Users */}
             <div className="glass-card p-6">
               <h3 className="text-xl font-bold text-white mb-4">🚫 Engellenen Kullanıcılar</h3>
-              {blockedUsers.length > 0 ? (
+              {blockedUsers?.length > 0 ? (
                 <div className="space-y-2">
-                  {blockedUsers.map(userId => (
-                    <div key={userId} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
-                      <span className="text-white">{userId}</span>
+                  {blockedUsers.map((userId, idx) => (
+                    <div key={userId || idx} className="flex items-center justify-between p-3 bg-white/5 rounded-xl">
+                      <span className="text-white">{userId || 'Kullanıcı'}</span>
                       <button
                         onClick={async () => {
                           try {
-                            await api.unblockUser(user.uid, userId);
+                            await api.unblockUser(user?.uid, userId);
                             setBlockedUsers(blockedUsers.filter(id => id !== userId));
                           } catch (e) {
-                            console.error(e);
+                            console.error('Engel kaldırılamadı:', e);
                           }
                         }}
                         className="text-red-500 hover:text-red-400 text-sm font-semibold"
