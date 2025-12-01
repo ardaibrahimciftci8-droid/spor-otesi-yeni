@@ -1993,14 +1993,26 @@ const MessagesPage = ({ user, setPage }) => {
             <h2 className="text-xl font-bold text-white">Mesajlar</h2>
           </div>
           <div className="overflow-y-auto h-[calc(100%-4rem)]">
-            {conversations.length > 0 ? conversations.map(conv => {
+            {loading ? (
+              <div className="p-8 text-center">
+                <div className="w-8 h-8 border-2 border-yellow-500 border-t-transparent rounded-full animate-spin mx-auto"></div>
+                <p className="text-gray-400 text-sm mt-3">Yükleniyor...</p>
+              </div>
+            ) : error ? (
+              <div className="p-4 text-center text-red-400">
+                <MessageCircle size={32} className="mx-auto mb-2 opacity-50" />
+                <p className="text-sm">{error}</p>
+                <button onClick={loadConversations} className="btn-primary mt-3 text-sm">Tekrar Dene</button>
+              </div>
+            ) : conversations?.length > 0 ? conversations.map(conv => {
+              if (!conv?.id) return null;
               const other = getOtherParticipant(conv);
               return (
                 <button key={conv.id} onClick={() => openConversation(conv)} className={`w-full p-4 flex items-center gap-3 hover:bg-white/5 transition border-b border-white/5 ${activeConversation?.id === conv.id ? 'bg-white/5' : ''}`}>
-                  <img src={other.photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl" />
+                  <img src={other?.photo || 'https://ui-avatars.com/api/?background=1f2937&color=fff&size=48'} alt="" className="w-12 h-12 rounded-xl" />
                   <div className="flex-1 text-left">
-                    <h4 className="font-bold text-white">{other.name}</h4>
-                    <p className="text-sm text-gray-500 truncate">{conv.last_message || 'Henüz mesaj yok'}</p>
+                    <h4 className="font-bold text-white">{other?.name || 'Kullanıcı'}</h4>
+                    <p className="text-sm text-gray-500 truncate">{conv?.last_message || 'Henüz mesaj yok'}</p>
                   </div>
                 </button>
               );
