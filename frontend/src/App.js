@@ -789,8 +789,24 @@ const AnalyticsPage = ({ user, setPage }) => {
 
 // --- SOCIAL PAGE ---
 const SocialPage = ({ user, setPage, onViewProfile }) => {
-  const [activeTab, setActiveTab] = useState('feed'); // 'feed' or 'reels'
-  const [posts, setPosts] = useState([]);
+  // DEMO DATA - API fail olsa bile gösterilecek
+  const DEMO_POSTS = [
+    {
+      id: 'demo-1',
+      user_id: 'demo',
+      user_name: 'Demo Kullanıcı',
+      user_photo: 'https://ui-avatars.com/api/?background=f59e0b&color=fff&name=Demo',
+      content: 'Bugün harika bir antrenman yaptım! 💪🏃‍♂️ (Demo Gönderi)',
+      media_url: 'https://picsum.photos/600/400?random=demo',
+      media_type: 'image',
+      likes_count: 42,
+      comments_count: 8,
+      created_at: new Date().toISOString()
+    }
+  ];
+
+  const [activeTab, setActiveTab] = useState('feed');
+  const [posts, setPosts] = useState(DEMO_POSTS);
   const [loading, setLoading] = useState(true);
   const [showCreatePost, setShowCreatePost] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
@@ -822,8 +838,11 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
     setLoading(true);
     try {
       const data = await api.getFeed(user?.uid);
-      setPosts(data);
-    } catch (e) { console.error(e); }
+      setPosts(Array.isArray(data) && data.length > 0 ? data : DEMO_POSTS);
+    } catch (e) { 
+      console.error('Feed yüklenemedi, demo data kullanılıyor:', e);
+      setPosts(DEMO_POSTS);
+    }
     setLoading(false);
   };
 
