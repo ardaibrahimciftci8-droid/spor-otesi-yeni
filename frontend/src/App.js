@@ -849,8 +849,11 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
   const loadStories = async () => {
     try {
       const data = await api.getStoriesFeed(user?.uid);
-      setStories(data);
-    } catch (e) { console.error(e); }
+      setStories(Array.isArray(data) ? data : []);
+    } catch (e) { 
+      console.error('Hikayeler yüklenemedi:', e);
+      setStories([]);
+    }
   };
 
   const handleCreateStory = async () => {
