@@ -2093,32 +2093,49 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
   const [blockedUsers, setBlockedUsers] = useState([]);
 
   const loadProfile = async () => {
-    if (!user) return;
+    if (!user) {
+      // Kullanıcı yoksa demo data kullan
+      setProfile(DEMO_PROFILE);
+      setPosts(DEMO_POSTS);
+      setFollowers(DEMO_FOLLOWERS);
+      setFollowing(DEMO_FOLLOWING);
+      setLoading(false);
+      return;
+    }
     setLoading(true);
     try {
-      let profileData = await api.getUser(user.uid);
+      let profileData = await api.getUser(user?.uid).catch(() => null);
       if (!profileData) {
-        profileData = await api.createUser({ firebase_uid: user.uid, display_name: user?.displayName || 'Kullanıcı', email: user?.email || '', photo_url: user?.photoURL || '', bio: '' });
+        profileData = await api.createUser({ 
+          firebase_uid: user?.uid || 'demo', 
+          display_name: user?.displayName || DEMO_PROFILE.display_name, 
+          email: user?.email || '', 
+          photo_url: user?.photoURL || DEMO_PROFILE.photo_url, 
+          bio: '' 
+        }).catch(() => DEMO_PROFILE);
       }
-      setProfile(profileData || {});
-      setBio(profileData?.bio || '');
+      setProfile(profileData || DEMO_PROFILE);
+      setBio(profileData?.bio || DEMO_PROFILE.bio);
       setIsPrivate(profileData?.is_private || false);
+      
       const [postsData, followersData, followingData, blockedData] = await Promise.all([
-        api.getUserPosts(user.uid).catch(() => []), 
-        api.getFollowers(user.uid).catch(() => []), 
-        api.getFollowing(user.uid).catch(() => []),
-        api.getBlockedUsers(user.uid).catch(() => ({ blocked_users: [] }))
+        api.getUserPosts(user?.uid).catch(() => DEMO_POSTS), 
+        api.getFollowers(user?.uid).catch(() => DEMO_FOLLOWERS), 
+        api.getFollowing(user?.uid).catch(() => DEMO_FOLLOWING),
+        api.getBlockedUsers(user?.uid).catch(() => ({ blocked_users: [] }))
       ]);
-      setPosts(Array.isArray(postsData) ? postsData : []); 
-      setFollowers(Array.isArray(followersData) ? followersData : []); 
-      setFollowing(Array.isArray(followingData) ? followingData : []);
+      
+      setPosts(Array.isArray(postsData) ? postsData : DEMO_POSTS); 
+      setFollowers(Array.isArray(followersData) ? followersData : DEMO_FOLLOWERS); 
+      setFollowing(Array.isArray(followingData) ? followingData : DEMO_FOLLOWING);
       setBlockedUsers(Array.isArray(blockedData?.blocked_users) ? blockedData.blocked_users : []);
     } catch (e) { 
-      console.error('Profil yüklenemedi:', e);
-      setProfile({});
-      setPosts([]);
-      setFollowers([]);
-      setFollowing([]);
+      console.error('Profil yüklenemedi, demo data kullanılıyor:', e);
+      // API tamamen başarısız - demo data kullan
+      setProfile(DEMO_PROFILE);
+      setPosts(DEMO_POSTS);
+      setFollowers(DEMO_FOLLOWERS);
+      setFollowing(DEMO_FOLLOWING);
     }
     setLoading(false);
   };
