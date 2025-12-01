@@ -2070,14 +2070,25 @@ const MessagesPage = ({ user, setPage }) => {
 
 // --- PROFILE PAGE ---
 const ProfilePage = ({ user, setPage, onViewProfile }) => {
-  const [profile, setProfile] = useState(null);
-  const [posts, setPosts] = useState([]);
-  const [followers, setFollowers] = useState([]);
-  const [following, setFollowing] = useState([]);
+  // DEMO DATA - API fail olsa bile gösterilecek
+  const DEMO_PROFILE = {
+    display_name: 'Misafir Kullanıcı',
+    bio: 'Spor tutkunu 🏃‍♂️ (Demo Modu)',
+    photo_url: 'https://ui-avatars.com/api/?background=f59e0b&color=fff&name=Demo&size=120',
+    is_private: false
+  };
+  const DEMO_POSTS = [];
+  const DEMO_FOLLOWERS = Array(10).fill(null).map((_, i) => ({ id: `demo-${i}`, display_name: `Takipçi ${i+1}`, photo_url: '' }));
+  const DEMO_FOLLOWING = Array(5).fill(null).map((_, i) => ({ id: `demo-f-${i}`, display_name: `Takip ${i+1}`, photo_url: '' }));
+
+  const [profile, setProfile] = useState(DEMO_PROFILE);
+  const [posts, setPosts] = useState(DEMO_POSTS);
+  const [followers, setFollowers] = useState(DEMO_FOLLOWERS);
+  const [following, setFollowing] = useState(DEMO_FOLLOWING);
   const [activeTab, setActiveTab] = useState('posts');
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
-  const [bio, setBio] = useState('');
+  const [bio, setBio] = useState(DEMO_PROFILE.bio);
   const [isPrivate, setIsPrivate] = useState(false);
   const [blockedUsers, setBlockedUsers] = useState([]);
 
