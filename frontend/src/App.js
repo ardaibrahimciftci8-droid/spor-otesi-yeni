@@ -30,6 +30,7 @@ import CreateReelModal from './components/social/CreateReelModal';
 import UserCard from './components/social/UserCard';
 import HomePage from './pages/HomePage';
 import LoginPage from './pages/LoginPage';
+import ChatPage from './pages/ChatPage';
 import Footer from './components/common/Footer';
 
 // Firebase initialization
