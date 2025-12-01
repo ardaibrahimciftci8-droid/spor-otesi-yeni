@@ -2643,7 +2643,7 @@ function App() {
       case 'tracker': return <TrackerPage user={user} setPage={setPage} />;
       case 'yoga': return <YogaPage user={user} setPage={setPage} />;
       case 'donate': return <DonatePage user={user} setPage={setPage} />;
-      case 'messages': return <MessagesPage user={user} setPage={setPage} />;
+      case 'messages': return <ChatPage user={user} setPage={setPage} />;
       case 'profile': return <ProfilePage user={user} setPage={setPage} onViewProfile={setViewingUserId} />;
       case 'nutrition': return <NutritionPage user={user} setPage={setPage} />;
       case 'analysis': return <AnalysisPage user={user} setPage={setPage} />;
