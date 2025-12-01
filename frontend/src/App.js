@@ -2034,13 +2034,20 @@ const MessagesPage = ({ user, setPage }) => {
               <h3 className="font-bold text-white">{getOtherParticipant(activeConversation).name}</h3>
             </div>
             <div className="flex-1 overflow-y-auto p-4 space-y-4">
-              {messages.map((msg, idx) => (
-                <div key={msg.id || idx} className={`flex ${msg.sender_id === user.uid ? 'justify-end' : 'justify-start'}`}>
-                  <div className={`max-w-[70%] p-3 ${msg.sender_id === user.uid ? 'message-sent' : 'message-received'}`}>
-                    <p className="text-sm">{msg.content}</p>
+              {messages?.length > 0 ? messages.map((msg, idx) => {
+                if (!msg) return null;
+                return (
+                  <div key={msg?.id || idx} className={`flex ${msg?.sender_id === user?.uid ? 'justify-end' : 'justify-start'}`}>
+                    <div className={`max-w-[70%] p-3 ${msg?.sender_id === user?.uid ? 'message-sent' : 'message-received'}`}>
+                      <p className="text-sm">{msg?.content || ''}</p>
+                    </div>
                   </div>
+                );
+              }) : (
+                <div className="text-center text-gray-500 py-8">
+                  <p className="text-sm">Mesaj yok</p>
                 </div>
-              ))}
+              )}
               <div ref={messagesEndRef} />
             </div>
             <form onSubmit={handleSendMessage} className="p-4 border-t border-white/10 flex gap-2">
