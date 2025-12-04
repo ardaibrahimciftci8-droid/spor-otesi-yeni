@@ -17,7 +17,7 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="hidden md:flex items-center gap-3 cursor-pointer" onClick={() => setPage('home')}>
             <img src="/logo.png" alt="Spor Ötesi Logo" className="h-10 w-10 rounded-full object-cover" />
-            <span className="text-2xl font-black bg-gradient-to-r from-yellow-400 to-orange-500 bg-clip-text text-transparent">SPOR ÖTESİ</span>
+            <span className="text-2xl font-black gradient-text-elite tracking-tight">SPOR ÖTESİ</span>
           </div>
 
           <div className="flex items-center justify-around w-full md:w-auto md:gap-2">
