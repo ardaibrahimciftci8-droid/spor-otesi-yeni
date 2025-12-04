@@ -12,8 +12,8 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-slate-900/95 backdrop-blur-xl border-t border-white/10 z-50 md:top-0 md:bottom-auto md:border-t-0 md:border-b safe-area-bottom">
-      <div className="max-w-7xl mx-auto px-4">
+    <nav className="fixed bottom-0 left-0 right-0 floating-nav z-50 md:top-0 md:bottom-auto md:border-t-0 md:border-b md:rounded-b-3xl safe-area-bottom">
+      <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="hidden md:flex items-center gap-3 cursor-pointer" onClick={() => setPage('home')}>
             <img src="/logo.png" alt="Spor Ötesi Logo" className="h-10 w-10 rounded-full object-cover" />
