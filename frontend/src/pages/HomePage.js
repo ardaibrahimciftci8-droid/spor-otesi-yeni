@@ -27,9 +27,9 @@ const HomePage = ({ user, setPage, onLogout }) => {
             </div>
           </motion.div>
 
-          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }} className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight">
-            SINIRLARINI<br />
-            <span className="gradient-text">YENİDEN ÇİZ</span>
+          <motion.h1 initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }} className="text-5xl md:text-7xl lg:text-8xl font-black mb-8 leading-tight tracking-tight">
+            <span className="text-white">SINIRLARINI</span><br />
+            <span className="gradient-text-elite">YENİDEN ÇİZ</span>
           </motion.h1>
 
           <motion.p initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.2 }} className="text-base md:text-lg text-gray-400 max-w-2xl mx-auto mb-12 leading-relaxed">
