@@ -192,7 +192,7 @@ const ChatPage = ({ user, setPage }) => {
       <div className="animated-bg" />
       
       <div className="max-w-6xl mx-auto px-4 py-4">
-        <div className="glass-card overflow-hidden flex" style={{ height: 'calc(100vh - 12rem)' }}>
+        <div className="elite-card overflow-hidden flex" style={{ height: 'calc(100vh - 12rem)' }}>
           
           {/* Left Panel - Conversations List */}
           <div className={`${activeConversation ? 'hidden md:flex' : 'flex'} flex-col w-full md:w-96 border-r border-white/10`}>
