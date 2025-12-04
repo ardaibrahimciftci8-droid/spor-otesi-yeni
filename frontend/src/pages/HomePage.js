@@ -14,8 +14,8 @@ const HomePage = ({ user, setPage, onLogout }) => {
   ];
 
   return (
-    <div className="min-h-screen pb-24 md:pb-8 md:pt-28">
-      <div className="animated-bg" />
+    <div className="min-h-screen pb-24 md:pb-8 md:pt-28 bg-elite-bg">
+      <div className="fixed inset-0 bg-gradient-to-br from-electric-blue/5 via-transparent to-neon-lime/5 pointer-events-none" />
       
       {/* Hero Section */}
       <section className="relative pt-32 pb-16 md:pt-36 md:pb-24 px-4 overflow-hidden">
