@@ -67,13 +67,24 @@ const HomePage = ({ user, setPage, onLogout }) => {
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((feature, idx) => (
-            <motion.button key={feature.id} initial={{ opacity: 0, y: 30 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }} onClick={() => setPage(feature.page)} className="feature-card text-left group" style={{ '--card-accent': feature.color }}>
-              <div className={`w-14 h-14 rounded-2xl flex items-center justify-center mb-4 transition-transform group-hover:scale-110`} style={{ background: `linear-gradient(135deg, ${feature.color}20, ${feature.color}10)` }}>
-                <feature.icon size={28} style={{ color: feature.color }} />
+            <motion.button 
+              key={feature.id} 
+              initial={{ opacity: 0, y: 30 }} 
+              whileInView={{ opacity: 1, y: 0 }} 
+              transition={{ delay: idx * 0.1 }} 
+              whileHover={{ scale: 1.05, y: -8 }}
+              onClick={() => setPage(feature.page)} 
+              className="elite-card text-left group p-8"
+            >
+              <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 transition-all group-hover:scale-110 group-hover:rotate-6`} style={{ background: `linear-gradient(135deg, ${feature.color}40, ${feature.color}20)`, boxShadow: `0 8px 24px ${feature.color}30` }}>
+                <feature.icon size={32} style={{ color: feature.color }} />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">{feature.title}</h3>
-              <p className="text-gray-400">{feature.desc}</p>
-              <ArrowRight size={20} className="text-gray-600 mt-4 group-hover:translate-x-2 transition-transform" />
+              <h3 className="text-2xl font-bold text-white mb-3">{feature.title}</h3>
+              <p className="text-slate-400 text-sm leading-relaxed mb-4">{feature.desc}</p>
+              <div className="flex items-center gap-2 text-neon-lime group-hover:gap-4 transition-all">
+                <span className="text-sm font-semibold">Keşfet</span>
+                <ArrowRight size={18} className="group-hover:translate-x-2 transition-transform" />
+              </div>
             </motion.button>
           ))}
         </div>
