@@ -199,8 +199,8 @@ const ChatPage = ({ user, setPage }) => {
             {/* Header */}
             <div className="p-4 border-b border-white/10">
               <h2 className="text-xl font-bold text-white mb-3 flex items-center gap-2">
-                <MessageCircle size={24} className="text-yellow-500" />
-                Mesajlar
+                <MessageCircle size={24} className="text-neon-lime" />
+                <span className="gradient-text-elite">Mesajlar</span>
               </h2>
               <div className="relative">
                 <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" />
