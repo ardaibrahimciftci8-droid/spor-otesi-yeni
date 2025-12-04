@@ -311,10 +311,10 @@ const ChatPage = ({ user, setPage }) => {
                           {!isMe && (
                             <p className="text-xs text-gray-400 mb-1 ml-1">{msg.sender_name}</p>
                           )}
-                          <div className={`px-4 py-3 rounded-2xl ${
+                          <div className={`px-5 py-3 rounded-2xl ${
                             isMe 
-                              ? 'bg-gradient-to-r from-yellow-500 to-orange-500 text-white rounded-br-sm' 
-                              : 'bg-white/10 text-white rounded-bl-sm'
+                              ? 'bg-gradient-to-r from-neon-lime to-electric-blue text-elite-bg rounded-br-sm font-semibold' 
+                              : 'bg-white/10 text-white rounded-bl-sm backdrop-blur-md'
                           }`}>
                             <p className="text-sm">{msg.content}</p>
                             <p className={`text-xs mt-1 ${isMe ? 'text-white/70' : 'text-gray-500'}`}>
