@@ -92,18 +92,27 @@ const HomePage = ({ user, setPage, onLogout }) => {
 
       {/* Stats Section */}
       <section className="max-w-6xl mx-auto px-4 py-16">
-        <div className="glass-card p-8 md:p-12">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+        <div className="elite-card p-12 md:p-16">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-12 text-center">
             {[
-              { value: '10K+', label: 'Aktif Sporcu', icon: Users },
-              { value: '81', label: 'İl Desteği', icon: MapPin },
-              { value: '50K+', label: 'Paylaşım', icon: MessageCircle },
-              { value: '1M+', label: 'Toplam Bağış', icon: Heart },
+              { value: '10K+', label: 'Aktif Sporcu', icon: Users, color: '#ccff00' },
+              { value: '81', label: 'İl Desteği', icon: MapPin, color: '#3b82f6' },
+              { value: '50K+', label: 'Paylaşım', icon: MessageCircle, color: '#10b981' },
+              { value: '1M+', label: 'Toplam Bağış', icon: Heart, color: '#ef4444' },
             ].map((stat, idx) => (
-              <motion.div key={idx} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.1 }}>
-                <stat.icon size={32} className="mx-auto mb-3 text-yellow-500" />
-                <div className="text-3xl md:text-4xl font-black gradient-text">{stat.value}</div>
-                <div className="text-gray-400 text-sm mt-1">{stat.label}</div>
+              <motion.div 
+                key={idx} 
+                initial={{ opacity: 0, y: 20 }} 
+                whileInView={{ opacity: 1, y: 0 }} 
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ scale: 1.1, y: -5 }}
+                className="transition-elite"
+              >
+                <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4" style={{ background: `${stat.color}20`, boxShadow: `0 8px 24px ${stat.color}20` }}>
+                  <stat.icon size={32} style={{ color: stat.color }} />
+                </div>
+                <div className="text-4xl md:text-5xl font-black gradient-text-elite mb-2">{stat.value}</div>
+                <div className="text-slate-400 text-sm font-medium tracking-wide uppercase">{stat.label}</div>
               </motion.div>
             ))}
           </div>
