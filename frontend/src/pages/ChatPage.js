@@ -351,7 +351,7 @@ const ChatPage = ({ user, setPage }) => {
                   <button
                     type="submit"
                     disabled={!newMessage.trim()}
-                    className="bg-gradient-to-r from-yellow-500 to-orange-500 hover:from-yellow-600 hover:to-orange-600 disabled:opacity-50 disabled:cursor-not-allowed text-white p-3 rounded-full transition"
+                    className="bg-gradient-to-r from-neon-lime to-electric-blue hover:scale-110 disabled:opacity-50 disabled:cursor-not-allowed text-elite-bg p-3 rounded-full transition-elite shadow-lg hover:shadow-neon-lime/50"
                   >
                     <Send size={20} />
                   </button>
