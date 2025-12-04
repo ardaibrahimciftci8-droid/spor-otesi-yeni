@@ -46,21 +46,23 @@
   box-shadow: 0 32px 64px -12px rgba(0, 0, 0, 0.5), 0 0 40px rgba(245, 158, 11, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
 }
 
-/* Button Styles - Elite Design */
+/* PREMIUM BUTTON STYLES - Elite Design */
 .btn-primary {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 50%, #d97706 100%);
+  background: linear-gradient(135deg, #ccff00 0%, #3b82f6 100%);
   background-size: 200% auto;
-  color: #000;
-  font-weight: 800;
-  padding: 16px 36px;
-  border-radius: 20px;
+  color: #0f172a;
+  font-weight: 700;
+  padding: 14px 32px;
+  border-radius: 16px;
   border: none;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
   overflow: hidden;
-  box-shadow: 0 10px 30px rgba(245, 158, 11, 0.3), 0 0 60px rgba(245, 158, 11, 0.1), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-  letter-spacing: 0.5px;
+  box-shadow: 0 8px 24px rgba(204, 255, 0, 0.25), 0 0 40px rgba(59, 130, 246, 0.15);
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  font-size: 14px;
 }
 .btn-primary::before {
   content: '';
