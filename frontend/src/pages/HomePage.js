@@ -21,9 +21,9 @@ const HomePage = ({ user, setPage, onLogout }) => {
       <section className="relative pt-32 pb-16 md:pt-36 md:pb-24 px-4 overflow-hidden">
         <div className="max-w-6xl mx-auto text-center relative z-10">
           <motion.div initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-8">
-            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-yellow-500/10 to-orange-500/10 border border-yellow-500/20 rounded-full px-6 py-3 mb-6 backdrop-blur-xl">
-              <Rocket size={20} className="text-yellow-500 animate-pulse" />
-              <span className="text-sm font-semibold text-yellow-500">Yapay Zeka Destekli Platform</span>
+            <div className="inline-flex items-center gap-3 bg-gradient-to-r from-neon-lime/10 to-electric-blue/10 border border-neon-lime/30 rounded-full px-6 py-3 mb-6 backdrop-blur-xl pulse-glow">
+              <Rocket size={20} className="text-neon-lime animate-pulse" />
+              <span className="text-sm font-bold text-neon-lime tracking-wide">YAPAY ZEKA DESTEKLİ PLATFORM</span>
             </div>
           </motion.div>
 
