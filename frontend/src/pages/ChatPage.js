@@ -346,7 +346,7 @@ const ChatPage = ({ user, setPage }) => {
                     value={newMessage}
                     onChange={(e) => setNewMessage(e.target.value)}
                     placeholder="Mesaj yaz..."
-                    className="flex-1 bg-white/5 border border-white/10 rounded-full px-5 py-3 text-white focus:outline-none focus:border-yellow-500/50"
+                    className="input-elite flex-1 rounded-full px-6 py-3"
                   />
                   <button
                     type="submit"
