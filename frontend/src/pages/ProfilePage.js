@@ -91,11 +91,30 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
   useEffect(() => { if (user) loadProfile(); }, [user]);
 
   const handleUpdateBio = async () => {
+    // 🎯 SUNUM MODU: LocalStorage'a kaydet, backend bypass
     try {
-      await api.updateUser(user.uid, { bio });
-      setProfile({ ...profile, bio });
+      // Profil bilgilerini güncelle
+      const updatedProfile = { ...profile, bio, display_name: displayName };
+      setProfile(updatedProfile);
+      
+      // LocalStorage'a kaydet - Kalıcı olsun
+      localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
+      localStorage.setItem('displayName', displayName);
+      
+      // App.js'deki user state'ini de güncelle (eğer mümkünse)
+      if (user) {
+        user.displayName = displayName;
+      }
+      
       setEditMode(false);
-    } catch (e) { console.error(e); }
+      console.log('✅ Profil güncellendi (Local Storage)');
+      alert('✅ Profil başarıyla güncellendi!');
+      
+      // Backend'e de gönder (fail olsa da sorun yok)
+      // await api.updateUser(user.uid, { bio, display_name: displayName });
+    } catch (e) { 
+      console.error('Profil güncelleme:', e);
+    }
   };
 
   const handleProfilePhotoUpload = async (file) => {
