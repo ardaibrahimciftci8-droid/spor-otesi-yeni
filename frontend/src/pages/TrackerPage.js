@@ -25,15 +25,45 @@ const TrackerPage = ({ user, setPage }) => {
   const loadData = async () => {
     if (!user) return;
     setLoading(true);
-    try {
-      const [activitiesData, sleepData, statsData, sleepStatsData] = await Promise.all([
-        api.getActivities(user.uid), api.getSleepRecords(user.uid),
-        api.getActivityStats(user.uid, 7), api.getSleepStats(user.uid, 7)
-      ]);
-      setActivities(activitiesData); setSleepRecords(sleepData);
-      setStats(statsData); setSleepStats(sleepStatsData);
-    } catch (e) { console.error(e); }
-    setLoading(false);
+    
+    // 🎯 SUNUM MODU: Demo istatistikler - Backend bypass
+    // try {
+    //   const [activitiesData, sleepData, statsData, sleepStatsData] = await Promise.all([
+    //     api.getActivities(user.uid), api.getSleepRecords(user.uid),
+    //     api.getActivityStats(user.uid, 7), api.getSleepStats(user.uid, 7)
+    //   ]);
+    //   setActivities(activitiesData); setSleepRecords(sleepData);
+    //   setStats(statsData); setSleepStats(sleepStatsData);
+    // } catch (e) { console.error(e); }
+    
+    // Demo data - Sunum için dolu istatistikler
+    setTimeout(() => {
+      const demoActivities = [
+        { id: '1', activity_type: 'running', duration_minutes: 45, distance_km: 7.5, calories_burned: 450, created_at: new Date(Date.now() - 86400000).toISOString() },
+        { id: '2', activity_type: 'cycling', duration_minutes: 60, distance_km: 15, calories_burned: 520, created_at: new Date(Date.now() - 172800000).toISOString() },
+        { id: '3', activity_type: 'walking', duration_minutes: 30, distance_km: 3, calories_burned: 180, created_at: new Date(Date.now() - 259200000).toISOString() }
+      ];
+      
+      const demoStats = {
+        total_activities: 12,
+        total_duration_minutes: 450,
+        total_distance_km: 85.5,
+        total_calories_burned: 2450,
+        weekly_data: [45, 60, 30, 0, 90, 45, 60] // Son 7 gün
+      };
+      
+      const demoSleepStats = {
+        avg_sleep_hours: 7.5,
+        avg_quality: 4.2,
+        total_records: 7
+      };
+      
+      setActivities(demoActivities);
+      setSleepRecords([]);
+      setStats(demoStats);
+      setSleepStats(demoSleepStats);
+      setLoading(false);
+    }, 800); // Gerçekçi yükleme süresi
   };
 
   useEffect(() => { if (user) loadData(); }, [user]);
