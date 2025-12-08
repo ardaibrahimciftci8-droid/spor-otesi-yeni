@@ -39,7 +39,16 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
                 <button onClick={() => setPage('analytics')} className="p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-500/10 rounded-xl transition relative">
                   <TrendingUp size={20} />
                 </button>
-                <button onClick={() => setPage('messages')} className="p-2 text-gray-400 hover:text-electric-blue hover:bg-electric-blue/10 rounded-xl transition relative" title="Mesajlar">
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    setPage('messages');
+                  }} 
+                  className="p-2 text-gray-400 hover:text-electric-blue hover:bg-electric-blue/10 rounded-xl transition relative cursor-pointer" 
+                  title="Mesajlar"
+                  style={{ zIndex: 10000, position: 'relative' }}
+                >
                   <MessageCircle size={20} />
                   <span className="absolute top-1 right-1 w-2 h-2 bg-electric-blue rounded-full pulse-glow"></span>
                 </button>
