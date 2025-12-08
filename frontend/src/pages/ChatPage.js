@@ -1,52 +1,56 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { MessageCircle, Send, ArrowLeft, Search, Phone, Video, MoreVertical } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { MessageCircle, Send, ArrowLeft, Search, Phone, Video, MoreVertical, Check, CheckCheck } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
 import api from '../api';
 
 const ChatPage = ({ user, setPage }) => {
-  // DEMO DATA - Backend fail olsa bile profesyonel görünüm
+  // INSTAGRAM-STYLE DEMO DATA - FAIL-SAFE
   const DEMO_CONVERSATIONS = [
     {
       id: 'demo-1',
       participant_id: 'trainer-123',
-      participant_name: 'Mehmet Hoca (Antrenör)',
-      participant_photo: 'https://ui-avatars.com/api/?background=10b981&color=fff&name=Mehmet+Hoca',
-      last_message: 'Yarınki idman saat 10:00\'a alındı.',
-      last_message_time: new Date(Date.now() - 1000 * 60 * 15).toISOString(),
-      unread_count: 1
+      participant_name: 'Eren Hoca',
+      participant_photo: 'https://ui-avatars.com/api/?background=0ea5e9&color=fff&name=Eren&size=128',
+      last_message: 'Yarınki maç saat kaçta?',
+      last_message_time: new Date(Date.now() - 1000 * 60 * 5).toISOString(),
+      unread_count: 1,
+      online: true
     },
     {
       id: 'demo-2',
-      participant_id: 'gym-456',
-      participant_name: 'Spor Salonu',
-      participant_photo: 'https://ui-avatars.com/api/?background=3b82f6&color=fff&name=Spor+Salonu',
-      last_message: 'Üyeliğiniz yenilenmiştir.',
-      last_message_time: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
-      unread_count: 0
+      participant_id: 'friend-456',
+      participant_name: 'Ayşe Yılmaz',
+      participant_photo: 'https://ui-avatars.com/api/?background=ec4899&color=fff&name=Ayşe&size=128',
+      last_message: 'Antrenman nasıl gitti?',
+      last_message_time: new Date(Date.now() - 1000 * 60 * 45).toISOString(),
+      unread_count: 0,
+      online: false
     },
     {
       id: 'demo-3',
-      participant_id: 'dietitian-789',
-      participant_name: 'Diyetisyen Ayşe',
-      participant_photo: 'https://ui-avatars.com/api/?background=f59e0b&color=fff&name=Ayşe',
-      last_message: 'Öğün fotoğraflarını bekliyorum.',
-      last_message_time: new Date(Date.now() - 1000 * 60 * 60 * 5).toISOString(),
-      unread_count: 2
+      participant_id: 'coach-789',
+      participant_name: 'Mehmet Antrenör',
+      participant_photo: 'https://ui-avatars.com/api/?background=10b981&color=fff&name=Mehmet&size=128',
+      last_message: 'Yarın görüşürüz 💪',
+      last_message_time: new Date(Date.now() - 1000 * 60 * 120).toISOString(),
+      unread_count: 0,
+      online: true
     }
   ];
 
   const DEMO_MESSAGES = {
     'demo-1': [
-      { id: 'm1', sender_id: 'trainer-123', sender_name: 'Mehmet Hoca', content: 'Merhaba! Nasıl gidiyor?', created_at: new Date(Date.now() - 1000 * 60 * 30).toISOString() },
-      { id: 'm2', sender_id: user?.uid || 'me', sender_name: user?.displayName || 'Ben', content: 'İyi hocam, düzenli çalışıyorum', created_at: new Date(Date.now() - 1000 * 60 * 20).toISOString() },
-      { id: 'm3', sender_id: 'trainer-123', sender_name: 'Mehmet Hoca', content: 'Yarınki idman saat 10:00\'a alındı.', created_at: new Date(Date.now() - 1000 * 60 * 15).toISOString() }
+      { id: 'm1', sender_id: 'trainer-123', sender_name: 'Eren Hoca', content: 'Merhaba! Yarınki maç saat kaçta?', created_at: new Date(Date.now() - 1000 * 60 * 10).toISOString() },
+      { id: 'm2', sender_id: user?.uid || 'me', sender_name: user?.displayName || 'Sen', content: '14:00\'te hocam. Stadyum önünde buluşalım mı?', created_at: new Date(Date.now() - 1000 * 60 * 5).toISOString() },
+      { id: 'm3', sender_id: 'trainer-123', sender_name: 'Eren Hoca', content: 'Tamam, hazır ol! 🔥', created_at: new Date(Date.now() - 1000 * 60 * 2).toISOString() }
     ],
     'demo-2': [
-      { id: 'm4', sender_id: 'gym-456', sender_name: 'Spor Salonu', content: 'Üyeliğiniz yenilenmiştir.', created_at: new Date(Date.now() - 1000 * 60 * 120).toISOString() },
-      { id: 'm5', sender_id: user?.uid || 'me', sender_name: user?.displayName || 'Ben', content: 'Teşekkürler!', created_at: new Date(Date.now() - 1000 * 60 * 110).toISOString() }
+      { id: 'm4', sender_id: 'friend-456', sender_name: 'Ayşe Yılmaz', content: 'Antrenman nasıl gitti?', created_at: new Date(Date.now() - 1000 * 60 * 45).toISOString() },
+      { id: 'm5', sender_id: user?.uid || 'me', sender_name: user?.displayName || 'Sen', content: 'Çok iyiydi! Sen de gelsene yarın', created_at: new Date(Date.now() - 1000 * 60 * 40).toISOString() }
     ],
     'demo-3': [
-      { id: 'm6', sender_id: 'dietitian-789', sender_name: 'Diyetisyen Ayşe', content: 'Öğün fotoğraflarını bekliyorum.', created_at: new Date(Date.now() - 1000 * 60 * 300).toISOString() }
+      { id: 'm6', sender_id: 'coach-789', sender_name: 'Mehmet Antrenör', content: 'Yarın görüşürüz 💪', created_at: new Date(Date.now() - 1000 * 60 * 120).toISOString() },
+      { id: 'm7', sender_id: user?.uid || 'me', sender_name: user?.displayName || 'Sen', content: 'Görüşürüz hocam 👍', created_at: new Date(Date.now() - 1000 * 60 * 110).toISOString() }
     ]
   };
 
