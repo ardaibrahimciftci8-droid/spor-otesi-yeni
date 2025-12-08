@@ -192,11 +192,11 @@ const ChatPage = ({ user, setPage }) => {
   }
 
   return (
-    <div className="min-h-screen pb-24 md:pb-0 md:pt-24">
-      <div className="animated-bg" />
+    <div className="min-h-screen pb-24 md:pb-0 md:pt-24 bg-elite-bg">
+      <div className="fixed inset-0 bg-gradient-to-br from-electric-blue/5 via-transparent to-neon-lime/5 pointer-events-none" />
       
-      <div className="max-w-6xl mx-auto px-4 py-4">
-        <div className="elite-card overflow-hidden flex" style={{ height: 'calc(100vh - 12rem)' }}>
+      <div className="max-w-7xl mx-auto px-2 md:px-4 py-2 md:py-4 relative z-10">
+        <div className="bg-elite-bg border border-white/10 rounded-3xl overflow-hidden flex shadow-2xl" style={{ height: 'calc(100vh - 8rem)' }}>
           
           {/* Left Panel - Conversations List */}
           <div className={`${activeConversation ? 'hidden md:flex' : 'flex'} flex-col w-full md:w-96 border-r border-white/10`}>
