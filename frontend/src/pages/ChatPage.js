@@ -200,7 +200,7 @@ const ChatPage = ({ user, setPage }) => {
     }
   };
 
-  // OPTIMISTIC UI - Mesaj hemen ekrana basılır
+  // FIRESTORE + OPTIMISTIC UI - Mesaj hemen ekrana basılır
   const handleSendMessage = async (e) => {
     e.preventDefault();
     if (!newMessage.trim() || !activeConversation) return;
@@ -212,7 +212,7 @@ const ChatPage = ({ user, setPage }) => {
     const optimisticMsg = {
       id: `temp-${Date.now()}`,
       sender_id: user?.uid || 'me',
-      sender_name: user?.displayName || 'Ben',
+      sender_name: user?.displayName || 'Sen',
       content: msgText,
       created_at: new Date().toISOString(),
       status: 'sending'
@@ -220,30 +220,41 @@ const ChatPage = ({ user, setPage }) => {
 
     setMessages([...messages, optimisticMsg]);
 
-    // Conversation'daki son mesajı güncelle
+    // Update last message in conversations
     setConversations(conversations.map(c => 
       c.id === activeConversation.id 
         ? { ...c, last_message: msgText, last_message_time: new Date().toISOString() }
         : c
     ));
 
-    // Arka planda API'ye göndermeyi dene (başarısız olsa da sorun yok)
-    if (user && !activeConversation.id.startsWith('demo-')) {
+    // FIRESTORE SAVE - Real-time database
+    if (useFirestore && user && !activeConversation.id.startsWith('demo-')) {
       try {
-        await api.sendMessage({
+        await addDoc(collection(db, 'messages'), {
           conversation_id: activeConversation.id,
           sender_id: user.uid,
-          sender_name: user.displayName,
-          sender_photo: user.photoURL,
-          content: msgText
+          sender_name: user.displayName || 'Kullanıcı',
+          sender_photo: user.photoURL || '',
+          content: msgText,
+          created_at: serverTimestamp(),
+          read: false
         });
-        // Başarılı - mesaj status'unu güncelle
-        setMessages(msgs => msgs.map(m => 
-          m.id === optimisticMsg.id ? { ...m, status: 'sent' } : m
-        ));
+        console.log('✅ Mesaj Firestore\'a kaydedildi');
+        // Real-time listener otomatik güncelleyecek
       } catch (e) {
-        console.log('Send message failed, but message displayed (optimistic UI)');
-        // Hata olsa bile mesaj ekranda kalır - SUNUM İÇİN KRİTİK!
+        console.log('Firestore failed, trying API:', e);
+        // Fallback to API
+        try {
+          await api.sendMessage({
+            conversation_id: activeConversation.id,
+            sender_id: user.uid,
+            sender_name: user.displayName,
+            sender_photo: user.photoURL,
+            content: msgText
+          });
+        } catch (apiError) {
+          console.log('API also failed, but message visible (optimistic UI)');
+        }
       }
     }
   };
