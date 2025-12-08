@@ -3,6 +3,7 @@ import { Camera, Smartphone, Send, ChevronLeft, BrainCircuit, Trophy } from "luc
 import api from "../api";
 import AICoach from "../components/common/AICoach";
 import AdBanner from "../components/common/AdBanner";
+import { askGemini } from "../utils/helpers";
 
 const AnalysisPage = ({ user, setPage }) => {
   const [takim1, setTakim1] = useState("");
