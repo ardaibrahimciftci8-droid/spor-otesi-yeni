@@ -178,13 +178,22 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
               }}
             />
           </div>
-          <h1 className="text-2xl font-bold text-white">{user?.displayName || profile?.display_name || 'Misafir Kullanıcı'}</h1>
+          {editMode ? (
+            <input 
+              value={displayName} 
+              onChange={(e) => setDisplayName(e.target.value)} 
+              placeholder="İsim" 
+              className="text-2xl font-bold text-white bg-white/10 px-4 py-2 rounded-lg text-center"
+            />
+          ) : (
+            <h1 className="text-2xl font-bold text-white">{displayName || user?.displayName || profile?.display_name || 'Misafir Kullanıcı'}</h1>
+          )}
           {editMode ? (
             <div className="mt-4 space-y-2">
               <textarea value={bio} onChange={(e) => setBio(e.target.value)} placeholder="Kendini tanıt..." className="input-modern resize-none" rows={2} />
               <div className="flex gap-2 justify-center">
                 <button onClick={handleUpdateBio} className="btn-primary py-2 px-4">Kaydet</button>
-                <button onClick={() => { setEditMode(false); setBio(profile?.bio || ''); }} className="btn-secondary py-2 px-4">İptal</button>
+                <button onClick={() => { setEditMode(false); setBio(profile?.bio || ''); setDisplayName(user?.displayName || profile?.display_name || 'Misafir Kullanıcı'); }} className="btn-secondary py-2 px-4">İptal</button>
               </div>
             </div>
           ) : (
