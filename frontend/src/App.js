@@ -2122,6 +2122,14 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
   const [blockedUsers, setBlockedUsers] = useState([]);
   const [previewPhoto, setPreviewPhoto] = useState(null); // Instant preview
 
+  // LocalStorage'dan profil fotoğrafını yükle
+  useEffect(() => {
+    const savedPhoto = localStorage.getItem('profileImage');
+    if (savedPhoto) {
+      setPreviewPhoto(savedPhoto);
+    }
+  }, []);
+
   const loadProfile = async () => {
     if (!user) {
       // Kullanıcı yoksa demo data kullan
