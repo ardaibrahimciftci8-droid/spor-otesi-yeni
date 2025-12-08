@@ -57,9 +57,28 @@ const AICoach = ({ user, coachType, title, icon: Icon, color, placeholder }) => 
     //   console.error(e);
     // }
 
-    // Fake AI Response - Sunum için
+    // Fake AI Response - Kullanıcı mesajına göre değişken cevaplar
     setTimeout(() => {
-      const fakeResponse = "Harika bir hedef! 🎯 Senin fiziksel özelliklerine ve geçmişine göre 3 aşamalı bir plan hazırladım:\n\n💪 1. Gün: Full Body Hipertrofi - Squat, Bench Press, Deadlift\n🏃 2. Gün: Aktif Dinlenme ve Kardiyo - 30 dakika tempolu koşu\n🔥 3. Gün: Upper Body Odaklı - Shoulder Press, Pull-ups, Dips\n\nBaşlamaya hazır mısın? İlk antrenmandan sonra geri bildirim vermeni bekliyorum! 💪";
+      let fakeResponse = "";
+      const msgLower = userMsg.toLowerCase();
+      
+      // Mesaja göre akıllı cevaplar
+      if (msgLower.includes('kilo') && (msgLower.includes('ver') || msgLower.includes('zayıfla'))) {
+        fakeResponse = "🎯 Kilo verme hedefin için süper bir plan hazırladım!\n\n💪 Haftalık Program:\n• Pazartesi-Çarşamba-Cuma: Kardiyo (30-45 dk)\n• Salı-Perşembe: Kuvvet antrenmanı\n• Haftalık kalori açığı: 500 kcal\n\n🥗 Beslenme:\n• Günde 2000-2200 kalori\n• Yüksek protein (1.8g/kg)\n• Bol sebze ve meyve\n\nİlk 2 hafta sonunda 2-3 kg verebilirsin! Başlamaya hazır mısın? 💚";
+      } else if (msgLower.includes('kas') && msgLower.includes('yap')) {
+        fakeResponse = "💪 Kas yapma hedefin için harika bir program!\n\n🔥 Hipertrofi Programı:\n• Haftada 4-5 antrenman\n• Her kas grubuna haftada 2 kez\n• 8-12 tekrar aralığı\n• Kompound hareketler: Squat, Deadlift, Bench Press\n\n🍗 Beslenme:\n• Kalori fazlası: +300-500 kcal\n• Protein: 2g/kg\n• Karbonhidrat bolca (antrenman öncesi/sonrası)\n\n3 ayda 3-5 kg kas yapabilirsin! Disiplinle devam! 🚀";
+      } else if (msgLower.includes('koş') || msgLower.includes('kardiyo')) {
+        fakeResponse = "🏃‍♂️ Koşu ve kardiyo için mükemmel bir plan!\n\n📅 12 Haftalık Program:\n• Hafta 1-4: 3-4 km (haftada 3 gün)\n• Hafta 5-8: 5-7 km (haftada 4 gün)\n• Hafta 9-12: 8-10 km (haftada 5 gün)\n\n⏱️ Tempo:\n• İlk 2 ay: Rahat tempoda (konuşabilecek hızda)\n• Son ay: Interval training ekle\n\n💡 İpucu: İyi koşu ayakkabısı al ve ısınmayı unutma! Hazır mısın? 🔥";
+      } else if (msgLower.includes('yoga') || msgLower.includes('esneklik') || msgLower.includes('meditasyon')) {
+        fakeResponse = "🧘‍♀️ Yoga ve meditasyon için harika bir başlangıç!\n\n🌅 Günlük Rutin:\n• Sabah: 15 dakika güneş selamı\n• Öğle: 10 dakika nefes egzersizi\n• Akşam: 20 dakika yin yoga + meditasyon\n\n✨ Faydalar:\n• Esneklik artışı (4-6 hafta)\n• Stres azalması (2 hafta)\n• Daha iyi uyku kalitesi\n\nYouTube'dan Yoga with Adriene kanalını öneriyorum! Başlayalım mı? 🙏";
+      } else if (msgLower.includes('diyet') || msgLower.includes('beslenme') || msgLower.includes('yemek')) {
+        fakeResponse = "🥗 Sağlıklı beslenme planı hazır!\n\n🍽️ Örnek Günlük Menü:\n• Sabah: Yumurta (2 adet) + kepekli ekmek + domates\n• Ara: Meyve + 10 adet badem\n• Öğle: Izgara tavuk (150g) + bulgur pilavı + salata\n• Ara: Yoğurt + 1 muz\n• Akşam: Izgara balık + zeytinyağlı sebze\n\n💧 Su: Günde 2.5-3 litre\n🚫 Kaçın: Şeker, fast food, işlenmiş gıda\n\nBaşarıya giden yol mutfaktan geçer! 🌟";
+      } else if (msgLower.includes('motivasyon') || msgLower.includes('başla') || msgLower.includes('nasıl')) {
+        fakeResponse = "🔥 Motivasyon için en iyi tavsiyelerim!\n\n💡 Başarı İpuçları:\n1. Küçük hedefler koy (haftalık)\n2. İlerlemeyi takip et (fotoğraf çek)\n3. Bir arkadaşla birlikte çalış\n4. Kendini ödüllendir\n5. Kötü günler olacak, önemli değil!\n\n📈 Hatırla:\n• İlk 21 gün en zor\n• 3 ay sonra alışkanlık olur\n• 6 ay sonra yaşam tarzı olur\n\nSen yapabilirsin! Ben buradayım! 💪✨";
+      } else {
+        // Genel cevap
+        fakeResponse = "Harika bir soru! 🎯 Senin için özel bir plan hazırlayabilirim.\n\n💪 Önerilerim:\n• Haftada 3-4 antrenman yap\n• Beslenmeye dikkat et\n• Düzenli uyku (7-8 saat)\n• Bol su iç (2.5-3 litre)\n\nDaha detaylı bilgi için bana şunları sor:\n• Kilo verme\n• Kas yapma\n• Koşu/Kardiyo\n• Yoga/Esneklik\n• Beslenme planı\n\nHangi konuda yardımcı olabilirim? 😊";
+      }
       
       const newChat = { 
         user_message: userMsg, 
