@@ -3,6 +3,7 @@ import { Utensils, ChefHat, PlusCircle, X, Coffee, ShoppingBag, ChevronLeft, Cam
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api";
 import AICoach from "../components/common/AICoach";
+import AdBanner from "../components/common/AdBanner";
 
 const NutritionPage = ({ user, setPage }) => {
   const [activeTab, setActiveTab] = useState("hesapla");
