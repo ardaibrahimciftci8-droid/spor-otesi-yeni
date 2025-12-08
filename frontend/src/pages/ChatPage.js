@@ -2,6 +2,8 @@ import React, { useState, useEffect, useRef } from 'react';
 import { MessageCircle, Send, ArrowLeft, Search, Phone, Video, MoreVertical, Check, CheckCheck } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 import api from '../api';
+import { db } from '../firebase';
+import { collection, addDoc, query, where, orderBy, onSnapshot, serverTimestamp, getDocs } from 'firebase/firestore';
 
 const ChatPage = ({ user, setPage }) => {
   // INSTAGRAM-STYLE DEMO DATA - FAIL-SAFE
