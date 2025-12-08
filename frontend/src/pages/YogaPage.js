@@ -3,6 +3,7 @@ import { Heart, Target, Volume2, Headphones, Sparkles, PlusCircle, X } from "luc
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api";
 import AdBanner from "../components/common/AdBanner";
+import AICoach from "../components/common/AICoach";
 
 const YogaPage = ({ user, setPage }) => {
   const [programs, setPrograms] = useState([]);
