@@ -319,20 +319,27 @@ const ChatPage = ({ user, setPage }) => {
                         animate={{ opacity: 1, y: 0 }}
                         className={`flex ${isMe ? 'justify-end' : 'justify-start'}`}
                       >
-                        <div className={`max-w-[70%] ${isMe ? 'order-2' : 'order-1'}`}>
+                        <div className={`max-w-[75%] md:max-w-[60%] ${isMe ? 'ml-auto' : 'mr-auto'}`}>
                           {!isMe && (
-                            <p className="text-xs text-gray-400 mb-1 ml-1">{msg.sender_name}</p>
+                            <p className="text-xs text-gray-400 mb-1 ml-3 font-medium">{msg.sender_name}</p>
                           )}
-                          <div className={`px-5 py-3 rounded-2xl ${
+                          <div className={`px-4 py-2.5 rounded-3xl inline-block ${
                             isMe 
-                              ? 'bg-gradient-to-r from-neon-lime to-electric-blue text-elite-bg rounded-br-sm font-semibold' 
-                              : 'bg-white/10 text-white rounded-bl-sm backdrop-blur-md'
+                              ? 'bg-gradient-to-br from-electric-blue to-blue-600 text-white ml-auto rounded-br-md shadow-lg' 
+                              : 'bg-white/8 text-white rounded-bl-md backdrop-blur-md border border-white/5'
                           }`}>
-                            <p className="text-sm">{msg.content}</p>
-                            <p className={`text-xs mt-1 ${isMe ? 'text-white/70' : 'text-gray-500'}`}>
+                            <p className="text-[15px] leading-relaxed">{msg.content}</p>
+                          </div>
+                          <div className={`flex items-center gap-1.5 mt-1 ${isMe ? 'justify-end' : 'justify-start'} ${isMe ? 'mr-2' : 'ml-2'}`}>
+                            <p className="text-[11px] text-gray-500">
                               {timeAgo(msg.created_at)}
-                              {msg.status === 'sending' && ' • Gönderiliyor...'}
                             </p>
+                            {isMe && msg.status !== 'sending' && (
+                              <CheckCheck size={14} className="text-electric-blue" />
+                            )}
+                            {isMe && msg.status === 'sending' && (
+                              <Check size={14} className="text-gray-500 animate-pulse" />
+                            )}
                           </div>
                         </div>
                       </motion.div>
