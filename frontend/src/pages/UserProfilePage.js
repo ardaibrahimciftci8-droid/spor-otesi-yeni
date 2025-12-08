@@ -92,29 +92,39 @@ const UserProfilePage = ({ userId, currentUser, onBack, setPage }) => {
 
           {/* Stats & Actions */}
           <div className="flex-1">
-            <div className="flex items-center gap-4 mb-6">
+            <div className="flex items-center gap-3 mb-6">
               <h2 className="text-2xl font-bold text-white">{user.display_name}</h2>
               {!isOwnProfile && currentUser && (
-                <button
-                  onClick={handleFollow}
-                  className={`flex items-center gap-2 px-6 py-2 rounded-xl font-semibold transition ${
-                    following
-                      ? 'bg-gray-700 text-white hover:bg-gray-600'
-                      : 'bg-gradient-to-r from-yellow-500 to-orange-500 text-black hover:from-yellow-600 hover:to-orange-600'
-                  }`}
-                >
-                  {following ? (
-                    <>
-                      <UserMinus size={18} />
-                      <span>Takipten Çık</span>
-                    </>
-                  ) : (
-                    <>
-                      <UserPlus size={18} />
-                      <span>Takip Et</span>
-                    </>
-                  )}
-                </button>
+                <>
+                  <button
+                    onClick={handleFollow}
+                    className={`flex items-center gap-2 px-6 py-2 rounded-xl font-semibold transition ${
+                      following
+                        ? 'bg-white/10 text-white hover:bg-white/15 border border-white/20'
+                        : 'bg-gradient-to-r from-electric-blue to-blue-600 text-white hover:from-electric-blue/90 hover:to-blue-600/90'
+                    }`}
+                  >
+                    {following ? (
+                      <>
+                        <UserMinus size={18} />
+                        <span>Takipten Çık</span>
+                      </>
+                    ) : (
+                      <>
+                        <UserPlus size={18} />
+                        <span>Takip Et</span>
+                      </>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => setPage && setPage('messages')}
+                    className="flex items-center gap-2 px-6 py-2 rounded-xl font-semibold transition bg-white/8 text-white hover:bg-white/12 border border-white/10"
+                    title="Mesaj Gönder"
+                  >
+                    <MessageCircle size={18} />
+                    <span>Mesaj</span>
+                  </button>
+                </>
               )}
             </div>
 
