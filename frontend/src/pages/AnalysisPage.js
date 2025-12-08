@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Camera, Smartphone, Send } from "lucide-react";
+import { Camera, Smartphone, Send, ChevronLeft } from "lucide-react";
 import api from "../api";
 import AICoach from "../components/common/AICoach";
 
