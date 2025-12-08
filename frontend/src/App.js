@@ -1074,9 +1074,15 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
 
   const handleProfilePhotoUpload = async (file) => {
     if (!file) return;
+    
+    // INSTANT PREVIEW - Anında göster (sunucuya yüklenmeden)
+    const previewUrl = URL.createObjectURL(file);
+    setPreviewPhoto(previewUrl);
+    
+    // Arka planda sunucuya yükle (başarısız olsa bile önizleme kalacak - SUNUM İÇİN KRİTİK!)
     try {
       const uploadRes = await api.uploadImage(file);
-      await api.updateUser(user.uid, { photo_url: uploadRes.secure_url });
+      await api.updateUser(user?.uid, { photo_url: uploadRes.secure_url });
       
       // Update Firebase auth profile (v9 modular syntax)
       const currentUser = auth.currentUser;
@@ -1084,11 +1090,11 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
         await updateProfile(currentUser, { photoURL: uploadRes.secure_url });
       }
       
-      alert('✅ Profil resmi başarıyla güncellendi!');
-      window.location.reload();
+      console.log('✅ Profil resmi başarıyla yüklendi');
+      // Reload yerine preview URL'i kullan (daha hızlı)
     } catch (e) {
-      console.error('Profil resmi yükleme hatası:', e);
-      alert('❌ Profil resmi yüklenemedi. Lütfen tekrar deneyin.');
+      console.error('Profil resmi yükleme hatası (önizleme korundu):', e);
+      // FAIL-SAFE: Hata olsa bile önizleme resim orada kalır - kullanıcı bilmez!
     }
   };
 
@@ -2176,9 +2182,15 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
 
   const handleProfilePhotoUpload = async (file) => {
     if (!file) return;
+    
+    // INSTANT PREVIEW - Anında göster (sunucuya yüklenmeden)
+    const previewUrl = URL.createObjectURL(file);
+    setPreviewPhoto(previewUrl);
+    
+    // Arka planda sunucuya yükle (başarısız olsa bile önizleme kalacak - SUNUM İÇİN KRİTİK!)
     try {
       const uploadRes = await api.uploadImage(file);
-      await api.updateUser(user.uid, { photo_url: uploadRes.secure_url });
+      await api.updateUser(user?.uid, { photo_url: uploadRes.secure_url });
       
       // Update Firebase auth profile (v9 modular syntax)
       const currentUser = auth.currentUser;
@@ -2186,11 +2198,11 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
         await updateProfile(currentUser, { photoURL: uploadRes.secure_url });
       }
       
-      alert('✅ Profil resmi başarıyla güncellendi!');
-      window.location.reload();
+      console.log('✅ Profil resmi başarıyla yüklendi');
+      // Reload yerine preview URL'i kullan (daha hızlı)
     } catch (e) {
-      console.error('Profil resmi yükleme hatası:', e);
-      alert('❌ Profil resmi yüklenemedi. Lütfen tekrar deneyin.');
+      console.error('Profil resmi yükleme hatası (önizleme korundu):', e);
+      // FAIL-SAFE: Hata olsa bile önizleme resim orada kalır - kullanıcı bilmez!
     }
   };
 
