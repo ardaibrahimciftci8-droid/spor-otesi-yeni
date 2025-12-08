@@ -62,17 +62,31 @@ const ChatPage = ({ user, setPage }) => {
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [useFirestore, setUseFirestore] = useState(true); // Firestore switch
   const messagesEndRef = useRef(null);
+  const unsubscribeRef = useRef(null);
 
   // Auto-scroll to bottom
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
-  // Load conversations - Fail-safe
+  // Load conversations - FIRESTORE + FALLBACK
   useEffect(() => {
     loadConversations();
   }, [user]);
+
+  // Real-time messages listener - FIRESTORE
+  useEffect(() => {
+    if (activeConversation && user && useFirestore) {
+      loadMessagesRealtime();
+    }
+    return () => {
+      if (unsubscribeRef.current) {
+        unsubscribeRef.current();
+      }
+    };
+  }, [activeConversation, user, useFirestore]);
 
   const loadConversations = async () => {
     if (!user) {
