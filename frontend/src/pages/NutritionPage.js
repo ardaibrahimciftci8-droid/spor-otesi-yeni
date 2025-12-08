@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Utensils, ChefHat, PlusCircle, X, Coffee, ShoppingBag } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api";
+import AICoach from "../components/common/AICoach";
 
 const NutritionPage = ({ user, setPage }) => {
   const [activeTab, setActiveTab] = useState("hesapla");
