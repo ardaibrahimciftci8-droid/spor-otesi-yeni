@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { TrendingUp, Activity, Flame, Timer, Zap, Award } from "lucide-react";
+import { TrendingUp, Activity, Flame, Timer, Zap, Award, MessageSquare, Sparkles, BrainCircuit, Users, Heart } from "lucide-react";
 import { motion } from "framer-motion";
 import api from "../api";
 
