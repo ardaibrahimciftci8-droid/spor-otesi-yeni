@@ -88,11 +88,14 @@ const NutritionPage = ({ user, setPage }) => {
     e.preventDefault();
     if (!mealInput) return;
     setLoading(true);
-    try {
-      const res = await askGemini(`Diyetisyen gibi davran. Şu öğünü analiz et: "${mealInput}". Toplam Kalori, Makro Besinler ve sağlık yorumu yap. Türkçe.`);
-      setMealAnalysis(res || "Hata");
-    } catch (e) { setMealAnalysis("Analiz yapılamadı."); }
-    setLoading(false);
+    
+    // 🎯 SUNUM MODU: Simüle edilmiş beslenme analizi
+    setTimeout(() => {
+      const fakeAnalysis = `📊 Beslenme Analizi:\n\n🔥 Toplam Kalori: ~520 kcal\n\n💪 Makro Besinler:\n• Protein: 42g\n• Karbonhidrat: 48g\n• Yağ: 18g\n\n✅ Sağlık Yorumu:\nDengeli bir kahvaltı! Yumurta yüksek kaliteli protein, ekmek enerji, peynir kalsiyum sağlıyor. Yanına bir porsiyon sebze (salatalık, domates) eklersen mükemmel olur.\n\n💡 Önerim: Kepekli ekmek tercih et, porsiyon miktarlarını korumaya devam et. Bu kahvaltı 400-500 kcal arası ideal!`;
+      
+      setMealAnalysis(fakeAnalysis);
+      setLoading(false);
+    }, 1200);
   };
 
   return (
