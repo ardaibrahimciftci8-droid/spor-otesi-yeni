@@ -229,29 +229,37 @@ const ChatPage = ({ user, setPage }) => {
                   <motion.button
                     key={conv.id}
                     onClick={() => openConversation(conv)}
-                    whileHover={{ backgroundColor: 'rgba(255, 255, 255, 0.05)' }}
-                    className={`w-full p-4 flex items-center gap-3 border-b border-white/5 text-left transition ${
-                      activeConversation?.id === conv.id ? 'bg-white/10' : ''
+                    whileHover={{ scale: 1.01, backgroundColor: 'rgba(255, 255, 255, 0.03)' }}
+                    whileTap={{ scale: 0.99 }}
+                    className={`w-full px-4 py-3 flex items-center gap-4 text-left transition-elite ${
+                      activeConversation?.id === conv.id ? 'bg-white/5 border-l-4 border-electric-blue' : 'border-l-4 border-transparent'
                     }`}
                   >
-                    <div className="relative">
+                    <div className="relative flex-shrink-0">
                       <img
                         src={conv.participant_photo || `https://ui-avatars.com/api/?background=1f2937&color=fff&name=${conv.participant_name}`}
                         alt=""
-                        className="w-14 h-14 rounded-full object-cover border-2 border-white/10"
+                        className="w-16 h-16 rounded-full object-cover ring-2 ring-white/10"
                       />
+                      {conv.online && (
+                        <div className="absolute bottom-0 right-0 w-5 h-5 bg-green-500 rounded-full border-4 border-elite-bg"></div>
+                      )}
                       {conv.unread_count > 0 && (
-                        <div className="absolute -top-1 -right-1 bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
+                        <div className="absolute -top-1 -right-1 bg-electric-blue text-white text-xs font-bold rounded-full min-w-[22px] h-[22px] flex items-center justify-center px-1.5 shadow-lg">
                           {conv.unread_count}
                         </div>
                       )}
                     </div>
                     <div className="flex-1 min-w-0">
                       <div className="flex items-center justify-between mb-1">
-                        <h4 className="font-semibold text-white truncate">{conv.participant_name}</h4>
-                        <span className="text-xs text-gray-500">{timeAgo(conv.last_message_time)}</span>
+                        <h4 className={`font-semibold truncate ${conv.unread_count > 0 ? 'text-white' : 'text-gray-300'}`}>
+                          {conv.participant_name}
+                        </h4>
+                        <span className="text-xs text-gray-500 flex-shrink-0 ml-2">{timeAgo(conv.last_message_time)}</span>
                       </div>
-                      <p className="text-sm text-gray-400 truncate">{conv.last_message || 'Henüz mesaj yok'}</p>
+                      <p className={`text-sm truncate ${conv.unread_count > 0 ? 'text-gray-300 font-medium' : 'text-gray-500'}`}>
+                        {conv.last_message || 'Henüz mesaj yok'}
+                      </p>
                     </div>
                   </motion.button>
                 ))
