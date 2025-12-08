@@ -37,19 +37,33 @@ const AICoach = ({ user, coachType, title, icon: Icon, color, placeholder }) => 
     setMessage('');
     setLoading(true);
 
-    try {
-      const response = await api.coachChat(user.uid, coachType, userMsg);
-      const newChat = { user_message: userMsg, coach_response: response.response, created_at: new Date().toISOString() };
+    // 🎯 SUNUM MODU: Backend API bypass - Simülasyon cevabı
+    // try {
+    //   const response = await api.coachChat(user.uid, coachType, userMsg);
+    //   const newChat = { user_message: userMsg, coach_response: response.response, created_at: new Date().toISOString() };
+    //   setChatHistory([newChat, ...chatHistory]);
+    // } catch (e) {
+    //   console.error(e);
+    // }
+
+    // Fake AI Response - Sunum için
+    setTimeout(() => {
+      const fakeResponse = "Harika bir hedef! 🎯 Senin fiziksel özelliklerine ve geçmişine göre 3 aşamalı bir plan hazırladım:\n\n💪 1. Gün: Full Body Hipertrofi - Squat, Bench Press, Deadlift\n🏃 2. Gün: Aktif Dinlenme ve Kardiyo - 30 dakika tempolu koşu\n🔥 3. Gün: Upper Body Odaklı - Shoulder Press, Pull-ups, Dips\n\nBaşlamaya hazır mısın? İlk antrenmandan sonra geri bildirim vermeni bekliyorum! 💪";
+      
+      const newChat = { 
+        user_message: userMsg, 
+        coach_response: fakeResponse, 
+        created_at: new Date().toISOString() 
+      };
+      
       setChatHistory([newChat, ...chatHistory]);
+      setLoading(false);
       
       // Auto-speak response if TTS is available
       if (window.speakResponse && 'speechSynthesis' in window) {
-        handleSpeak(response.response);
+        handleSpeak(fakeResponse);
       }
-    } catch (e) {
-      console.error(e);
-    }
-    setLoading(false);
+    }, 1500); // 1.5 saniye bekleme - Gerçekçi görünsün
   };
 
   const handleSpeak = async (text) => {
