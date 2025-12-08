@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { Heart, Target, Volume2, Headphones } from "lucide-react";
-import { motion } from "framer-motion";
+import { Heart, Target, Volume2, Headphones, Sparkles, PlusCircle, X } from "lucide-react";
+import { motion, AnimatePresence } from "framer-motion";
 import api from "../api";
 import AdBanner from "../components/common/AdBanner";
 
