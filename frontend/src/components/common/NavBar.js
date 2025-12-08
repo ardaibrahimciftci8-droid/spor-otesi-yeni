@@ -12,7 +12,7 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
   ];
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 floating-nav z-50 md:top-0 md:bottom-auto md:border-t-0 md:border-b md:rounded-b-3xl safe-area-bottom">
+    <nav className="fixed bottom-0 left-0 right-0 floating-nav md:top-0 md:bottom-auto md:border-t-0 md:border-b md:rounded-b-3xl safe-area-bottom" style={{ zIndex: 9999, pointerEvents: 'auto' }}>
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="flex items-center justify-between h-16 md:h-20">
           <div className="hidden md:flex items-center gap-3 cursor-pointer" onClick={() => setPage('home')}>
