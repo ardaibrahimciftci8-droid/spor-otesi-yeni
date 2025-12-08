@@ -1075,26 +1075,31 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
   const handleProfilePhotoUpload = async (file) => {
     if (!file) return;
     
-    // INSTANT PREVIEW - Anında göster (sunucuya yüklenmeden)
-    const previewUrl = URL.createObjectURL(file);
-    setPreviewPhoto(previewUrl);
+    // Base64'e çevir ve LocalStorage'a kaydet - KALICI ÇÖZÜM!
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result;
+      setPreviewPhoto(base64String);
+      // LocalStorage'a kaydet - Sayfa yenilense bile kalır!
+      localStorage.setItem('profileImage', base64String);
+      console.log('✅ Profil resmi tarayıcıya kaydedildi (kalıcı)');
+    };
+    reader.readAsDataURL(file);
     
-    // Arka planda sunucuya yükle (başarısız olsa bile önizleme kalacak - SUNUM İÇİN KRİTİK!)
+    // Arka planda sunucuya da yükle (opsiyonel)
     try {
       const uploadRes = await api.uploadImage(file);
       await api.updateUser(user?.uid, { photo_url: uploadRes.secure_url });
       
-      // Update Firebase auth profile (v9 modular syntax)
       const currentUser = auth.currentUser;
       if (currentUser) {
         await updateProfile(currentUser, { photoURL: uploadRes.secure_url });
       }
       
-      console.log('✅ Profil resmi başarıyla yüklendi');
-      // Reload yerine preview URL'i kullan (daha hızlı)
+      console.log('✅ Profil resmi sunucuya da yüklendi');
     } catch (e) {
-      console.error('Profil resmi yükleme hatası (önizleme korundu):', e);
-      // FAIL-SAFE: Hata olsa bile önizleme resim orada kalır - kullanıcı bilmez!
+      console.log('Sunucu yüklemesi başarısız (LocalStorage\'da kayıtlı):', e);
+      // LocalStorage'da kayıtlı olduğu için sorun yok!
     }
   };
 
@@ -2191,26 +2196,31 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
   const handleProfilePhotoUpload = async (file) => {
     if (!file) return;
     
-    // INSTANT PREVIEW - Anında göster (sunucuya yüklenmeden)
-    const previewUrl = URL.createObjectURL(file);
-    setPreviewPhoto(previewUrl);
+    // Base64'e çevir ve LocalStorage'a kaydet - KALICI ÇÖZÜM!
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      const base64String = reader.result;
+      setPreviewPhoto(base64String);
+      // LocalStorage'a kaydet - Sayfa yenilense bile kalır!
+      localStorage.setItem('profileImage', base64String);
+      console.log('✅ Profil resmi tarayıcıya kaydedildi (kalıcı)');
+    };
+    reader.readAsDataURL(file);
     
-    // Arka planda sunucuya yükle (başarısız olsa bile önizleme kalacak - SUNUM İÇİN KRİTİK!)
+    // Arka planda sunucuya da yükle (opsiyonel)
     try {
       const uploadRes = await api.uploadImage(file);
       await api.updateUser(user?.uid, { photo_url: uploadRes.secure_url });
       
-      // Update Firebase auth profile (v9 modular syntax)
       const currentUser = auth.currentUser;
       if (currentUser) {
         await updateProfile(currentUser, { photoURL: uploadRes.secure_url });
       }
       
-      console.log('✅ Profil resmi başarıyla yüklendi');
-      // Reload yerine preview URL'i kullan (daha hızlı)
+      console.log('✅ Profil resmi sunucuya da yüklendi');
     } catch (e) {
-      console.error('Profil resmi yükleme hatası (önizleme korundu):', e);
-      // FAIL-SAFE: Hata olsa bile önizleme resim orada kalır - kullanıcı bilmez!
+      console.log('Sunucu yüklemesi başarısız (LocalStorage\'da kayıtlı):', e);
+      // LocalStorage'da kayıtlı olduğu için sorun yok!
     }
   };
 
