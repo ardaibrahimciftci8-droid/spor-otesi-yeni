@@ -101,17 +101,22 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
       localStorage.setItem('userProfile', JSON.stringify(updatedProfile));
       localStorage.setItem('displayName', displayName);
       
-      // App.js'deki user state'ini de güncelle (eğer mümkünse)
+      // currentUser'ı da güncelle - Ana App.js'deki user state için
+      const currentUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+      currentUser.displayName = displayName;
+      localStorage.setItem('currentUser', JSON.stringify(currentUser));
+      
+      // Page refresh olmadan state'i güncelle
       if (user) {
         user.displayName = displayName;
       }
       
       setEditMode(false);
-      console.log('✅ Profil güncellendi (Local Storage)');
-      alert('✅ Profil başarıyla güncellendi!');
+      console.log('✅ Profil güncellendi (Local Storage + Global State)');
+      alert('✅ Profil başarıyla güncellendi! Sayfa yenilense bile kaydedilir.');
       
-      // Backend'e de gönder (fail olsa da sorun yok)
-      // await api.updateUser(user.uid, { bio, display_name: displayName });
+      // Sayfayı yenile ki navbar'daki isim de güncellensin
+      window.location.reload();
     } catch (e) { 
       console.error('Profil güncelleme:', e);
     }
