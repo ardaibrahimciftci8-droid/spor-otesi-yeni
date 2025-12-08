@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Utensils, ChefHat, PlusCircle, X, Coffee, ShoppingBag, ChevronLeft } from "lucide-react";
+import { Utensils, ChefHat, PlusCircle, X, Coffee, ShoppingBag, ChevronLeft, Camera, Flame } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api";
 import AICoach from "../components/common/AICoach";
