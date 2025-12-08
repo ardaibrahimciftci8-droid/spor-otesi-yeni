@@ -4,29 +4,33 @@ import { motion } from "framer-motion";
 import api from "../api";
 
 const AnalyticsPage = ({ user, setPage }) => {
-  const [stats, setStats] = useState(null);
-  const [userStats, setUserStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+  // 🎯 SUNUM MODU: Demo istatistikler
+  const DEMO_USER_STATS = {
+    posts_count: 8,
+    followers_count: 125,
+    following_count: 87,
+    total_activities: 12,
+    total_workout_minutes: 450,
+    total_calories_burned: 2450,
+    avg_workout_duration: 37.5,
+    streak_days: 7
+  };
+
+  const DEMO_GENERAL_STATS = {
+    total_users: 1250,
+    total_posts: 3420,
+    total_workouts: 8750,
+    active_users_today: 234
+  };
+
+  const [stats, setStats] = useState(DEMO_GENERAL_STATS);
+  const [userStats, setUserStats] = useState(DEMO_USER_STATS);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    loadStats();
+    // 🎯 SUNUM MODU: Veriler zaten yüklü
+    console.log('📊 Analytics: Demo istatistikler aktif');
   }, [user]);
-
-  const loadStats = async () => {
-    setLoading(true);
-    try {
-      const generalStats = await api.getAnalyticsStats();
-      setStats(generalStats);
-      
-      if (user) {
-        const uStats = await api.getUserAnalytics(user.uid);
-        setUserStats(uStats);
-      }
-    } catch (e) {
-      console.error(e);
-    }
-    setLoading(false);
-  };
 
   if (!user) {
     return (
