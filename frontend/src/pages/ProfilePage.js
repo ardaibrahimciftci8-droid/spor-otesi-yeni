@@ -26,6 +26,7 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
   const [activeTab, setActiveTab] = useState('posts');
   const [loading, setLoading] = useState(true);
   const [editMode, setEditMode] = useState(false);
+  const [displayName, setDisplayName] = useState(user?.displayName || DEMO_PROFILE.display_name);
   const [bio, setBio] = useState(DEMO_PROFILE.bio);
   const [isPrivate, setIsPrivate] = useState(false);
   const [blockedUsers, setBlockedUsers] = useState([]);
