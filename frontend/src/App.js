@@ -1109,10 +1109,15 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
       
       {/* Reels Full Screen View */}
       {activeTab === 'reels' ? (
-        <div className="fixed inset-0 z-50 bg-black">
+        <div className="fixed inset-0 bg-black" style={{ zIndex: 9000 }}>
           <button
-            onClick={() => setActiveTab('feed')}
-            className="absolute top-4 left-4 z-50 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white"
+            onClick={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              setActiveTab('feed');
+            }}
+            className="absolute top-4 left-4 p-2 bg-white/20 backdrop-blur-sm rounded-full text-white cursor-pointer"
+            style={{ zIndex: 9001 }}
           >
             <X size={24} />
           </button>
