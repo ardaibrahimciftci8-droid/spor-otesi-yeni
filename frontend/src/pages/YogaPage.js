@@ -18,40 +18,45 @@ const YogaPage = ({ user, setPage }) => {
   const [generatingProgram, setGeneratingProgram] = useState(false);
 
   const loadPrograms = async () => {
-    if (!user) return;
-    setLoading(true);
-    try {
-      const data = await api.getUserYogaPrograms(user.uid);
-      setPrograms(data);
-    } catch (e) {
-      console.error(e);
-    }
+    // 🎯 SUNUM MODU: Backend bypass - Programlar boş
     setLoading(false);
   };
 
   useEffect(() => {
-    if (user) loadPrograms();
+    // 🎯 SUNUM MODU: Programları yükleme
+    setLoading(false);
   }, [user]);
 
   const handleCreateProgram = async (e) => {
     e.preventDefault();
     if (!user) return;
     setGeneratingProgram(true);
-    try {
-      const newProgram = await api.generateYogaProgram(
-        user.uid,
-        programForm.name,
-        programForm.duration,
-        programForm.difficulty,
-        programForm.preferences
-      );
-      setPrograms([newProgram, ...programs]);
+    
+    // 🎯 SUNUM MODU: Simüle edilmiş program oluşturma
+    setTimeout(() => {
+      const demoProgram = {
+        id: Date.now().toString(),
+        user_id: user.uid,
+        name: programForm.name || "Sabah Yoga Rutini",
+        duration: programForm.duration,
+        difficulty: programForm.difficulty,
+        exercises: [
+          "Güneş Selamı (10 tekrar)",
+          "Aşağı Bakan Köpek Pozisyonu (2 dk)",
+          "Savaşçı Pozu I-II (her biri 1.5 dk)",
+          "Ağaç Pozisyonu (1 dk)",
+          "Şavazana (5 dk)"
+        ],
+        created_at: new Date().toISOString()
+      };
+      
+      setPrograms([demoProgram, ...programs]);
       setShowCreateProgram(false);
       setProgramForm({ name: '', duration: 30, difficulty: 'beginner', preferences: '' });
-    } catch (e) {
-      console.error(e);
-    }
-    setGeneratingProgram(false);
+      setGeneratingProgram(false);
+      
+      alert('✅ Yoga programı başarıyla oluşturuldu!');
+    }, 1500);
   };
 
   if (!user) {
