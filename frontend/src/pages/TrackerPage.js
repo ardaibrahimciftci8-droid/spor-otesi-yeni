@@ -5,6 +5,7 @@ import { motion } from "framer-motion";
 import api from "../api";
 import { ACTIVITY_TYPES } from "../utils/constants";
 import { askGemini } from "../utils/helpers";
+import AICoach from "../components/common/AICoach";
 
 const TrackerPage = ({ user, setPage }) => {
   const [activeTab, setActiveTab] = useState('activities');
