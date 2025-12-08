@@ -2114,6 +2114,7 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
   const [bio, setBio] = useState(DEMO_PROFILE.bio);
   const [isPrivate, setIsPrivate] = useState(false);
   const [blockedUsers, setBlockedUsers] = useState([]);
+  const [previewPhoto, setPreviewPhoto] = useState(null); // Instant preview
 
   const loadProfile = async () => {
     if (!user) {
