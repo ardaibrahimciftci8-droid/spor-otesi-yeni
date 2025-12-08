@@ -13,7 +13,7 @@ import axios from 'axios';
 import "./App.css";
 
 // --- CONFIG ---
-const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://sportgram.preview.emergentagent.com";
+const BACKEND_URL = process.env.REACT_APP_BACKEND_URL || "https://sportster.preview.emergentagent.com";
 const API = `${BACKEND_URL}/api`;
 
 const firebaseConfig = {
