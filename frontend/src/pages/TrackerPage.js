@@ -1,6 +1,6 @@
 // TrackerPage extracted from App.js
 import React, { useState, useEffect } from "react";
-import { Activity, Footprints, Timer, TrendingUp, Moon as MoonIcon, PlusCircle, Sparkles, Dumbbell } from "lucide-react";
+import { Activity, Footprints, Timer, TrendingUp, Moon as MoonIcon, PlusCircle, Sparkles, Dumbbell, Flame } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api";
 import { ACTIVITY_TYPES } from "../utils/constants";
