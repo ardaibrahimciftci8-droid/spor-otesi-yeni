@@ -4,16 +4,21 @@ import { motion } from "framer-motion";
 import api from "../api";
 
 const AnalyticsPage = ({ user, setPage }) => {
-  // 🎯 SUNUM MODU: Demo istatistikler
+  // 🎯 SUNUM MODU: Kullanıcıya özel demo istatistikler
   const DEMO_USER_STATS = {
     posts_count: 8,
+    activities_count: 12,           // ✅ Eklendi
+    yoga_programs_count: 3,         // ✅ Eklendi
+    coach_chats_count: 15,          // ✅ Eklendi
     followers_count: 125,
     following_count: 87,
     total_activities: 12,
     total_workout_minutes: 450,
     total_calories_burned: 2450,
     avg_workout_duration: 37.5,
-    streak_days: 7
+    streak_days: 7,
+    total_distance_km: 85.5,        // ✅ Eklendi
+    best_workout_time: "Sabah"      // ✅ Eklendi
   };
 
   const DEMO_GENERAL_STATS = {
