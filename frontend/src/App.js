@@ -71,27 +71,42 @@ try {
 
 // ===== MAIN APP COMPONENT =====
 function App() {
-  console.log('%c🚀 SPOR ÖTESİ - SUNUM VERSİYONU', 'color: #ec4899; font-size: 20px; font-weight: bold; background: black; padding: 10px;');
-  console.log('%c✅ Instagram Benzeri Sosyal Medya - YENİ TASARIM AKTİF', 'color: #10b981; font-size: 14px;');
+  console.log('%c🚀 SPOR ÖTESİ - SUNUM MODU AKTİF', 'color: #ec4899; font-size: 20px; font-weight: bold; background: black; padding: 10px;');
+  console.log('%c✅ Otomatik Giriş: Mock User Yüklendi', 'color: #10b981; font-size: 14px;');
   
-  const [page, setPage] = useState('home');
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(!!auth);
+  // 🎯 SUNUM MODU: Otomatik mock user ile başla
+  const DEMO_USER = {
+    uid: 'demo_user_1',
+    displayName: 'Misafir Sporcu',
+    email: 'demo@sporotesi.com',
+    photoURL: 'https://ui-avatars.com/api/?background=f59e0b&color=fff&name=Misafir+Sporcu&size=200'
+  };
+  
+  const [page, setPage] = useState('social'); // Direkt sosyal sayfaya yönlendir
+  const [user, setUser] = useState(DEMO_USER); // Otomatik giriş yapılmış
+  const [loading, setLoading] = useState(false); // Yükleme yok
   const [viewingUserId, setViewingUserId] = useState(null);
 
+  // 🎯 SUNUM MODU: Firebase auth devre dışı
   useEffect(() => {
-    if (auth) {
-      const unsub = onAuthStateChanged(auth, async (u) => {
-        setUser(u);
-        setLoading(false);
-        if (u) {
-          try {
-            await api.createUser({ firebase_uid: u.uid, display_name: u.displayName, email: u.email, photo_url: u.photoURL, bio: '' });
-          } catch (e) { console.error('User sync error:', e); }
-        }
-      });
-      return () => unsub();
-    }
+    // Firebase onAuthStateChanged devre dışı - Sunum modu
+    console.log('🎯 Sunum Modu: Firebase Auth Bypass - Mock User Aktif');
+    
+    // Mock user'ı backend'e sync et (optional, hata vermemesi için)
+    const syncMockUser = async () => {
+      try {
+        await api.createUser({ 
+          firebase_uid: DEMO_USER.uid, 
+          display_name: DEMO_USER.displayName, 
+          email: DEMO_USER.email, 
+          photo_url: DEMO_USER.photoURL, 
+          bio: 'Demo hesabı - Sunum modu' 
+        });
+      } catch (e) { 
+        console.log('Mock user sync (optional):', e.message); 
+      }
+    };
+    syncMockUser();
   }, []);
 
   const handleLogin = async () => {
