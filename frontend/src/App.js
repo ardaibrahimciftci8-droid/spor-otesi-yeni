@@ -74,40 +74,55 @@ function App() {
   console.log('%c🚀 SPOR ÖTESİ - SUNUM MODU AKTİF', 'color: #ec4899; font-size: 20px; font-weight: bold; background: black; padding: 10px;');
   console.log('%c✅ Otomatik Giriş: Mock User Yüklendi', 'color: #10b981; font-size: 14px;');
   
-  // 🎯 SUNUM MODU: Otomatik mock user ile başla
-  const DEMO_USER = {
-    uid: 'demo_user_1',
-    displayName: 'Misafir Sporcu',
-    email: 'demo@sporotesi.com',
-    photoURL: 'https://ui-avatars.com/api/?background=f59e0b&color=fff&name=Misafir+Sporcu&size=200'
+  // 🎯 SUNUM MODU: LocalStorage'dan kullanıcı bilgilerini yükle
+  const loadUserFromStorage = () => {
+    try {
+      const savedUser = localStorage.getItem('currentUser');
+      const savedDisplayName = localStorage.getItem('displayName');
+      const savedPhoto = localStorage.getItem('profileImage');
+      
+      if (savedUser) {
+        const parsedUser = JSON.parse(savedUser);
+        // Kaydedilmiş isim varsa güncelle
+        if (savedDisplayName) {
+          parsedUser.displayName = savedDisplayName;
+        }
+        // Kaydedilmiş foto varsa güncelle
+        if (savedPhoto) {
+          parsedUser.photoURL = savedPhoto;
+        }
+        console.log('✅ Kullanıcı bilgileri LocalStorage\'dan yüklendi:', parsedUser.displayName);
+        return parsedUser;
+      }
+    } catch (e) {
+      console.log('LocalStorage okuma hatası:', e);
+    }
+    
+    // İlk kez giriş - Default user
+    const DEMO_USER = {
+      uid: 'demo_user_1',
+      displayName: 'Misafir Sporcu',
+      email: 'demo@sporotesi.com',
+      photoURL: 'https://ui-avatars.com/api/?background=f59e0b&color=fff&name=Misafir+Sporcu&size=200'
+    };
+    
+    // LocalStorage'a kaydet
+    localStorage.setItem('currentUser', JSON.stringify(DEMO_USER));
+    return DEMO_USER;
   };
   
-  const [page, setPage] = useState('social'); // Direkt sosyal sayfaya yönlendir
-  const [user, setUser] = useState(DEMO_USER); // Otomatik giriş yapılmış
-  const [loading, setLoading] = useState(false); // Yükleme yok
+  const [page, setPage] = useState('social');
+  const [user, setUser] = useState(loadUserFromStorage()); // LocalStorage'dan yükle
+  const [loading, setLoading] = useState(false);
   const [viewingUserId, setViewingUserId] = useState(null);
 
-  // 🎯 SUNUM MODU: Firebase auth devre dışı
+  // 🎯 SUNUM MODU: User değiştiğinde LocalStorage'a kaydet
   useEffect(() => {
-    // Firebase onAuthStateChanged devre dışı - Sunum modu
-    console.log('🎯 Sunum Modu: Firebase Auth Bypass - Mock User Aktif');
-    
-    // Mock user'ı backend'e sync et (optional, hata vermemesi için)
-    const syncMockUser = async () => {
-      try {
-        await api.createUser({ 
-          firebase_uid: DEMO_USER.uid, 
-          display_name: DEMO_USER.displayName, 
-          email: DEMO_USER.email, 
-          photo_url: DEMO_USER.photoURL, 
-          bio: 'Demo hesabı - Sunum modu' 
-        });
-      } catch (e) { 
-        console.log('Mock user sync (optional):', e.message); 
-      }
-    };
-    syncMockUser();
-  }, []);
+    if (user) {
+      localStorage.setItem('currentUser', JSON.stringify(user));
+      console.log('💾 Kullanıcı bilgileri LocalStorage\'a kaydedildi');
+    }
+  }, [user]);
 
   // 🎯 SUNUM MODU: Login devre dışı - Zaten giriş yapılmış
   const handleLogin = async () => {
