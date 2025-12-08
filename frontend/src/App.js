@@ -2667,6 +2667,7 @@ function App() {
           userId={viewingUserId}
           currentUser={user}
           onBack={() => setViewingUserId(null)}
+          setPage={setPage}
         />
       );
     }
