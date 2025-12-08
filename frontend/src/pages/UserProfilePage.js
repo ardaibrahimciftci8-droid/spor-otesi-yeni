@@ -3,7 +3,7 @@ import { ArrowLeft, UserPlus, UserMinus, Grid, Heart, MessageSquare } from 'luci
 import { motion } from 'framer-motion';
 import api from '../api';
 
-const UserProfilePage = ({ userId, currentUser, onBack }) => {
+const UserProfilePage = ({ userId, currentUser, onBack, setPage }) => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [following, setFollowing] = useState(false);
