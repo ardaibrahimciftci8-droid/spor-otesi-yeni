@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Heart, Target, Volume2, Headphones } from "lucide-react";
 import { motion } from "framer-motion";
+import api from "../api";
 import AdBanner from "../components/common/AdBanner";
 
 const YogaPage = ({ user, setPage }) => {
