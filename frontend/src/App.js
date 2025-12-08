@@ -2213,9 +2213,13 @@ const ProfilePage = ({ user, setPage, onViewProfile }) => {
     <div className="min-h-screen pb-24 md:pb-8 md:pt-24 px-4">
       <div className="animated-bg" />
       <div className="max-w-2xl mx-auto">
-        <div className="glass-card p-8 text-center mb-8">
+        <div className="elite-card p-10 text-center mb-8">
           <div className="relative inline-block">
-            <img src={user?.photoURL || profile?.photo_url || 'https://ui-avatars.com/api/?background=f59e0b&color=fff&name=Demo&size=120'} alt="" className="w-24 h-24 rounded-2xl border-4 border-yellow-500/50 mb-4" />
+            <img 
+              src={previewPhoto || user?.photoURL || profile?.photo_url || `https://ui-avatars.com/api/?background=3b82f6&color=fff&name=${user?.displayName || 'User'}&size=200`} 
+              alt="Profile" 
+              className="w-28 h-28 rounded-3xl border-4 border-electric-blue/50 shadow-2xl object-cover mb-4 transition-all hover:scale-105" 
+            />
             {user && (
               <label htmlFor="photoUpload" className="absolute bottom-2 right-2 p-2 bg-yellow-500 hover:bg-yellow-600 rounded-full cursor-pointer transition">
                 <Camera size={16} className="text-black" />
