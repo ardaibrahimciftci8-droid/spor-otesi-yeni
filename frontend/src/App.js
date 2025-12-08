@@ -109,25 +109,16 @@ function App() {
     syncMockUser();
   }, []);
 
+  // 🎯 SUNUM MODU: Login devre dışı - Zaten giriş yapılmış
   const handleLogin = async () => {
-    if (auth) {
-      try { 
-        await signInWithPopup(auth, googleProvider); 
-        setPage('home'); 
-      }
-      catch (e) { 
-        console.error("Login error:", e); 
-        if (e.code === 'auth/unauthorized-domain') {
-          alert('⚠️ Firebase Domain Hatası!\n\nBu sorunu çözmek için:\n1. Firebase Console\'a gidin (console.firebase.google.com)\n2. Authentication → Settings → Authorized Domains\n3. Bu domain\'i ekleyin: ' + window.location.hostname + '\n\nVercel\'e deploy ettiğinizde bu sorun otomatik çözülecektir.');
-        } else {
-          alert('Giriş hatası: ' + (e.message || 'Bilinmeyen hata'));
-        }
-      }
-    }
+    console.log('🎯 Sunum Modu: Login bypass - Zaten giriş yapılmış');
+    setPage('social'); // Direkt sosyal sayfaya git
   };
 
+  // 🎯 SUNUM MODU: Logout devre dışı - Her zaman giriş yapılı kal
   const handleLogout = async () => {
-    if (auth) { await signOut(auth); setPage('home'); }
+    console.log('🎯 Sunum Modu: Logout devre dışı');
+    // Çıkış yapma, her zaman giriş yapılı kal
   };
 
   const renderPage = () => {
