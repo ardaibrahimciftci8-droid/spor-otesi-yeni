@@ -6,6 +6,7 @@ import api from "../api";
 import { ACTIVITY_TYPES } from "../utils/constants";
 import { askGemini } from "../utils/helpers";
 import AICoach from "../components/common/AICoach";
+import AdBanner from "../components/common/AdBanner";
 
 const TrackerPage = ({ user, setPage }) => {
   const [activeTab, setActiveTab] = useState('activities');
