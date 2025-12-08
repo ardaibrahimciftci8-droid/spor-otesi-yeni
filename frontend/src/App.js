@@ -33,6 +33,19 @@ import LoginPage from './pages/LoginPage';
 import ChatPage from './pages/ChatPage';
 import Footer from './components/common/Footer';
 
+// Import page components (refactored from App.js)
+import SocialPage from './pages/SocialPage';
+import TrackerPage from './pages/TrackerPage';
+import YogaPage from './pages/YogaPage';
+import DonatePage from './pages/DonatePage';
+import ProfilePage from './pages/ProfilePage';
+import NotificationsPage from './pages/NotificationsPage';
+import GoalsPage from './pages/GoalsPage';
+import AnalyticsPage from './pages/AnalyticsPage';
+import MessagesPage from './pages/MessagesPage';
+import NutritionPage from './pages/NutritionPage';
+import AnalysisPage from './pages/AnalysisPage';
+
 // Firebase initialization
 let app, auth, googleProvider;
 try {
