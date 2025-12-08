@@ -64,7 +64,20 @@ try {
 // UserCard component moved to /components/social/UserCard.js
 // HomePage component moved to /pages/HomePage.js
 
-// --- DONATION PAGE ---
+// ===== ALL PAGE COMPONENTS REFACTORED TO /pages/ DIRECTORY =====
+// DonatePage moved to /pages/DonatePage.js
+// NotificationsPage moved to /pages/NotificationsPage.js
+// GoalsPage moved to /pages/GoalsPage.js
+// AnalyticsPage moved to /pages/AnalyticsPage.js
+// SocialPage moved to /pages/SocialPage.js
+// YogaPage moved to /pages/YogaPage.js
+// TrackerPage moved to /pages/TrackerPage.js
+// MessagesPage moved to /pages/MessagesPage.js
+// ProfilePage moved to /pages/ProfilePage.js
+// NutritionPage moved to /pages/NutritionPage.js
+// AnalysisPage moved to /pages/AnalysisPage.js
+
+// ===== MAIN APP COMPONENT =====
 const DonatePage = ({ user, setPage }) => {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCity, setSelectedCity] = useState(null);
