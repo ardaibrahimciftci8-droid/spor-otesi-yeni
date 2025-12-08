@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Camera, Smartphone, Send } from "lucide-react";
 import api from "../api";
+import AICoach from "../components/common/AICoach";
 
 const AnalysisPage = ({ user, setPage }) => {
   const [takim1, setTakim1] = useState("");
