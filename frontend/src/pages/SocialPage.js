@@ -108,11 +108,8 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
   };
 
   const loadConversations = async () => {
-    if (!user) return;
-    try {
-      const data = await api.getConversations(user.uid);
-      setConversations(data);
-    } catch (e) { console.error(e); }
+    // 🎯 SUNUM MODU: Conversations ChatPage'den yüklenecek
+    // API bypass - Boş liste
   };
 
   useEffect(() => { loadPosts(); }, [user]);
