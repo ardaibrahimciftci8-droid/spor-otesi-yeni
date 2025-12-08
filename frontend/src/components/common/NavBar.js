@@ -20,12 +20,17 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
             <span className="text-2xl font-black gradient-text-elite tracking-tight">SPOR ÖTESİ</span>
           </div>
 
-          <div className="flex items-center justify-around w-full md:w-auto md:gap-2">
+          <div className="flex items-center justify-around w-full md:w-auto md:gap-2" style={{ zIndex: 10000, position: 'relative' }}>
             {navItems.map(item => (
               <button
                 key={item.id}
-                onClick={() => setPage(item.id)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setPage(item.id);
+                }}
                 className={`nav-item ${currentPage === item.id ? 'active' : ''}`}
+                style={{ pointerEvents: 'auto', cursor: 'pointer', position: 'relative', zIndex: 10001 }}
               >
                 <item.icon size={20} />
                 <span className="text-xs font-medium hidden md:block">{item.label}</span>
