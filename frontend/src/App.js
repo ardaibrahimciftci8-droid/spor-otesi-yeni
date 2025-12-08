@@ -56,40 +56,20 @@ try {
   console.error("Firebase error:", e);
 }
 
-// AdBanner component moved to /components/common/AdBanner.js
-// AICoach component moved to /components/common/AICoach.js
-// NavBar component moved to /components/common/NavBar.js
-// PostCard component moved to /components/social/PostCard.js
-// CreatePostModal component moved to /components/social/CreatePostModal.js
-// UserCard component moved to /components/social/UserCard.js
-// HomePage component moved to /pages/HomePage.js
+// ===== ALL PAGE COMPONENTS REFACTORED TO /pages/ DIRECTORY =====
+// DonatePage moved to /pages/DonatePage.js
+// NotificationsPage moved to /pages/NotificationsPage.js
+// GoalsPage moved to /pages/GoalsPage.js
+// AnalyticsPage moved to /pages/AnalyticsPage.js
+// SocialPage moved to /pages/SocialPage.js
+// YogaPage moved to /pages/YogaPage.js
+// TrackerPage moved to /pages/TrackerPage.js
+// MessagesPage moved to /pages/MessagesPage.js
+// ProfilePage moved to /pages/ProfilePage.js
+// NutritionPage moved to /pages/NutritionPage.js
+// AnalysisPage moved to /pages/AnalysisPage.js
 
-            placeholder="Maç taktikleri ve analiz hakkında soru sorun..."
-          />
-        </div>
-
-        <div className="glass-card p-8">
-          <div className="text-center mb-8">
-            <div className="w-16 h-16 bg-gradient-to-br from-purple-500/20 to-blue-500/20 rounded-2xl flex items-center justify-center mx-auto mb-4"><BrainCircuit size={32} className="text-purple-500" /></div>
-            <h1 className="text-3xl font-bold text-white">AI Maç Analisti</h1>
-          </div>
-          <form onSubmit={handleAnalyze} className="space-y-4">
-            <div className="grid grid-cols-2 gap-4">
-              <input type="text" value={takim1} onChange={e=>setTakim1(e.target.value)} placeholder="Ev Sahibi" className="input-modern" required />
-              <input type="text" value={takim2} onChange={e=>setTakim2(e.target.value)} placeholder="Deplasman" className="input-modern" required />
-            </div>
-            <button disabled={loading} className="w-full bg-gradient-to-r from-purple-500 to-blue-500 text-white font-bold py-4 rounded-xl transition disabled:opacity-50">{loading ? 'Analiz...' : <><BrainCircuit className="inline mr-2" /> Analiz Et</>}</button>
-          </form>
-          {analiz && <div className="mt-8 glass-card p-6 whitespace-pre-line text-gray-300">{analiz}</div>}
-        </div>
-        <div className="mt-8"><AdBanner /></div>
-      </div>
-    </div>
-  );
-};
-
-// --- FOOTER ---
-// --- MAIN APP ---
+// ===== MAIN APP COMPONENT =====
 function App() {
   console.log('%c🚀 SPOR ÖTESİ - SUNUM VERSİYONU', 'color: #ec4899; font-size: 20px; font-weight: bold; background: black; padding: 10px;');
   console.log('%c✅ Instagram Benzeri Sosyal Medya - YENİ TASARIM AKTİF', 'color: #10b981; font-size: 14px;');
