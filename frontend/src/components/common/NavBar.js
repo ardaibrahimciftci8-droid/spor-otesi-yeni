@@ -39,9 +39,9 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
                 <button onClick={() => setPage('analytics')} className="p-2 text-gray-400 hover:text-purple-500 hover:bg-purple-500/10 rounded-xl transition relative">
                   <TrendingUp size={20} />
                 </button>
-                <button onClick={() => setPage('notifications')} className="p-2 text-gray-400 hover:text-blue-500 hover:bg-blue-500/10 rounded-xl transition relative">
+                <button onClick={() => setPage('messages')} className="p-2 text-gray-400 hover:text-electric-blue hover:bg-electric-blue/10 rounded-xl transition relative" title="Mesajlar">
                   <MessageCircle size={20} />
-                  <span className="absolute top-1 right-1 w-2 h-2 bg-blue-500 rounded-full"></span>
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-electric-blue rounded-full pulse-glow"></span>
                 </button>
                 <button onClick={onLogout} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition">
                   <LogOut size={20} />
