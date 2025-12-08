@@ -21,12 +21,23 @@ const AICoach = ({ user, coachType, title, icon: Icon, color, placeholder }) => 
   }, [chatHistory]);
 
   const loadHistory = async () => {
-    try {
-      const history = await api.getCoachHistory(user.uid, coachType);
-      setChatHistory(history);
-    } catch (e) {
-      console.error(e);
-    }
+    // 🎯 SUNUM MODU: Backend API bypass - Demo chat history
+    // try {
+    //   const history = await api.getCoachHistory(user.uid, coachType);
+    //   setChatHistory(history);
+    // } catch (e) {
+    //   console.error(e);
+    // }
+    
+    // Demo chat history - Sunum için
+    const demoHistory = [
+      {
+        user_message: "Merhaba! Kilo verme hedefim var.",
+        coach_response: "Merhaba! 👋 Seni tanımak güzel. Kilo verme hedefin için sana özel bir plan hazırlayabilirim. Şu an kaç kilo ve hedef kilon nedir?",
+        created_at: new Date(Date.now() - 3600000).toISOString() // 1 saat önce
+      }
+    ];
+    setChatHistory(demoHistory);
   };
 
   const handleSend = async (e) => {
