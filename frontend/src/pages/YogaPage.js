@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Heart, Target, Volume2, Headphones, Sparkles, PlusCircle, X, ArrowRight } from "lucide-react";
+import { Heart, Target, Volume2, Headphones, Sparkles, PlusCircle, X, ArrowRight, Timer } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import api from "../api";
 import AdBanner from "../components/common/AdBanner";
