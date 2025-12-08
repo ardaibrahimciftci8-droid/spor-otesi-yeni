@@ -117,12 +117,12 @@ const UserProfilePage = ({ userId, currentUser, onBack, setPage }) => {
                     )}
                   </button>
                   <button
-                    onClick={() => setPage && setPage('messages')}
+                    onClick={() => setPage && setPage('chat')}
                     className="flex items-center gap-2 px-6 py-2 rounded-xl font-semibold transition bg-white/8 text-white hover:bg-white/12 border border-white/10"
                     title="Mesaj Gönder"
                   >
-                    <MessageCircle size={18} />
-                    <span>Mesaj</span>
+                    <MessageSquare size={18} />
+                    <span>Mesaj Gönder</span>
                   </button>
                 </>
               )}
