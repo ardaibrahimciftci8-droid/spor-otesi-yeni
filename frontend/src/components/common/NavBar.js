@@ -57,7 +57,15 @@ const NavBar = ({ user, setPage, currentPage, onLogout }) => {
                   <MessageCircle size={20} />
                   <span className="absolute top-1 right-1 w-2 h-2 bg-electric-blue rounded-full pulse-glow"></span>
                 </button>
-                <button onClick={onLogout} className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition">
+                <button 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    onLogout();
+                  }} 
+                  className="p-2 text-gray-400 hover:text-red-500 hover:bg-red-500/10 rounded-xl transition cursor-pointer"
+                  style={{ zIndex: 10000, position: 'relative' }}
+                >
                   <LogOut size={20} />
                 </button>
               </div>
