@@ -88,6 +88,51 @@ const ChatPage = ({ user, setPage }) => {
     };
   }, [activeConversation, user, useFirestore]);
 
+  // FIRESTORE REAL-TIME MESSAGES
+  const loadMessagesRealtime = () => {
+    if (!activeConversation?.id || !user?.uid) return;
+    
+    try {
+      const conversationId = activeConversation.id.startsWith('demo-') 
+        ? null 
+        : activeConversation.id;
+      
+      if (!conversationId) {
+        // Demo conversation - use demo messages
+        setMessages(DEMO_MESSAGES[activeConversation.id] || []);
+        return;
+      }
+
+      // FIRESTORE QUERY - Real-time listener
+      const messagesQuery = query(
+        collection(db, 'messages'),
+        where('conversation_id', '==', conversationId),
+        orderBy('created_at', 'asc')
+      );
+
+      unsubscribeRef.current = onSnapshot(
+        messagesQuery,
+        (snapshot) => {
+          const msgs = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data(),
+            created_at: doc.data().created_at?.toDate?.()?.toISOString() || new Date().toISOString()
+          }));
+          setMessages(msgs.length > 0 ? msgs : DEMO_MESSAGES[activeConversation.id] || []);
+        },
+        (error) => {
+          console.log('Firestore listener error, using demo:', error);
+          setUseFirestore(false);
+          setMessages(DEMO_MESSAGES[activeConversation.id] || []);
+        }
+      );
+    } catch (e) {
+      console.log('Firestore setup failed, using demo:', e);
+      setUseFirestore(false);
+      setMessages(DEMO_MESSAGES[activeConversation.id] || []);
+    }
+  };
+
   const loadConversations = async () => {
     if (!user) {
       setConversations(DEMO_CONVERSATIONS);
@@ -95,17 +140,40 @@ const ChatPage = ({ user, setPage }) => {
     }
     
     setLoading(true);
+    
+    // Try Firestore first
+    if (useFirestore) {
+      try {
+        const convQuery = query(
+          collection(db, 'conversations'),
+          where('participants', 'array-contains', user.uid)
+        );
+        const snapshot = await getDocs(convQuery);
+        
+        if (!snapshot.empty) {
+          const convs = snapshot.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          }));
+          setConversations(convs.length > 0 ? convs : DEMO_CONVERSATIONS);
+          setLoading(false);
+          return;
+        }
+      } catch (e) {
+        console.log('Firestore failed, trying API:', e);
+      }
+    }
+
+    // Fallback to API
     try {
       const data = await api.getConversations(user.uid);
       if (Array.isArray(data) && data.length > 0) {
         setConversations(data);
       } else {
-        // Boş response - demo data kullan
         setConversations(DEMO_CONVERSATIONS);
       }
     } catch (e) {
-      console.log('API failed, using demo data:', e);
-      // API fail - demo data kullan
+      console.log('API also failed, using demo data:', e);
       setConversations(DEMO_CONVERSATIONS);
     }
     setLoading(false);
