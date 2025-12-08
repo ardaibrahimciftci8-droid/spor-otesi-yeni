@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Camera, Smartphone, Send, ChevronLeft, BrainCircuit, Trophy } from "lucide-react";
 import api from "../api";
 import AICoach from "../components/common/AICoach";
+import AdBanner from "../components/common/AdBanner";
 
 const AnalysisPage = ({ user, setPage }) => {
   const [takim1, setTakim1] = useState("");
