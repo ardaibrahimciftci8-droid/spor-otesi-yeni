@@ -61,25 +61,17 @@ const SocialPage = ({ user, setPage, onViewProfile }) => {
   const messagesEndRef = useRef(null);
 
   const loadPosts = async () => {
+    // 🎯 SUNUM MODU: Demo data direkt yükle, API'yi atla
     setLoading(true);
-    try {
-      const data = await api.getFeed(user?.uid);
-      setPosts(Array.isArray(data) && data.length > 0 ? data : DEMO_POSTS);
-    } catch (e) { 
-      console.error('Feed yüklenemedi, demo data kullanılıyor:', e);
+    setTimeout(() => {
       setPosts(DEMO_POSTS);
-    }
-    setLoading(false);
+      setLoading(false);
+    }, 500);
   };
 
   const loadStories = async () => {
-    try {
-      const data = await api.getStoriesFeed(user?.uid);
-      setStories(Array.isArray(data) ? data : []);
-    } catch (e) { 
-      console.error('Hikayeler yüklenemedi:', e);
-      setStories([]);
-    }
+    // 🎯 SUNUM MODU: Boş hikaye listesi (veya demo eklenebilir)
+    setStories([]);
   };
 
   const handleCreateStory = async () => {
