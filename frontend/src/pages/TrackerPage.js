@@ -9,12 +9,33 @@ import AICoach from "../components/common/AICoach";
 import AdBanner from "../components/common/AdBanner";
 
 const TrackerPage = ({ user, setPage }) => {
+  // 🎯 SUNUM MODU: Demo data direkt yüklü - Backend bypass
+  const DEMO_ACTIVITIES = [
+    { id: '1', activity_type: 'running', duration_minutes: 45, distance_km: 7.5, calories_burned: 450, created_at: new Date(Date.now() - 86400000).toISOString() },
+    { id: '2', activity_type: 'cycling', duration_minutes: 60, distance_km: 15, calories_burned: 520, created_at: new Date(Date.now() - 172800000).toISOString() },
+    { id: '3', activity_type: 'walking', duration_minutes: 30, distance_km: 3, calories_burned: 180, created_at: new Date(Date.now() - 259200000).toISOString() }
+  ];
+  
+  const DEMO_STATS = {
+    total_activities: 12,
+    total_duration_minutes: 450,
+    total_distance_km: 85.5,
+    total_calories_burned: 2450,
+    weekly_data: [45, 60, 30, 0, 90, 45, 60]
+  };
+  
+  const DEMO_SLEEP_STATS = {
+    avg_sleep_hours: 7.5,
+    avg_quality: 4.2,
+    total_records: 7
+  };
+  
   const [activeTab, setActiveTab] = useState('activities');
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useState(DEMO_ACTIVITIES);
   const [sleepRecords, setSleepRecords] = useState([]);
-  const [stats, setStats] = useState(null);
-  const [sleepStats, setSleepStats] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [stats, setStats] = useState(DEMO_STATS);
+  const [sleepStats, setSleepStats] = useState(DEMO_SLEEP_STATS);
+  const [loading, setLoading] = useState(false);
   const [showAddActivity, setShowAddActivity] = useState(false);
   const [showAddSleep, setShowAddSleep] = useState(false);
   const [aiAnalysis, setAiAnalysis] = useState('');
