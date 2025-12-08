@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { MessageCircle } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { MessageCircle, Send, X, ChevronLeft } from "lucide-react";
+import api from "../api";
 
 const MessagesPage = ({ user, setPage }) => {
   const [conversations, setConversations] = useState([]);
